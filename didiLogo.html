@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #circleOuter{
+            width: 100px;
+            height: 100px;
+            border-radius: 0 0 50px 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fc9153;
+        }
+        #circleInner{
+            width: 60px;
+            height: 60px;
+            border-radius: 0 0 30px 30px;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+        }
+        #block{
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #fff;
+        }
+        .parent{
+            width: 200px ;
+            height: 100px;
+            position: relative;
+            background-color:pink;
+            margin-top: 10px;
+        }
+        #center1{
+            background-color: #ff7777;
+        }
+        #center2{
+            width: 100px;
+            height: 50px;
+            margin:0 auto;
+            background-color: #ff7777;
+        }
+        #centerAbsolute{
+            width:100px;
+            height: 80px;
+            background-color: chartreuse;
+            position: absolute;
+            margin: 0 auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        #centerAlign1{
+            width:100px;
+            height: 80px;
+            background-color: chartreuse;
+            position: absolute;
+            left:50%;
+            top:50%;
+            margin-left: -50px;
+            margin-top: -40px;
+        }
+        #centerAlign2{
+            width:100px;
+            height: 80px;
+            background-color: chartreuse;
+            position: absolute;
+            left:50%;
+            top:50%;
+            transform: translate(-50%, -50%);
+        }
+        #centerAlign3{
+            width:100px;
+            height: 80px;
+            background-color: chartreuse;
+            position:absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin:auto;
+        }
+    </style>
+    <title>HTML5-drag&drop</title>
+</head>
+<body>
+<!--滴滴logo-->
+<div id="circleOuter">
+    <div id="circleInner"></div>
+    <div id="block"></div>
+</div>
+<div style="width:100px;height:100px;background-color:#fc9153;border-radius:50px 50px 0 0;">正方形，有两个圆角</div>
+<div style="width:100px;height:50px;background-color:#fc9153;border-radius:50px 50px 0 0;">半圆</div>
+<div style="width:100px;height:100px;background-color:#fc9153;border-radius:50px;">圆</div>
+<div class="parent" style="text-align: center">
+    <span id="center1">行内元素水平居中</br>text-align: center</span>
+</div>
+<div class="parent">
+    <div id="center2">块级元素水平居中</div>
+</div>
+<div class="parent">
+    <div id="centerAbsolute">绝对定位元素水平居中</div>
+</div>
+<div class="parent">
+    <div id="centerAlign1">绝对定位元素水平垂直居中 方案一</div>
+</div>
+<div class="parent">
+    <div id="centerAlign2">绝对定位元素水平垂直居中 方案2</div>
+</div>
+<div class="parent">
+    <div id="centerAlign3">绝对定位元素水平垂直居中 方案3</div>
+</div>
+<div style="
+    width: 200px ;
+    height: 100px;
+    position: relative;
+    background-color:pink;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+">
+    <div style="background-color: chartreuse;width: 100px">绝对定位元素水平垂直居中 方案4</div>
+</div>
+</body>
+</html>

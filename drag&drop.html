@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>HTML5-drag&drop</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .dropTarget{
+        width: 600px;
+        height: 400px;
+        background: #fff;
+        border: 1px solid deeppink;
+        margin-left: 20px;
+        margin-top: 40px;
+    }
+    #child{
+        width: 100px;
+        height: 60px;
+        position: relative;
+        box-sizing: border-box;
+        background: #ff7777;
+    }
+</style>
+<body>
+<div id="start" class="dropTarget" ondrop="drop(event)" ondragover="dragover(event)">
+    <div
+        id="child"
+        onmousedown="mousedown(event)"
+        draggable="true"
+        ondragstart="dragstart(event)"
+        ondrag="drag(event)"
+        ondragend="dragend(event)"
+
+    ></div>
+</div>
+</body>
+<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+    var relativeX = 0;//可移动元素相对于父元素的位置
+    var relativeY = 0;
+    var mousedownX = 0;//鼠标在可移动元素上单击时，相对于该元素的位置 0 < x < 100
+    var mousedownY = 0;
+    var draggableEle = document.getElementById('child');
+    function dragstart(ev) {
+        //ev.dataTransfer.setData("Text",ev.target.id);//获取拖动元素实例
+    }
+    function drag(ev) {
+
+    }
+    function mousedown(ev) {
+        //ev对象下offsetX offsetY鼠标在该移动元素上的位置
+        mousedownX = ev.offsetX;
+        mousedownY = ev.offsetY;
+    }
+    function dragend(ev) {
+        //ev对象下screenX clientX pageX x都相同
+        //ev对象下clientY pageY y都相同，相对于可视区域的垂直位置；但screenY不同，screenY是相对于屏幕的垂直位置
+        //ev对象下offsetX offsetY鼠标移动的位移+鼠标在该移动元素上的位置
+        //DOM元素属性操作方法 getAttribute()、setAttribute()、removeAttribute()
+        //DOM元素样式操作方法 elm.style.color 获取和赋值
+        relativeX += ev.offsetX - mousedownX;
+        relativeY += ev.offsetY - mousedownY;
+        //draggableEle.setAttribute('style','left:'+ relativeX + 'px;top:' + relativeY + 'px');//失效，因为重置了所有属性，丢失了宽高
+        //水平方向
+        if(ev.screenX <= 20 || ev.screenX >= 620){//鼠标出界
+            if(ev.screenX <= 20){//父元素相对于屏幕的margin-left: 20px;
+                draggableEle.style.left = 0 + 'px';
+                relativeX = 0;//注意：此处没有px
+            }else if(ev.screenX >= 620){//父元素宽600 + 20
+                draggableEle.style.left = 500 + 'px';//600-100
+                relativeX = 500;//注意：此处没有px
+            }else{
+                draggableEle.style.left = relativeX + 'px';
+            }
+        }else{//元素出界鼠标没有出界
+            if(ev.screenX <= mousedownX + 20){
+                draggableEle.style.left = 0 + 'px';
+                relativeX = 0;//注意：此处没有px
+            }else if(ev.screenX >= mousedownX + 520){//600-100+20
+                draggableEle.style.left = 500 + 'px';
+                relativeX = 500;//注意：此处没有px
+            }else{
+                draggableEle.style.left = relativeX + 'px';
+            }
+
+        }
+        //垂直方向
+        if(ev.pageY <= 20 || ev.pageY >= 440){//鼠标出界
+            if(ev.pageY <= 40){
+                draggableEle.style.top = 0 + 'px';
+                relativeY = 0;//注意：此处没有px
+            }else if(ev.pageY >= 440){
+                draggableEle.style.top = 340 + 'px';
+                relativeY = 340;//注意：此处没有px
+            }else{
+                draggableEle.style.top = relativeY + 'px';
+            }
+        }else{//元素出界鼠标没有出界
+            if(ev.pageY <= mousedownY + 40){
+                draggableEle.style.top = 0 + 'px';
+                relativeY = 0;//注意：此处没有px
+            }else if(ev.pageY >= mousedownY + 380){//400-60+40
+                draggableEle.style.top = 340 + 'px';
+                relativeY = 340;//注意：此处没有px
+            }else{
+                draggableEle.style.top = relativeY + 'px';
+            }
+        }
+    }
+    //必须重写dragenter事件和dragover事件，阻止这两个事件的默认行为触发，才能触发drop事件
+    function dragenter(ev) {
+        ev.preventDefault();//dragenter事件的默认行为是该元素不允许其他元素放入，阻止默认行为之后，其他元素即可放入
+    }
+    function dragover(ev) {
+        ev.preventDefault();//dragover事件的默认行为是该元素不允许其他元素放入，阻止默认行为之后，其他元素即可放入
+    }
+    //在Firefox3.5+中，放置事件的默认行为是打开被放到放置目标上的URL，为了兼容性，需要取消drop事件的默认行为
+    function drop(ev) {
+        ev.preventDefault();
+    }
+</script>
+</html>

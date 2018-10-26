@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--
+
+实际遇到的问题有哪些？
+如何解决的？
+
+-->
+<!--
+1、React框架
+
+背景：2013年5月Facebook开源
+
+原理：两大特点，带有Diff算法分析的Virtual DOM和组件化开发，虚拟dom解决性能问题，组件化开发解决可复用问题
+React的DOM构造都是通过虚拟DOM进行，每当数据变化时，React都会重新构建整个DOM树，然后React将当前整个DOM树和上一次的DOM树进行对比，得到DOM结构的区别，然后仅仅将需要变化的部分进行实际的浏览器DOM更新。
+React组件应该具有特征：可组合-Composeable-可重用-Reusable-可维护-Maintainable
+
+差异算法diff：
+UI渲染的结果不是一个真正的DOM节点，他们仅仅是轻量的JavaScript对象。我们称之为虚拟DOM。
+算法原理，给定任意两棵树，找到最少的转换步骤。但是标准的的Diff算法时间复杂度需要O(n^3)-指数，这显然无法满足性能要求。
+然而Facebook工程师却做到了，他们结合Web界面的特点做出了两个简单的假设，使得Diff算法复杂度直接降低到O(n)-线性
+1两个相同组件产生类似的DOM结构，不同的组件产生不同的DOM结构；
+2对于同一层次的一组子节点，它们可以通过唯一的id进行区分。
+算法上的优化是React整个界面Render的基础，事实也证明这两个假设是合理而精确的，保证了整体界面构建的性能。
+http://www.infoq.com/cn/articles/react-dom-diff?utm_campaign=rightbar_v2&utm_source=infoq&utm_medium=articles_link&utm_content=link_text
+https://calendar.perfplanet.com/2013/diff/
+对DOM树进行Diff算法分析。
+
+组件的生命周期分成三个状态：
+Mounting：已插入真实 DOM
+Updating：正在被重新渲染
+Unmounting：已移出真实 DOM
+React 为每个状态都提供了两种处理函数，will 函数在进入状态之前调用，did 函数在进入状态之后调用，三种状态共计五种处理函数。
+componentWillMount()
+componentDidMount()
+componentWillUpdate(object nextProps, object nextState)
+componentDidUpdate(object prevProps, object prevState)
+componentWillUnmount()
+此外，React 还提供两种特殊状态的处理函数。
+componentWillReceiveProps(object nextProps)：已加载组件收到新的参数时调用
+shouldComponentUpdate(object nextProps, object nextState)：组件判断是否重新渲染时调用
+
+与vue相比：
+更大的规模、更多的使用者、更好的可测试性
+Web和原生APP
+能提供更多支持和工具的更大的生态系统
+
+速度快，特殊的dom操作方式，什么算法
+跨浏览器兼容 IE8
+模块化
+单向数据流
+
+缺点：
+单页面JS应用程序的最大缺陷在于对搜索引擎的索引有很大限制。React可以在服务器上预渲染应用再发送到客户端。它可以从预渲染的静态内容中恢复一样的记录到动态应用程序中。
+因为搜索引擎的爬虫程序依赖的是服务端响应而不是JavaScript的执行，预渲染你的应用有助于搜索引擎优化。
+最多可以认为是MVC中的V（View）
+
+优化：
+React性能消耗的模型理解起来很简答：每次setState会重新渲染整个子树。如果你想要提升性能，调用setState的频率变低，并且使用shouldComponentUpdate来阻止一个大的子树的重新渲染。
+
+性能优化：
+
+优秀的组件库：
+Ant Design - A UI Design Language 蚂蚁设计——用户界面设计语言
+http://www.material-ui.com/#/
+http://design.alipay.com/
+https://ant.design/index-cn
+https://www.zhihu.com/question/33629737?sort=created
+Kissy之母承玉 (之父是 @玉伯) 在大约在三年前还没去蚂蚁金服时就开始了React研究之路，后来让人惊讶的是去蚂蚁开创了Ant Design这个伟大的项目。
+https://zhuanlan.zhihu.com/p/23035940 阿里通信求前端工程师
+
+源码阅读：
+对编码规范的理解、操作和领悟
+
+2、Vue框架
+将标记放在HTML文件中是Vue应用程序的默认选项。大括号用于数据绑定表达式，指令（特殊的HTML属性）用于向模板添加功能。
+深入响应式原理
+
+与react相比：
+模板或渲染的灵活选项
+语法以及项目设置的简单
+渲染速度更快，体积更小
+
+Vue 不支持 IE8 以及更低版本浏览器的原因。
+
+React和Vue都是优秀的UI库，并且具有更多的相似之处。它们都有的优势是：
+使用虚拟DOM快速渲染
+轻量级
+响应式组件
+服务端渲染
+轻松集成的的路由、捆绑和状态管理
+强大的支持和社区
+
+3、前端性能优化的方法
+减少http请求次数：CSS Sprites, JS、CSS源码压缩、图片大小控制合适；网页Gzip，CDN托管，data缓存 ，图片服务器。
+前端模板 JS+数据，减少由于HTML标签导致的带宽浪费，前端用变量保存AJAX请求结果，每次操作本地变量，不用请求，减少请求次数
+用innerHTML代替DOM操作，减少DOM操作次数，优化javascript性能。
+当需要设置的样式很多时设置className而不是直接操作style。
+少用全局变量、缓存DOM节点查找的结果。减少IO读取操作。
+避免使用CSS Expression（css表达式)又称Dynamic properties(动态属性)。
+图片预加载，将样式表放在顶部，将脚本放在底部  加上时间戳。
+向前端优化指的是，在不影响功能和体验的情况下，能在浏览器执行的不要在服务端执行，能在缓存服务器上直接返回的不要到应用服务器，程序能直接取得的结果不要到外部取得，本机内能取得的数据不要到远程取，内存能取到的不要到磁盘取，缓存中有的不要去数据库查询。减少数据库操作指减少更新次数、缓存结果减少查询次数、将数据库执行的操作尽可能的让你的程序完成（例如join查询），减少磁盘IO指尽量不使用文件系统作为缓存、减少读写文件次数等。程序优化永远要优化慢的部分，换语言是无法“优化”的。
+
+ Web前端性能优化
+4.2.1 浏览器访问优化
+4.2.2 CDN加速
+4.2.3 反向代理
+
+减少dom操作
+
+5、伪类和伪元素
+
+
+
+
+7、zepto和jQuery的区别
+https://www.cnblogs.com/colima/p/5289386.html
+8、前端如何监测用户网页打不开的情况
+http://fex.baidu.com/blog/2014/05/build-performance-monitor-in-7-days/
+7天打造性能监控系统
+跨域
+H5
+C3
+
+chrome工具
+redux
+
+http://docs.kissyui.com/
+KISSY 是一款跨终端、模块化、高性能、使用简单的 JavaScript 框架。除了完备的工具集合如 DOM、Event、Ajax、Anim 等，它还提供了经典的面向对象、动态加载、性能优化解决方案。作为一款全终端支持的 JavaScript 框架，KISSY 为移动终端做了大量适配和优化，让你的程序在全终端均能流畅运行。
+KISSY 是一个框架，一个生态系统，里面不仅有DOM操作，还有什么模块加载功能，
+然后在模块功能之上有各种模块，内部的，外部的，开源的，自己用的，拉拉杂杂一大堆。
+jQuery专注DOM，只是把DOM操作包装成了一个库，别的再先进的功能也没有了。
+个人虽然认为KISSY的DOM API不如jQuery，但不得不承认，阿里很难只靠jQuery就写出淘宝、天猫这种规模的应用。
+框架大而全，类库小而美。二者只有场景之分，很难讲优劣。
+
+
+算法(一般指排序算法)和数据结构
+http://blog.csdn.net/haoshidai/article/details/52263191
+
+百度面试总结
+优化方案 pc 移动
+兼容性方案 PC和移动的不同
+
+jquery绑定事件的方法 on once one 不同点，动态添加dom元素，父元素绑定的事件委托，动态添加的子元素是否能够监听到
+
+css3
+
+手写事件委托
+
+bind call apply
+
+箭头函数和普通函数区别
+
+动态获取鼠标坐标
+
+ie input 和chrome的区别
+
+浮动元素水平居中
+
+绝对定位元素水平居中
+
+不同类型的水平居中，父元素块级元素，子元素块级元素和行内元素
+
+跨域详解
+
+cavans做一个画板
+
+function abc(ele){
+    if(ele){
+        var a = 'abc';
+    }else{
+        console.log(a)
+    }
+}
+
+function abc(ele){
+    var a;
+    if(ele){
+        a = 'abc';
+    }else{
+        console.log(a)
+    }
+}
+
+function abc(ele){
+    if(ele){
+        let a = 'abc';
+    }else{
+        console.log(a)
+    }
+}
+
+移动端开发兼容性问题
+-->
+</body>
+</html>

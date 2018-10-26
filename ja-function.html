@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+//模板字符串函数
+(function(window){
+	function fn(str){
+		this.str = str;
+	}
+	fn.prototype.format = function(){
+		var arg = arguments;//arguments 类数组对象
+		console.log(arguments);
+		//var arg = Array.prototype.slice.call(arguments,0);
+		console.log(Array.prototype.slice.call(arguments,0));//["http://www.baidu.com", "baidu", "welcome"]
+		return this.str.replace(/\{(\d+)\}/ig,function(a,b){
+			console.log([].slice.call(arguments));
+			console.log(a);//{0} {1} {2}
+			console.log(b);//0 1 2
+			console.log(arg[b]);//http://www.baidu.com baidu welcome
+			return arg[b] || "";
+		});
+	}
+	window.fn = fn;
+})(window);
+(function(){
+	var t = new fn('<p><a href = "{0}">{1}</a><span>{2}</span></p>');
+	document.getElementById('div').innerHTML = t.format('http://www.baidu.com','baidu','welcome');
+	console.log(t.format('http://www.baidu.com','baidu','welcome'));
+})();
+
+//改变log方法的默认输出
+console.log = (function(oriLogFunc){
+	return function(str){
+		oriLogFunc.call(console,'hello '+str);
+	}
+})(console.log);
+console.log('wanshaobo');//hello wanshaobo
+
+//sum函数，实现不定数量参数的求和，非number类型参数需要进行过滤
+function sum(){
+	var len = arguments.length,sum = 0;
+	for(var i=0;i<len;i++){
+		if(typeof arguments[i] == 'number'){
+			sum += arguments[i];
+		}
+	}
+	console.log(sum);
+	return sum;
+}
+sum('a',10,3,'',4,5);//22
+
+b();//函数声明提前
+a();//变量a声明提前，但赋值不会提前，a is not a function
+var a=function(){console.log("aaa")};
+function b(){console.log("bbb")};//bbb
+
+
+$(document).ready(function(){
+	//不一定要等所有的js和图片加载完毕，就可以执行的一些方法
+});
+$(window).load(function() {
+	$("#btn-upload").click(function(){uploadPhotos();});//必须等所有的js和图片加载完毕才能执行的一些方法
+});
+
+//传入不同个数的参数，按照固定格式输出
+function outArguments(){
+	var arr = [];//arguments不能使用slice等Array的方法
+	for(var i=0,len=arguments.length;i<len;i++){
+		arr.push(arguments[i])
+	}
+	console.log('test, ' + arr.join(' '));
+}
+outArguments('you','will','be','success');//test, you will be success
+
+//自执行 闭包
+var test = (function(a){
+	this.a = a;
+	return function(b){
+		console.log("this.s",this.a)
+		return this.a + b;
+	}}(function(a,b){
+		return a;
+	}(1,2))
+);
+console.log(test(4));//5
+
+(function(){
+	return typeof arguments
+})();//"object"
+
+var f = function g(){return 23};
+typeof g();//错误 因为function g(){return 23}是函数表达式，不是函数声明
+
+(function(x){
+	delete x;
+	return x;
+})(1);//1
+
+(function f(f){
+	return typeof f();
+})(function(){return 1;})//number f()参数的优先级高于函数名
+
+var foo = {
+	bar: function(){
+		return this.baz;
+	},
+	baz: 1
+};
+(function(){
+	return typeof arguments[0]();
+})(foo.bar);//undefined
+//arguments[0]    function (){return this.baz;}
+//arguments[0]()  undefined
+
+var foo = {
+	bar: function(){
+		return this.baz;
+	},
+	baz:1
+};
+typeof (f = foo.bar)();//undefined
+//f = foo.bar;typeof f();
+
+var f = (function f(){
+	return '1';
+},function g(){
+	return 2;
+})();//逗号分隔的表达式，只有最后一个表达式的结果保存
+typeof f;//number
+
+var x = 1;
+if(function f(){})(
+	x += typeof f
+)
+x;//1undefined
+
+//2
+(function f(){
+	function f(){return 1;}
+	return f();
+	function f(){return 2;}
+})();
+
+//函数声明会在任何表达式被解析和求值之前先被解析和求值
+//但是变量声明提前，赋值不会提前
+abc();//x
+function abc(){
+	console.log('x');
+}
+
+function f(){return f;}
+console.log(f());//function f(){return f;}
+new f() instanceof f;//false instanceof来检测某个对象是否是数组的实例
+
+var a = 100;
+function test(){
+	var b = 2*a;
+	var a = 200;
+	var c = a/2;
+	console.log(b);
+	console.log(c);
+}
+test();// NaN 100
+
+var a = 10;
+function test(){
+	a = 100;
+	console.log(a);//100
+	console.log(this.toString());//[object Window]
+	console.log(this);//Window{}
+	console.log(this.a);//10
+	var a;
+	console.log(this.a);//10
+	console.log(a);//100
+}
+test();
+
+var a = 100;
+function test(){
+	console.log(a);//100
+	a = 10;
+	console.log(a);//10
+}
+test();
+console.log(a);//10
+
+/**
+ * 获取指定函数的函数名称（用于兼容IE）
+ * @param {Function} fun 任意函数
+ */
+function getFunctionName(fun) {
+	if (fun.name !== undefined)
+		return fun.name;
+	var ret = fun.toString();//function a(){}
+	ret = ret.substr('function '.length);//a(){}
+	ret = ret.substr(0, ret.indexOf('('));//a
+	return ret;
+}
+
+//JS闭包面试题
+//http://www.jb51.net/article/75450.htm
+function trust(a,b){
+	console.log(b);
+	return {
+		trust: function(c){
+			return trust(c,a);
+		}
+	}
+}
+var interview1 = trust(0);//声明的同时执行console.log(b) 并输出undefined
+//interview1 = {trust: function(c){return trust(c,0);}}
+interview1.trust(1);//0
+interview1.trust(2);//0
+var interview2= trust(0).trust(1);//undefined 0
+//interview2 = trust(1,0)
+interview2.trust(2);//1
+var interview3= trust(0).trust(1).trust(2);////undefined 0 1
+
+//逗号操作符，从左到右计算它的操作数，返回最后一个操作数的值
+var x = 20;
+var temp = {
+	x: 40,
+	foo: function(){
+		var x = 10;
+		return this.x;
+	}
+};
+(temp.foo,temp.foo)();//20 等价于 var fun=temp.foo;fun();fun调用时this指向window
+
+//在不改变代码的情况下，如何得到原有的person对象
+var o = (function(){
+	var person = {
+		name: 'Vincent',
+		age: 24
+	};
+	return {
+		run: function(k){
+			return person[k];
+		}
+	}
+}());
+Object.defineProperty(Object.prototype,'self',{
+	get: function(){
+		return this;
+	},
+	configrable: true
+});
+console.log(o.run('self'));//person     Object {name: "Vincent", age: 24}
+
+var Proto = Object.create({},{
+	x: {
+		value: 1,
+		writable: false
+	}
+});
+var obj = Object.create(Proto);
+obj.x = 100;
+obj.x;//1  writable false阻止了赋值
+
+//浮点数转换为整数 >> 右移 位操作符
+function convertToInt(num){
+	return num >> 0;
+}
+console.log(convertToInt(-Math.PI));//-3
+console.log(convertToInt(12.025));//12
+
+function nsm(){
+	console.log(this);
+}
+nsm();//Window{...}
+nsm.call(null);//Window{...}
+nsm.call(undefined);//Window{...}
+nsm.call(1);//Number {[[PrimitiveValue]]: 1}
+
+function sm(){
+	'use strict';
+	console.log(this);
+}
+sm();//undefined
+sm.call(null);//null
+sm.call(undefined);//undefined
+sm.call(1);//1
+
+//https://www.zhihu.com/question/20175380
+//函数柯里化问题 Currying 卡瑞化 加里化 是把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术
+//sum(1) 1
+//sum(1)(2) 3
+//sum(1)(2)(3) 6
+function sum(item){
+	var cur = item;
+	var inner = function(next){
+		return next == null ? cur : (cur += next,inner);
+	};
+	return item == null ? undefined : inner;
+}
+console.log(sum(1)());//1
+console.log(sum(1)(2)());//3
+console.log(sum(1)(2)(3)());//6
+function sum(item){
+	var cur = item;
+	var inner = function(next){
+		if(next != null){
+			cur += next;
+		}
+		return inner;
+	};
+	inner.toString = function(){
+		return cur;
+	}
+	return inner;
+}
+function add(seed) {
+	function retVal(later) {
+		return add( seed + later );
+	}
+	retVal.toString = function() {
+		return seed;
+	}
+	return retVal;
+}
+console.log(sum(1));//1
+console.log(sum(1)(2));//3
+console.log(sum(1)(2)(3));//6
+function multiply(item){
+	var cur = item;
+	var inner = function(next){
+		if(next != null){
+			cur *= next;
+		}
+		return inner
+	}
+	inner.toString = function(){
+		return cur;
+	}
+	return inner;
+}
+
+//实现如下函数
+function repeat(fun,amount,timer){
+	var lastTime = Date.now();
+	while((amount--) > 0){
+		if(Date.now() - lastTime > timer){
+			fun();
+        }
+    }
+}
+	var alertRepear = repeat;//执行alert函数两次，每次间隔500毫秒
+	alertRepear(alert,2,1000);
+
+	//fetch和xhr的区别
+	//react vue 全家桶
+
+	//redux 操作数据的原理，仅仅改变某个节点数据的方案
+
+	//对象序列化和反序列化
+	let obj = {
+		a:{name:'wanshaobo'},
+		b:{age:28},
+		c:{sex:'man'}
+	};
+	let objnew = [{name:'wanshaobo'},{age:28},{sex:'man'},{index:[0,1,2]}]
+</script>
+</body>
+</html>

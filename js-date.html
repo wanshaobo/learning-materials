@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+//寻找周期
+//给定一个按照某个周期递增的日期数组，寻找出该周期，按照如下格式输出周期：1year1month1day1hour1minute1second
+var date = ['20170101 00:02:01','20170101 05:04:02','20170101 10:06:03'];//5hour2minute1second
+var date = ['20170101 00:00:10','20170301 00:00:30','20170501 00:00:50'];//2month20second
+var date = ['20170101 00:00:10','20180325 10:05:30'];//1year2month24day10hour5minute20second
+function dateCycle(dateArr){
+	var str01 = dateArr[0],str02 = dateArr[1];
+	var ruleArr = [],unitArr = ['year','month','day','hour','minute','second'],result = '';
+	ruleArr[0] = str02.slice(0,4) - str01.slice(0,4);
+	ruleArr[1] = str02.slice(4,6) - str01.slice(4,6);
+	ruleArr[2] = str02.slice(6,8) - str01.slice(6,8);
+	ruleArr[3] = str02.slice(9,11) - str01.slice(9,11);
+	ruleArr[4] = str02.slice(12,14) - str01.slice(12,14);
+	ruleArr[5] = str02.slice(-2) - str01.slice(-2);
+	for(var i=0,len=ruleArr.length;i<len;i++){
+		if(ruleArr[i] !== 0){
+			result += ruleArr[i]+unitArr[i];
+		}
+	}
+	console.log(result);
+	return result;
+}
+dateCycle(date);
+
+var str = ' ';
+function isNum(str){
+		var isNum = false;
+		for(var i=0;i<10;i++){
+			if(Number(str) == i){
+				isNum = true;
+				break;
+			}else{
+				isNum = false;
+			}
+		}
+		return isNum;
+	}
+isNum(str);
+console.log(isNaN("100%"));
+
+//倒计时
+function countDown(year,month,day,hour,minute){
+	var now=new Date();
+	var furuteTime=new Date(year,month-1,day,hour,minute);
+	var countTime=furuteTime.getTime()-now.getTime();
+	var countSecond=parseInt(countTime/1000);
+	var days=Math.floor(countSecond/(24*60*60));
+	var hours=Math.floor((countSecond-days*24*60*60)/3600);
+	var minutes=Math.floor((countSecond-days*24*60*60-hours*3600)/60);
+	var seconds=Math.floor(countSecond-days*24*60*60-hours*3600-minutes*60);
+	var time=document.getElementById("time");
+	time.innerHTML="距离" + year +"年" + month + "月" + day + "日" + hour + "时" + minute + "分" + "，剩下:" + days + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒";
+}
+// setInterval(function(){countDown(2016,10,16,15,33)},1000);
+setInterval(function(){countDown(2017,7,22,23,30)},1000);
+
+
+var t = (new Date()).toLocaleTimeString();//下午9:39:42
+var tt = (new Date()).toLocaleDateString();//2017/7/23
+var ttt = (new Date()).toLocaleString();//2017/7/23 下午9:39:42
+var tttt = (new Date()).toTimeString();//21:39:42 GMT+0800 (中国标准时间)
+
+function twoBit(str){
+	if((str+'').length<2){
+		str = "0"+str;
+	}
+	return str;
+}
+function threeBit(str){
+	if((str+'').length == 1){
+		str = "00"+str;
+	}else if((str+'').length == 2){
+		str = "0"+str;
+	}
+	return str;
+}
+function weekF(str){
+	if(str == 0){
+		str = "日";
+	}else if(str == 1){
+		str = "一";
+	}else if(str == 2){
+		str = "二";
+	}else if(str == 3){
+		str = "三";
+	}else if(str == 4){
+		str = "四";
+	}else if(str == 5){
+		str = "五";
+	}else if(str == 6){
+		str = "六";
+	}
+	return str;
+}
+function time(){
+	var d = new Date();
+	var year = d.getFullYear();
+	var month = d.getMonth() + 1;
+	var day = d.getDate();
+	var week = d.getDay();
+	var hour = d.getHours();
+	var min = d.getMinutes();
+	var sec = d.getSeconds();
+	var mSec = d.getMilliseconds();
+	var date = "今天是：" + year + "年" + twoBit(month) + "月" + twoBit(day) + "日"+" "+"星期"+weekF(week)+" "+twoBit(hour)+":"+twoBit(min)+":"+twoBit(sec)+":"+threeBit(mSec);
+	//return date;
+	console.log(date);
+}
+setInterval(function(){time()},1000);//今天是：2017年07月23日 星期日 21:41:32:051
+
+var date = new Date();
+date.getHours();//
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #calc{
+            background-color: gainsboro;
+            width: 250px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #screen{
+            height: 50px;
+            font-size: 20px;
+            line-height: 50px;
+            background-color: #fff;
+            margin: 5px;
+            border-radius: 5px;
+            padding: 0 4px;
+            text-align: right;
+        }
+        #num li{
+            display: flex;
+        }
+        #num span{
+            flex: 1;
+            display: inline-block;
+            font-size: 16px;
+            line-height: 50px;
+            text-align: center;
+            margin: 6px;
+            background-color: antiquewhite;
+            border-radius: 4px;
+        }
+        #result{
+            height: 50px;
+            line-height: 50px;
+            font-size: 40px;
+            font-weight: bolder;
+            text-align: center;
+            background-color: orange;
+            border-radius: 4px;
+            margin: 5px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="calc">
+    <div id="screen">0</div>
+    <ul id="num">
+        <li><span>AC</span><span>+/-</span><span>%</span><span>÷</span></li>
+        <li><span>7</span><span>8</span><span>9</span><span>×</span></li>
+        <li><span>4</span><span>5</span><span>6</span><span>-</span></li>
+        <li><span>1</span><span>2</span><span>3</span><span>+</span></li>
+        <li><span>0</span><span></span><span>.</span><span>=</span></li>
+    </ul>
+    <div id="result">=</div>
+</div>
+</body>
+<script src="jquery-3.1.0.min.js"></script>
+<script>
+    //
+</script>
+</html>

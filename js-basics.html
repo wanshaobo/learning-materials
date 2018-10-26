@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>不用打印输出</title>
+</head>
+<body>
+<script type="text/javascript">
+//数据类型转换
+let a = null;
+!!a;//false 数据强制类型转换为Boolean
++a;//0
+''+a;//'nul'
+
+var arr = ["1", "2", "3"].map(parseInt);
+console.log(arr);//[1, NaN, NaN]
+//["1", "2", "3", "4", "5", "6", "7", "8", "9", '10']
+//[1,   NaN, NaN,  NaN, NaN,NaN, NaN, NaN, NaN,  9 ]
+//[1,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,9,11,13,15,17,19]
+//parseInt(string, radix) string-必需-要被解析的字符串 radix-可选。表示要解析的数字的基数。该值介于 2 ~ 36 之间。
+//数组的索引值index被当做 基数 传入
+//parseInt('1',0) 当参数radix的值为0，或没有设置该参数时，parseInt() 会根据 string 来判断数字的基数。如果 string 以 1 ~ 9 的数字开头，parseInt() 将把它解析为十进制的整数。
+//parseInt('2',1)
+//parseInt('3',2)
+//parseInt('4',3)
+//parseInt('5',4)
+//parseInt('6',5)
+//parseInt('7',6)
+//parseInt('8',7)
+//parseInt('9',8)
+//parseInt('10',9) 9+0
+//parseInt('11',10) 10+1
+//parseInt('12',11) 11+2
+//parseInt('13',12) 12+3
+//parseInt('14',13) 13+4
+//parseInt('15',14) 14+5
+
+Object.prototype.toString.call(undefined)//"[object Undefined]"
+Object.prototype.toString.call(null)//"[object Null]"
+Object.prototype.toString.call(true)//"[object Boolean]"
+Object.prototype.toString.call(123)//"[object Number]"
+Object.prototype.toString.call('')//"[object String]"
+Object.prototype.toString.call([])//"[object Array]"
+Object.prototype.toString.call({})//"[object Object]"
+
+Object.prototype.toString.call(undefined).slice(8,-1)//"Undefined"
+Object.prototype.toString.call(null).slice(8,-1)//"Null"
+Object.prototype.toString.call(true).slice(8,-1)//"Boolean"
+Object.prototype.toString.call(123).slice(8,-1)//"Number"
+Object.prototype.toString.call('').slice(8,-1)//"String"
+Object.prototype.toString.call([]).slice(8,-1)//"Array"
+Object.prototype.toString.call({}).slice(8,-1)//"Object"
+
+var s = 'test';
+console.log(s.length);//4
+s.len = 4;//字符串不能添加 属性 或 方法
+console.log(s.len);//undefined
+
+var scope = 'global';
+function f(){
+	console.log(scope);//undefined
+	var scope = 'local';//函数作用域内局部变量声明提前，但赋值没有提前
+	console.log(scope);//local
+}
+f();//undefined local
+console.log(scope);//global
+
+var name = '';
+console.log(name);//没有
+
+console.log(null == undefined)//true
+console.log(null === undefined)//false
+console.log(undefined == false)//false
+console.log(0 == false);//true
+console.log(0 === false);//false
+console.log(2 == '2');//true
+console.log(2 === '2');//false
+
+console.log(NaN == NaN);//false  原因是 NaN 与所有值都不相等，包括它自己。
+console.log(Number.NaN);//NaN
+console.log(Number(NaN));//NaN
+console.log(NaN);//NaN
+console.log(isNaN(1));//false
+console.log(isNaN(''));//false
+console.log(isNaN(NaN));//true
+console.log(isNaN(new Object()));//true
+console.log(isNaN(undefined));//true
+console.log(isNaN('aa'));//true
+console.log(isNaN('str'));//true
+console.log(isNaN('a'));//true
+
+console.log([1<2<3,3<2<1]);//[true, true]
+console.log(1<2<3);//true
+console.log(3<2<1);//true
+console.log(3<2);//false
+//false为0
+//非0值都是true
+console.log(true == 1);//true
+console.log(false == 0);//true
+console.log(true === 1);//false
+console.log(false === 0);//false
+console.log(false < 1);//true
+console.log(false > 1);//false
+console.log(true < 1);//false
+console.log(true < 3);//true
+console.log(true > 3);//false
+console.log(true > 1);//false
+
+console.log('12' > '9');//false   字符串按位比较
+console.log('12' < '9');//true
+console.log('1'-1);//Number 0
+
+console.log(parseFloat(''));//NaN
+console.log(Number(''));//0
+console.log(parseInt(12.5))//12
+console.log(parseFloat(12.5))//12.5
+console.log(parseInt(12.5) == parseFloat(1.25));//false
+console.log(Number('') == parseFloat(''));//false
+console.log(isNaN('abc') == NaN);//false
+console.log(typeof NaN === 'number');//true
+console.log(typeof NaN);//number
+console.log(NaN == NaN);//false
+console.log(NaN === NaN);//false
+
+if(0){
+	console.log('0');//没有
+}
+if(1){
+	console.log('1');//1
+}
+
+var A=function(){};
+A.method1 = function() {
+	console.log('method1')
+};
+A.method1();//method1
+
+console.log(String);//function String() { [native code] }
+
+var a=[1,2,3,4],i=0;
+a[i++] = a[i++]*2;//等号运算符从左到右执行
+console.log(i);//2
+console.log(a);//[4, 2, 3, 4]
+
+console.log('1'+2);//string 12
+console.log('12'-'1');//number 11
+console.log('1'+2-'1');//number 11
+
+b();//bbb
+a();//TypeError: a is not a function
+var a = function(){console.log("aaa")};
+function b(){console.log("bbb")};//bbb
+
+var a = {n:1};
+var b = a;
+a.x = a = {n:2};
+//执行顺序a.x = {n:2};a = {n:2};等号运算符从左到右执行，先将a.x的栈指针指向新的堆地址{n:2},再将a的栈指针指向新的堆地址{n:2}
+console.log(a.x);//undefined
+console.log(b.x);//{n:2}
+
+var a = [1,2];
+var b = [1,2];
+console.log(a == b);//false 栈指针和堆地址都不相同
+console.log(a === b);//false
+console.log({});//Object {}
+console.log({}.length);//undefined
+console.log({}+{});//[object Object][object Object]
+console.log(({}+{}).length);//30
+
+console.log(Object.keys({a:1}));//["a"] 将对象私有属性的所有key值转换为数组
+console.log(Object.keys({a:1}).length);//1
+
+if(!('a' in window)){
+	var a = 1;
+}
+console.log(a);//undefined
+
+var a;
+function test(){
+	var a = 1;
+	setTimeout(function(){
+		a = 2;
+		console.log(a);//3 2
+	},0);
+	console.log(a);//1 1
+}
+test();
+setTimeout(function(){console.log(3)},0);//4 3
+console.log(a);//2 undefined
+
+for(var i=0;i<5;i++){
+	setTimeout(function(){
+		console.log(i);
+	},1000)
+}
+//一秒后：5 5 5 5 5
+
+for(var i=0;i<5;i++){
+	(function(i){
+		setTimeout(function(){
+			console.log(i)
+		},1000)
+	})(i)
+}
+//一秒后：0 1 2 3 4
+
+for(var i=0;i<5;i++){
+	(function(i){
+		setTimeout(function(){
+			console.log(i);
+		},1000*i);
+	})(i)
+}
+//0 1 2 3 4 每秒打印一个
+
+for(var i=0;i<5;i++){
+	(function(){//没有传进i
+		setTimeout(function(){
+			console.log(i);
+		},1000*i);
+	})(i);
+}
+//5个5 每秒打印一个
+
+for(var i=0;i<5;i++){
+	setTimeout((function(){
+		console.log(i);
+	})(i),1000)
+}
+//直接输出：0 1 2 3 4
+
+for(var i=0;i<5;i++){
+	console.log(i);//0 1 2 3 4
+}
+
+for(var i=0;i<5;i++){
+	setTimeout(function(){
+		console.log(i);
+	},1000*i);//5个5，每秒打印一个
+}
+
+for(var i=0;i<5;i++){
+	setTimeout((function(i){
+		console.log(i);
+	})(i),1000*i);
+}
+//0 1 2 3 4 直接输出
+
+setTimeout(function(){
+	console.log(1);
+},0);
+new Promise(function executor(resolve){
+	console.log(2);
+	for(var i=0;i<10000;i++){
+		i == 9999 && resolve();
+	}
+	console.log(3);
+}).then(function(){
+	console.log(4);
+},function(){
+	console.log(5);
+});
+console.log(6);//2 3 6 4 1
+
+var name = 'window';
+function func(){
+	this.name = 'func';
+	this.method = function(){
+		setTimeout(function(){
+			console.log(this.name);
+		},0);
+	};
+}
+new func().method();//window
+
+//哪些值会阻止输出
+var a = '';//null undefined false 0 NaN ''
+if(a){
+	console.log('test');
+}
+
+//页面上的字符内容通常都需要进行HTML转义才能正确显示，尤其对于Input，Textarea提交的内容更是要进行转义以防止javascript注入攻击
+//通常的HTML转义主要是针对内容中的"<"，">"，"&"，以及空格、单双引号等。但其实还有很多字符也需要进行转义。具体的可以参考这篇文章。
+var REGX_HTML_ENCODE = /"|&|'|<|>|[\x00-\x20]|[\x7F-\xFF]|[\u0100-\u2700]/g;
+var encodeHtml = function(s){
+	return (typeof s != "string") ? s :
+			s.replace(this.REGX_HTML_ENCODE,
+					function($0){
+						var c = $0.charCodeAt(0), r = ["&#"];
+						c = (c == 0x20) ? 0xA0 : c;
+						r.push(c);
+						r.push(";");
+						return r.join("");
+					});
+};
+console.log(encodeHtml('<'));//&#60;
+console.log(encodeHtml('>'));//&#62;
+console.log(encodeHtml('&'));//&#38;
+console.log(encodeHtml('"'));//&#34;
+console.log(encodeHtml("'"));//&#39;
+console.log(encodeHtml(" "));//&#160;
+
+//原生js实现ajaxget请求
+function originAjax(){
+	var xhr;
+	if (window.XMLHttpRequest){
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xhr = new XMLHttpRequest();
+	}
+	else {
+		// IE6, IE5 浏览器执行代码
+		xhr = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			//xhr.responseText:{isSuccess:1}
+			if(xhr.responseText.isSuccess == 1){
+				console.log('request success')
+			}else{
+				console.log('request err')
+			}
+		}
+	}
+	xhr.open("GET","http://192.166.65.131?code=10",true);//true 异步
+	xhr.send();//xhr.send(string);string仅用于 POST 请求
+}
+
+var User = {
+	count: 1,
+	getCount: function(){
+		return this.count;
+	}
+};
+console.log(User.getCount());//1
+var func = User.getCount;
+console.log(func());//undefined
+
+
+var x = 3;
+var foo = {
+	x:2,
+	baz:{
+		x:1,
+		bar:function(){
+			return this.x;
+		}
+	}
+}
+var go = foo.baz.bar;
+console.log(go());//3
+console.log(foo.baz.bar());//1
+
+function test(o){
+	var i=0;
+	if(typeof o == 'object'){
+		var j=0;
+		for(var k=0;k<10;k++){
+			console.log(k)//0 1 2 ... 9
+		}
+		console.log(k)//10
+	}
+	console.log(j)//0
+}
+test(null)//0 1 2 ... 9 10 0
+console.log(typeof null)//object
+
+var scope = 'global'
+function f(){
+	console.log(scope)//undefined 变量声明提前，赋值不提前
+	var scope = 'local'
+	console.log(scope)//local
+}
+f()//undefined local
+
+console.log(1<2<3,3<2<1)//true true
+
+var name = 'World!'
+;(function(){
+	if(typeof name === 'undefined'){
+		var name = 'Jack'
+		console.log(name)//Jack
+	}else{
+		console.log(name)
+	}
+})()
+
+// var END = Math.pow(2,53);//x^53
+var END = 222;
+var START = END - 100;
+var count = 0;
+for(var i=START;i<=END;i++){
+	count++;
+}
+console.log(count)//101
+
+var i= 0,j= 0,k;
+for(;i<10,j<6;i++,j++){
+	k=i+j;
+}
+console.log(k)//10
+
+var x=1;
+function fn(n){
+	n = n+1;
+};
+y=fn(x)//函数执行结束没有return，因此 return undefined
+console.log(y)//undefined
+
+var x=1;
+function fn(n){
+	n = n+1;
+	return n
+};
+y=fn(x)
+console.log(y)//2
+
+fn1();
+var fn1 = function(a){
+	console.log(a)
+}
+//fn1 is not a function
+
+function fn1(){
+	var a=0;
+	function fn2(){
+		++a;
+		console.log(a)
+	}
+	return fn2
+}
+fn1()();//1
+var newFn = fn1();
+newFn();//1
+newFn();//2
+
+//操作DOM插入元素
+var lis = '',ul = document.createElement('ul');
+for(var i=1;i<=10;i++){
+	lis += "<li>第" + i + "行</li>";
+}
+ul.innerHTML = lis;
+document.body.appendChild(ul);
+
+var y = 1,x = y = typeof x;
+x;//undefined
+
+console.log(Boolean(''));//false
+console.log(Boolean(0));//false
+console.log(Boolean('0'));//true
+console.log(Boolean(1));//true
+console.log(Boolean('1'));//true
+console.log(Boolean(' '));//true
+
+var wo = 'abc';
+function wo(){
+	console.log();
+}
+console.log(wo);//abc
+console.log(wo());//Uncaught TypeError: wo is not a function
+
+
+console.log('11'-'2');//9
+console.log('11'+'2');//112
+console.log('11'*'2');//22
+console.log('11'/'2');//5.5
+
+console.log(Number(Math.random().toFixed(2)));//0.18 number
+console.log(Math.random().toFixed(2));//0.18 string
+console.log(Math.random());//0.1030634458546611 十六位
+console.log(typeof Math.random());//number
+
+var num = 100;
+var obj = {
+	num:200,
+	inner:{
+		num:300,
+		print:function(){
+			console.log(this.num);
+		}
+	}
+};
+obj.inner.print();//300
+var func = obj.inner.print;
+func();//100
+(obj.inner.print)();//300
+console.log(obj.inner.print);
+(obj.inner.print = obj.inner.print)();//右边全局变量obj.inner.print赋值function (){console.log(this.num);}  100
+
+(function(num){
+	console.log(num);
+	var num = 10;
+})(100);//100
+(function(num){
+	console.log(num);
+	var num = 10;
+}(100));//100
+(function(num){
+	console.log(num);
+	var num = 10;
+	function num(){};
+}(100));//function num(){}
+
+var btn = document.getElementById('btn');
+btn.addEventListener('click',function(){console.log(1);});
+btn.addEventListener('click',function(){console.log(2);});
+btn.onclick = function(){console.log(3);};
+btn.onclick = function(){console.log(4);};
+//1 2 4
+
+//parseInt会调用toString()
+console.log(parseInt(0.000008));//'0.000008' 0
+console.log(parseInt(0.0000008));//'8.8e-7'  8
+
+var a = b = 1;
+var test = function(){
+	console.log(a);
+	this.b = 10;
+	b = 10;
+	console.log(this.b);
+	console.log(b);
+	console.log(this);
+	var a,b;
+}
+var func = new test();//new做了什么，对象实例化  undefined 10 10 test {b:10}
+console.log(func);//test {b:10}
+test();//undefined 10 10 Window
+
+var a = b = 1;
+var test = function(){
+	console.log(a);
+	b = 10;
+	console.log(this.b);
+	console.log(b);
+	console.log(this);
+	var a,b;
+}
+var func = new test();//new做了什么，对象实例化  undefined undefined 10 test {}
+console.log(func);//test {}
+test();//undefined 1 10 Window
+
+//基本数据类型强转
+var a = 1;
+var b = '1';
+console.log('' + a);//number-string string
+console.log(+b);//string-number number
+console.log(String(a));//string
+console.log(Number(b));//number
+//位运算符
+console.log(1&2);//0 0001 0010 &=and
+console.log(1|2);//3 0001 0010 |=or
+console.log(~1);//-2 0001 反码1110 补码1001，首位1代表负数，计算机存储负数都是补码存储，负数还原，负数还原就是除了符号位其余取反加1  ~=取反 -1-1 按位非的本质 操作数的负值减一
+console.log(~100);//-101 ~=取反 -100-1 按位非的本质 操作数的负值减一
+console.log(1^2);//3 0001 0010 0011 ^=异或
+console.log(0.1+0.2);//0.30000000000000004
+console.log((0.1+0.2).toFixed(1));//0.3 string
+console.log(+(0.1+0.2).toFixed(1));//0.3 number
+
+console.log({} == {});//false
+console.log({} === {});//false
+console.log(NaN == NaN);//false
+console.log(NaN === NaN);//false
+
+console.log('1' + 1);//11 string
+console.log(1 + '1');//11 string
+console.log(1 + '1' + 1);//111 string
+console.log(1 + 1 + '1');//21 string
+console.log(1 + 1 + '1' + 1);//211 string
+
+1 == true //true
+2 == true //false
+1 === true //false
+	2 == [[[2]]] true
+	2 == [[2]] true
+	2 == [2] true
+
+var obj = {name: 'Coco'};
+var str = '123' + obj;//var str = '123' + obj.toString();
+console.log(str);//123[object Object]
+//如果只改写 valueOf() 或是 toString()其中一个，会优先调用被改写了的方法，而如果两个同时改写，则会像 Number 类型转换规则一样，优先查询 valueOf() 方法，在 valueOf() 方法返回的是非原始类型的情况下再查询 toString() 方法。
+var obj = {
+	toString: function () {
+		console.log('调用了toString');
+		return '1';
+	},
+	valueOf: function () {
+		console.log('调用了vlaueOf');
+		return '100';
+	}
+}
+
+alert(obj + '1');
+//调用了valueOf
+//'1001'
+
+//引用类型转换为字符串
+//1.优先调用toString方法（如果有），看其返回结果是否是原始类型，如果是，转化为字符串，返回。
+//2.否则，调用valueOf方法（如果有），看其返回结果是否是原始类型，如果是，转化为字符串，返回。
+//3.其他报错。
+//引用类型转化为数字
+//1.优先调用valueOf方法（如果有），看其返回结果是否是原始类型，如果是，转化为数字，返回。
+//2.否则，调用toString方法（如果有），看其返回结果是否是原始类型，如果是，转化为数字，返回。
+//3.其他报错。
+
+//1，null和undefined，相等。
+//2，数字和字符串，转化为数字再比较。
+//3，如果有true或false，转换为1或0，再比较。
+//4，如果有引用类型，优先调用valueOf。
+//5，其余都不相等。
+
+var a=(function(a){
+	// todo
+})(a);
+console.log(a);//undefined
+</script>
+</body>
+</html>

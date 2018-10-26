@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css"></style>
+</head>
+<body>
+<script type="text/javascript">
+/*
+26个API
+返回Boolean：
+返回数组：
+返回索引：
+返回结果：
+遍历数组：
+操作数组：
+*/
+	//提取字符串指定的元素：'abc'[0] 'abc'.charAt(0)
+	console.log('abc'[3]);//undefined
+	console.log('abc'.charAt(3));//''
+
+//1.九宫格键盘的字符串组合
+function strCombine(a,b){
+	var strArr = ['abc','def','ghi','jkl','mno','pqrs','tuv','wxyz'];
+	var str0 = strArr[a-1],str1 = strArr[b-1],arr = [];
+	var len0 = str0.length,len1 = str1.length;
+	for(var i=0;i<len0;i++){
+		for(var j=0;j<len1;j++){
+			arr.push(str0[i] + str1[j]);
+		}
+	}
+	return arr.join(',');
+}
+strCombine(1,2);//ad,ae,af,bd,be,bf,cd,ce,cf
+strCombine(6,7);//pt,pu,pv,qt,qu,qv,rt,ru,rv,st,su,sv
+
+//2.找出字符串中出现最多的字符，并统计出现的次数
+var str = 'qwertyuilo.,mnbvcsarrrrrrrrt  yuiop;l,mhgfdqrtyuio;.cvxsrtyiuo';
+function maxStr(str){
+	var maxNumber = 0,maxString = '',strObj = {};
+	for(var i=0,len=str.length;i<len;i++) {
+		if (!strObj[str.charAt(i)]){
+			strObj[str.charAt(i)] = 1;
+		}else{
+			strObj[str.charAt(i)]++;      
+		}    
+	}
+	console.log(strObj);//Object {q: 2, w: 1, e: 1, r: 11, t: 4…} 统计所有字符出现的次数
+	for(var item in strObj) {
+		if (strObj[item] > maxNumber) {
+			maxNumber = strObj[item];
+			maxString = item;
+		}
+	}
+	console.log('出现最多的字符是:' + maxString + ',出现的次数是:' + maxNumber);
+};
+maxStr(str);//出现最多的字符是 r,出现次数为 11
+
+//3.判断一个字符串为null、长度为0、空白字符
+function isEmpty(str){
+	if(str === null){
+		console.log('null');
+	}else if(str.length == 0){
+		console.log('length=0');
+	}else if (str.trim().length == 0){
+		console.log('空白符');
+	}else{
+		console.log(str);
+	}
+}
+isEmpty(null);//enpty
+isEmpty('');//length=0
+isEmpty('   ');//空白符
+isEmpty('a');//a
+
+//4.字符串去除空白字符(空格符 制表符 回车符 换行符 垂直换行符 换页符)
+var str = 'a  bdcd  d'.replace(/\s/g,'');
+var str = 'a  bdcd  d'.toLowerCase().replace(/\s/g,'');
+console.log(str);
+
+//5.解析字符串，判断数据类型，只有Boolean,Number,Date,String四种类型
+// Boolean类型的值有true/false，不区分大小写
+// Number的值包括整数，浮点数和科学计数
+// Date的值满足20170101或20170101 00:00:00
+// 不满足以上三种类型的值都是String类型
+//强制类型转换 Boolean(value)——把给定的值转换成Boolean型；Number(value)——把给定的值转换成数字（可以是整数或浮点数）；String(value)——把给定的值转换成字符串。
+var str = '-100.1,abcd,abced,1.0023e13,true,tRue,tttt,20,20170101,2017010,False,100%,20170101 04:00:00,20170101 0400:00';
+//Number,String,String,Number,Boolean,Boolean,String,Number,Date,Number,Boolean,String,Date,String
+//Number('') 0 Number(' ') 0
+function strType(str){
+	var arr = str.split(','),result = '';
+	console.log(arr);
+	function isNum(str){
+		var isNum = false;
+		if(str.replace(/\s/g,'').length == 0)//由于Number(' ') == 0 Number('') == 0，因此必须去除空白字符
+				return isNum;
+		for(var i=0;i<10;i++){
+			if(Number(str) == i){
+				isNum = true;
+				break;
+			}else{
+				isNum = false;
+			}
+		}
+		return isNum;
+	}
+	function stringOrNumber(str){
+		if(isNaN(str))
+			result += 'String,';
+		else
+			result += 'Number,';
+	}
+	for(var item in arr){
+		if(arr[item].length == 4){
+			var booleanStr = arr[item].toLowerCase();
+			if(booleanStr.charAt(0) == 't' && booleanStr.charAt(1) == 'r' && booleanStr.charAt(2) == 'u' && booleanStr.charAt(3) == 'e')
+				result += 'Boolean,';
+			else
+				stringOrNumber(arr[item]);
+		}else if(arr[item].length == 5){
+			var booleanStr = arr[item].toLowerCase();
+			if(booleanStr.charAt(0) == 'f' && booleanStr.charAt(1) == 'a' && booleanStr.charAt(2) == 'l' && booleanStr.charAt(3) == 's' && booleanStr.charAt(4) == 'e')
+				result += 'Boolean,';
+			else
+				stringOrNumber(arr[item]);
+		}else if(arr[item].length == 8){
+			var isDate = false;
+			for(var i=0;i<8;i++){
+				isDate = isNum(arr[item].charAt(i));
+				if(isDate == false)
+					break;
+			}
+			if(isDate == true)
+				result += 'Date,';
+			else
+				stringOrNumber(arr[item]);
+		}else if(arr[item].length == 17){
+			var isDate = false,isContinue=1;
+			for(var i=0;i<8;i++){
+				isDate = isNum(arr[item].charAt(i));
+				if(isDate == false){
+					isContinue=0;
+					break;
+				}
+			}
+			if(!isContinue)
+				continue;
+			if(arr[item].charAt(8) == ' ' && isNum(arr[item].charAt(9)) && isNum(arr[item].charAt(10)) && arr[item].charAt(11) == ':' && isNum(arr[item].charAt(12)) && isNum(arr[item].charAt(13)) && arr[item].charAt(14) == ':' && isNum(arr[item].charAt(15)) && isNum(arr[item].charAt(16))){
+				isDate = true;
+			}else{
+				isDate = false;
+				continue;
+			}
+			if(isDate == true)
+				result += 'Date,';
+			else
+				stringOrNumber(arr[item]);
+		}else{
+			stringOrNumber(arr[item]);
+		}
+	}
+	console.log(result.slice(0,result.length-1));
+}
+strType(str);
+
+//6.对于任意软件的两个版本号进行比较，首先分析需求如下：
+// java的jdk版本号：jdk1.7.0_02
+// QQ 移动端的版本号：V6.5.3.410
+// QQ PC端的版本号：11.2.01.3
+// 微信的版本号：WeChat 6.2.4
+// boss直聘版本号：version 5.20
+// 可以看到，软件版本号的组成方式有两种:纯数字 || 数字字母组合
+// 要比较版本大小，只需要比较数字部分即可，算法实现方式如下 
+function versionCompare(v1,v2){
+    var numIndex1,numIndex2,num1Str,num2Str,arr1,arr2,maxLength,count=0;//定义需要用到的变量
+    numIndex1 = v1.search(/\d/);//找到第一个数字出现的位置编号
+    numIndex2 = v1.search(/\d/);
+    num1Str = v1.slice(numIndex1);//提取版本号的所有数字
+    num2Str = v2.slice(numIndex2);
+    arr1 = num1Str.split(/[._]/);//将数字字符串转化为字符串数组，用.或_进行分割
+    arr2 = num2Str.split(/[._]/);
+    for(var i=0;i<arr1.length;i++){//将字符串数组，转化为数字数组
+        arr1[i] = parseInt(arr1[i]);
+    }
+    for(var i=0;i<arr2.length;i++){//将字符串数组，转化为数字数组
+        arr2[i] = parseInt(arr2[i]);
+    }
+    maxLength = arr1.length >= arr2.length ? arr1.length : arr2.length;//获取较长的版本号
+    if(arr1.length == arr2.length){//如果两个版本号相等，函数终止执行，并且返回结果
+        for(var i=0;i<maxLength;i++){
+            if(arr1[i] == arr2[i]){
+                count++;
+                if(count == maxLength && arr1[maxLength-1] == arr2[maxLength-1]){
+                    return '版本号相同：' + v1
+                }
+            }
+        }
+    }
+    for(var i=0;i<maxLength;i++){
+        if(arr1[i] > arr2[i]){
+            return v1;
+        }else if(arr1[i] == arr2[i]){
+            continue;
+        }else if(arr1[i] === undefined){
+            return v2;
+        }else if(arr2[i] === undefined){
+            return v1;
+        }else{
+            return v2;
+        }
+    }
+}
+//测试
+console.log(versionCompare('jdk1.7.0_02','jdk1.7.0_01'));//jdk1.7.0_02
+console.log(versionCompare('jdk1.7.0_01','jdk1.7.0_01'));//版本号相同：jdk1.7.0_01
+console.log(versionCompare('WeChat 7.0','WeChat 6.2.41.9.785.01'));//WeChat 7.0
+console.log(versionCompare('V6.5.3.410','V6.1.3.410'));//V6.5.3.410
+console.log(versionCompare('V_3.5.3.410','V_4.1.3.410'));//V_4.1.3.410
+console.log(versionCompare('version 5_20_01','version 5'));//version 5_20_01
+console.log(versionCompare('11.2.01.3','12'));//12
+
+//7.字符串移动（字符串为*号和26个字母的任意组合，把*号都移动到最左侧，把字母移到最右侧并保持相对顺序不变），要求时间和空间复杂度最小
+//slice();提取字符片段,第二个参数可有可无可以为负数  substring();截取字符串片段,第二个参数可有可无不能为负数
+var str="abc*de*f*";
+var char = '*';
+function shift(str,char){
+    var symbol = "",strAll = "";  
+    for(var i=0,len=str.length;i<len;i++){  
+        if(str.charAt(i) == char){  
+            symbol += char;
+        }else{
+        	strAll += str.charAt(i);
+        }
+    } 
+    return symbol + strAll;  
+}  
+console.log(shift(str,char)); // ***abcdef 
+
+//8.给定一个句子，包含单词和空格，将整句的单词位置反转
+//hello xiao mi => mi xiao hello
+var str = 'hello xiao mi';
+function reverseSentence(str){
+	return str.split(' ').reverse().join(' ');
+}
+
+
+//9.js判断某个字符出现的次数的简单实例
+function patch(reg,str){ //参数1正则式，参数2字符串
+	reg=eval("/"+reg+"/ig"); //i不区分大小写，g全局匹配
+	var len = str.match(reg).length;//match()方法可在字符串内检索指定的值，或找到一个或多个正则表达式的匹配。没有g，只匹配一次；有g返回一个数组。如果没有找到任何匹配的文本将返回 null。
+	return len;
+}
+var str="Hello World";
+console.log("num = " + patch("h",str));
+
+//10.十六进制颜色值的随机生成
+function randomColor(){
+	var arrHex=["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+	var strHex="#";
+	var index;
+	for(var i=0;i<6;i++){
+		index = Math.round(Math.random()*15);
+		strHex += arrHex[index];
+	}
+	return strHex;
+}
+console.log(randomColor());//#3b1914
+
+//11.阿拉伯数字 人民币大写  ¥1001  一千零一元
+function DX(n) {
+	if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(n))
+		return "数据非法";
+	var unit = "千百拾亿千百拾万千百拾元角分", str = "";
+	n += "00";
+	var p = n.indexOf('.');
+	if (p >= 0)
+		n = n.substring(0, p) + n.substr(p+1, 2);
+	unit = unit.substr(unit.length - n.length);
+	for (var i=0; i < n.length; i++)
+		str += '零壹贰叁肆伍陆柒捌玖'.charAt(n.charAt(i)) + unit.charAt(i);
+	return str.replace(/零(千|百|拾|角)/g, "零").replace(/(零)+/g, "零").replace(/零(万|亿|元)/g, "$1").replace(/(亿)万|壹(拾)/g, "$1$2").replace(/^元零?|零分/g, "").replace(/元$/g, "元整");
+}
+console.log(DX(1));
+
+//12.解析一个URL为js对象   http://wwww.baidu.com?a=1&b=2&c=3   {a:1,b:2,c:3}
+var url = 'http://wwww.baidu.com?a=1&b=2&c=3';
+function urlToObj(url){
+	var data = url.substring(url.indexOf('?')+1),arr = data.split('&'),obj = {};
+	for(var i=0,len=arr.length;i<len;i++){
+		obj[(arr[i].split('='))[0]] = Number((arr[i].split('='))[1]);
+	}
+	return obj;
+}
+console.log(urlToObj(url));
+function urlToObj(url){
+	var obj = new Object();
+	if(/\?/g.test(url)){
+		var urlStr = url.slice(url.indexOf('?') + 1);
+		//var urlStr = url.substring(url.indexOf('?') + 1);
+		var urlArr = urlStr.split('&');
+		for(var i=0;i<urlArr.length;i++){
+			var objArr = urlArr[i].split('=');
+			obj[objArr[0]] = objArr[1];
+		}
+	}else{
+		console.log('url不合法！');
+	}
+	return obj;
+}
+
+//13.剔除字符串连续字符，只保留一个
+function uniqueStr(str){
+	var result = '';
+	for(var i= 0,len=str.length;i<len;i++){
+		if(str.charAt(i) != str.charAt(i+1)){//str.charAt(len) == ''
+			result += str.charAt(i);
+		}
+	}
+	return result
+}
+var str = '011122222223349684';
+console.log(uniqueStr(str));//12349684
+
+//14.千位分隔符
+//基础版本，只考虑整数
+function thousands(num) {
+	var str = num + '',result = '';
+	while(str.length > 3){
+		result = ',' + str.slice(-3) + result;
+		str = str.substring(0,str.length-3);
+	}
+	return str + result
+}
+console.log(thousands(1234));
+//升级版本，有小数存在
+function thousands(num) {
+	var str = num + '',dot = '',result = '';
+	if(/\./g.test(str)){
+		dot = str.substring(str.indexOf('.'));
+		str = str.substring(0,str.indexOf('.'));
+	}
+	while(str.length > 3){
+		result = ',' + str.slice(-3) + result;
+		str = str.substring(0,str.length-3);
+	}
+	return str + result + dot
+}
+console.log(thousands(1122210.012))
+//升级版本，负整数
+function thousands(num) {
+	var str = num + '',result = '';
+	if(/\-/g.test(str)){
+		str = str.substring(1);
+	}
+	while(str.length > 3){
+		result = ',' + str.slice(-3) + result;
+		str = str.substring(0,str.length-3);
+	}
+	return '-' + str + result
+}
+console.log(thousands(-1234567))
+//升级版本，负整数+最多三位小数
+function thousands(num) {
+	var str = num + '',minus = false,dot = '',result = '';
+	if(/\-/g.test(str)){
+		minus = true;
+		str = str.substring(1);
+	}
+	if(/\./g.test(str)){
+		dot = str.substring(str.indexOf('.'));
+		str = str.substring(0,str.indexOf('.'));
+	}
+	while(str.length > 3){
+		result = ',' + str.slice(-3) + result;
+		str = str.substring(0,str.length-3);
+	}
+	return (minus ? '-' : '') + str + result + dot
+}
+console.log(thousands(-123500.125));
+
+//15.js判断字符串是不是合法的IP地址
+//合法：192.168.0.1 255.255.255.255 12.34.89.100 0.0.0.0
+//非法：00.168.0.1 345.23.2.1
+var str = '0.0.0.0';
+function isIp(str){
+	var arr = str.split('.');
+	for(var i=0,len=arr.length;i<len;i++){
+		var temp = arr[i];
+		if(Number(temp).toString().length != temp.length || Number(temp) < 0 || Number(temp) > 255){
+			return false
+		}
+		arr[i] = Number(temp);
+	}
+	return true
+}
+console.log(isIp(str));
+
+//16.判断当前页面是否从58.com或ganji.com下面的页面跳转而来
+var url = 'www.ganji.com/abc/';
+function originFrom(url){
+	//var url = location.href;
+	if(url.substr(url.indexOf('.') + 1, 6) == '58.com' || url.substr(url.indexOf('.') + 1, 9) == 'ganji.com'){
+		return true
+	}else{
+		return false
+	}
+}
+console.log(originFrom(url));//true
+
+	//17.电话号码分身
+	//数字 123 每位 加8 取个位变成 901，用对应的英文大写字母代替 NINE ZERO ONE，随机打乱 EZENIOROENN
+	//编程题：输入打乱后的字符串，输出升序排列的数字，如：EZENIOROENN 123
+	//EIGHT 8
+	//ZEROTWOONE 234
+	//OHWETENRTEO 345
+	//OHEWTIEGTHENRTEO 0345
+	//ZESIXROZFONEOUREROZERO 222368
+	//逻辑思路
+	//Z ZERO W TWO U FOUR X SIX G EIGHT
+	//R THREE O ONE F FIVE S SEVEN
+	//NINE
+	var enArr = ['ZERO','ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE'];
+	var str = 'OHEWTIEGTHENRTEO';//2 8 3 1  12 18 13 11  4 10 5 3  4035  0354
+	var str = 'ZESIXROZFONEOUREROZERO';//0 0 0 4 6 1   10 10 10 14 16 11   2 2 2 6 8 3   222368
+	function getTel(str){
+		var arr1 = ['Z','W','U','X','G'];
+		var arr2 = ['R','O','F','S'];
+		var result = '';
+		for(var i=0,len=arr1.length;i<len;i++){
+			while(str.indexOf(arr1[i]) != -1){
+				switch(arr1[i]){
+					case 'Z':
+						var numStr = 'ZERO';
+						for(var j=0,numLen=numStr.length;j<numLen;j++){
+							str = str.replace(numStr.charAt(j),'');
+						}
+						result += '0';
+						break;
+					case 'W':
+						var numStr = 'TWO';
+						for(var j=0,numLen=numStr.length;j<numLen;j++){
+							str = str.replace(numStr.charAt(j),'');
+						}
+						result += '2';
+						break;
+					case 'U':
+						var numStr = 'FOUR';
+						for(var j=0,numLen=numStr.length;j<numLen;j++){
+							str = str.replace(numStr.charAt(j),'');
+						}
+						result += '4';
+						break;
+					case 'X':
+						var numStr = 'SIX';
+						for(var j=0,numLen=numStr.length;j<numLen;j++){
+							str = str.replace(numStr.charAt(j),'');
+						}
+						result += '6';
+						break;
+					case 'G':
+						var numStr = 'EIGHT';
+						for(var j=0,numLen=numStr.length;j<numLen;j++){
+							str = str.replace(numStr.charAt(j),'');
+						}
+						result += '8';
+						break;
+				}
+			}
+		}
+		for(var i=0,len=arr2.length;i<len;i++){
+			while(str.indexOf(arr2[i]) != -1){
+				switch(arr2[i]){
+					case 'R':
+						var numStr = 'THREE';
+						for(var j=0,numLen=numStr.length;j<numLen;j++){
+							str = str.replace(numStr.charAt(j),'');
+						}
+						result += '3';
+						break;
+					case 'O':
+						var numStr = 'ONE';
+						for(var j=0,numLen=numStr.length;j<numLen;j++){
+							str = str.replace(numStr.charAt(j),'');
+						}
+						result += '1';
+						break;
+					case 'F':
+						var numStr = 'FIVE';
+						for(var j=0,numLen=numStr.length;j<numLen;j++){
+							str = str.replace(numStr.charAt(j),'');
+						}
+						result += '4';
+						break;
+					case 'S':
+						var numStr = 'SEVEN';
+						for(var j=0,numLen=numStr.length;j<numLen;j++){
+							str = str.replace(numStr.charAt(j),'');
+						}
+						result += '7';
+						break;
+				}
+			}
+		}
+		while(str.indexOf('I') != -1){
+			var numStr = 'NINE';
+			for(var i=0,numLen=numStr.length;i<numLen;i++){
+				str = str.replace(numStr.charAt(i),'');
+			}
+			result += '7';
+		}
+		result = result.split('');
+		for(var i= 0,len=result.length;i<len;i++){
+			result[i] = Number('1' + result[i]) - 8;
+			if(result[i].toString().length != 1){
+				result[i] = Number(result[i].toString().slice(-1));
+			}
+		}
+		result.sort(function(a,b){return a-b})
+		return result.join('')
+	}
+
+//18.输出前100个斐波那契数
+function fib(n){
+	if(n==1 || n==2){
+		return 1;
+	}
+	return fib(n - 1) + fib(n - 2);
+}
+for(var i=1;i<=100;i++){
+	console.log(fib(i))
+}
+
+//19.输出指定格式的字符串
+function mylog(){
+	var nowTime = new Date().toJSON();
+	nowTime = nowTime.substring(0, nowTime.indexOf('.'));
+	nowTime = '[' + nowTime.replace('T',' ') + ']MYLOG';
+	var arr = [];//arguments不能使用slice等Array的方法
+	for(var i=0,len=arguments.length;i<len;i++){
+		arr.push(' ' + arguments[i])
+	}
+	console.log(nowTime + arr.join(''))
+}
+mylog('foo');//'[2016-01-01 23:59:59]MYLOG foo'
+mylog('foo','bar','test');//'[2016-01-01 23:59:59]MYLOG foo bar test'
+
+//20.'we are the champions'  'ew era eht snoipmahc'
+//单词以单个空格隔开 单词以不定数量的空格隔开
+var str = 'we are the champions';
+var str = 'we  are    the     champions';
+function reverseWord(str){
+	var arr = str.split(' ');
+	//console.log(arr);//["we", "", "are", "", "", "", "the", "", "", "", "", "champions"]
+	for(var i=0,len=arr.length;i<len;i++){
+		if(arr[i].length != 0){
+			arr[i] = (arr[i].split('')).reverse().join('');
+		}
+	}
+	return arr.join(' ')
+}
+
+//21.
+function isEmpty(str){
+	if(str.length == 0 || str == null || str.trim().length == 0){
+		return true
+	}else{
+		return false
+	}
+}
+
+//22.
+function getQueryStringArgs(url){
+	var qs = url.substring(url.lastIndexOf("?") + 1);
+	var args = {};
+	var items = qs.length > 0 ? qs.split('&') : [];
+	var name = null,value = null;
+	for(var i=0,len=items.length;i<len; i++){
+		//用decodeURIComponent()分别解码name 和value（因为查询字符串应该是被编码过的）。
+		name = decodeURIComponent((items[i].split("="))[0]);
+		value = decodeURIComponent((items[i].split("="))[1]);
+		if(name.length){
+			args[name] = value;
+		}
+	}
+	return args;
+}
+
+//23.
+function getQueryObject(url) {
+	url = url == null ? window.location.href : url;
+	var search = url.substring(url.lastIndexOf("?") + 1);
+	var obj = {};
+	var reg = /([^?&=]+)=([^?&=]*)/g;
+	// [^?&=]+表示：除了？、&、=之外的一到多个字符
+	// [^?&=]*表示：除了？、&、=之外的0到多个字符（任意多个）
+	search.replace(reg, function (rs, $1, $2) {
+		var name = decodeURIComponent($1);
+		var val = decodeURIComponent($2);
+		val = String(val);
+		obj[name] = val;
+		return rs;
+	});
+	return obj;
+}
+
+//24. *1*5*9*7*3   3_7_11_9_5  每个数字+2  求出最大值
+function trans(str){
+	var arr = str.split('*')
+	arr.splice(0,1)
+	for(var item in arr){
+		arr[item] = Number(arr[item]) + 2
+	}
+	//找出最大值
+	console.log(Math.max.apply(null,arr))
+	var max = arr[0];
+	var len = arr.length;
+	for(var i=1;i<len;i++){
+		if(arr[i] > max){
+			max = arr[i];
+		}
+	}
+	console.log(max)
+	var newStr = arr.join('_')
+	console.log(newStr)
+}
+
+//25.大小写不定的乱序同字母字符串是否相同 Mary Army   shao Ohas
+function commonStr(str1,str2){
+	if(str1.length != str2.length){
+		return false
+	}else{
+		for(var i=0,len=str1.length;i<len;i++){
+			if((str2.toLowerCase()).indexOf((str1.charAt(i)).toLowerCase()) == -1){
+				return false
+			}
+		}
+		return true
+	}
+}
+
+
+	//长度未知数组，按照先进先出的队列规则让第一个元素出队，数组长度为0就把数字1添加到数组里
+	arr.length === 0 ? arr.push(1) : arr.shift();
+
+
+
+	//回文字符串 rececar  racecar
+	//所谓回文字符串，就是一个字符串，从左到右读和从右到左读是完全一样的，比如"aba"。
+	//一个字符串，可在任意位置添加字符，最少再添加几个字符，可以使这个字符串成为回文字符串。
+	function isPlalindrome(str){
+		var length = str.length;
+		for(var i=0,len=Math.floor(length/2);i<len;i++){
+			if(str.charAt(i) != str.charAt(length-i-1)){
+				return false
+			}
+		}
+		return true
+	}
+	function toPlalindrome(str){
+		var count = 0;
+		var isNotStr = true;
+		while(isNotStr){
+			var length = str.length;
+			for(var i=0,len=Math.floor(length/2);i<len;i++){
+				if(str.charAt(i) != str.charAt(length-i-1)){
+					str = str.substring(0,i) + str.charAt(length-i-1) + str.substring(i);
+					count++;
+					break;
+				}
+				if(i == len-1){
+					isNotStr = false;
+				}
+			}
+		}
+		console.log(str);
+		return count
+	}
+	console.log(toPlalindrome('abbc'));//cbbabbc这个方案不是最少的字符，最少的字符应该是cabbac
+
+	//字符串中出现最多的字符
+	function getMaxNumberOfChar(str){
+		return (str+'').split('').reduce(function(pre,cur,index,arr){
+			console.log(cur);//a
+			console.log(pre);//Object {value: 0}
+			console.log(cur in pre);//false
+			cur in pre ? pre[cur]++ : (pre[cur]=1);
+			pre[cur] > pre.value && (pre.char=cur,pre.value=pre[cur]);//前面为真，执行后面
+			return pre;
+		},{value:0});
+	}
+	console.log(getMaxNumberOfChar('qqaa'));//Object {value: 2, a: 2, char: "a", q: 1, d: 1}
+
+	var str = 'a' + typeof + '';//typeof(+'')
+	console.log(str);//anumber
+	console.log(typeof + '');//number
+
+	// 1. 去掉字符串两端的空格
+	String.prototype.trim=function (){return this.replace(/(^\s*)|(\s*$)/g,'');}
+
+	// 2. 去掉字符串中所有的空格:
+	String.prototype.sTrim = function (){return this.replace(/\s/g,'');}
+
+
+
+</script>
+</body>
+</html>

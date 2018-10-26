@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+/*
+在js中，面向对象来的有些奇葩。继承，需要依赖原型prototype。封装，需要依赖函数作用域和闭包。
+
+百度-js 数据结构
+
+程序设计=数据结构+算法
+
+数据结构就是关系，数据元素相互之间存在的一种或多种特定关系的集合。
+
+传统上，我们把数据结构分为逻辑结构和物理结构。
+逻辑结构：是指数据对象中数据元素之间的相互关系，也是我们今后最需要关注和讨论的问题。
+物理结构：是指数据的逻辑结构在计算机中的存储形式。
+
+常用的数据结构有：数组，队列（queue），堆（heap）,栈（stack），链表（linked list ），树（tree），图（graph）和散列表（hash）
+
+四大结构-集合结构 线性结构 树形结构 图形结构
+
+算法,解决特定问题求解步骤的描述，在计算机中表现为指令的有限序列，并且每条指令表示一个或多个操作。
+算法具有五个基本特征：输入、输出、有穷性、确定性和可行性。
+
+*/
+//http://blog.csdn.net/haoshidai/article/details/52263191
+//1、栈
+function Stack(){
+    this.dataStore = [];//底层数据结构是数组
+    //以下是属性
+    this.top = 0;//top应该是等于数组的length-栈顶
+    //以下是方法
+    this.push = push;//向栈中压入一个新元素
+    this.pop = pop;//返回栈顶元素， 同时将变量 top 的值减 1
+    this.peek = peek;//返回数组的第 top-1 个位置的元素， 即栈顶元素
+    this.length = length;
+    this.clear = clear;
+}
+function push(element) {
+    this.dataStore[this.top++] = element;
+}
+function pop() {
+    return this.dataStore[--this.top];
+}
+function peek() {
+    return this.dataStore[this.top-1];
+}
+function length(){
+    return this.top;
+}
+function clear() {
+    this.top = 0;
+}
+//测试 Stack 类的实现
+var firstStack = new Stack();
+firstStack.push('one');
+firstStack.push('two');
+firstStack.push('three');
+console.log(firstStack.length());//3
+console.log(firstStack.peek());//three
+console.log(firstStack.pop());//three
+console.log(firstStack.peek());//two
+firstStack.push('four');
+console.log(firstStack.peek());//four
+firstStack.clear();
+console.log(firstStack.length());//0
+console.log(firstStack.peek());//undefined
+firstStack.push('five');
+console.log(firstStack.peek());//five
+console.log(firstStack.length());//1
+
+//2、队列
+function Queue(){
+    this.dataStore = [];//使用数组作为底层数据对象
+    //没有属性
+    //以下是方法
+    this.enqueue = enqueue;//向队尾添加一个元素,借助push
+    this.dequeue = dequeue;//删除队首的元素,借助shift
+    this.front = front;//读取队首元素
+    this.back = back;//读取队尾元素
+    this.queueToString = queueToString;//显示队列内的所有元素
+    this.empty = empty;//判断队列是否为空
+}
+function enqueue(element){
+    this.dataStore.push(element);
+}
+function dequeue(){
+    return this.dataStore.shift();
+}
+function front(){
+    return this.dataStore[0];
+}
+function back(){
+    return this.dataStore[this.dataStore.length-1];
+}
+function queueToString(){
+    let str = '';
+    for(let i=0,len=this.dataStore.length;i<len;i++){
+        str += this.dataStore[i] + ' ';
+    }
+    return str
+}
+function empty(){
+    if(this.dataStore.length == 0){
+        return true
+    }else{
+        return false
+    }
+}
+//测试 Queue 类的实现
+let firstQueue = new Queue();
+console.log(firstQueue.empty());//true
+firstQueue.enqueue('one');
+firstQueue.enqueue('two');
+firstQueue.enqueue('three');
+console.log(firstQueue.queueToString());//one two three
+firstQueue.dequeue();
+console.log(firstQueue.queueToString());//two three
+console.log(firstQueue.front());//two
+console.log(firstQueue.back());//three
+console.log(firstQueue.empty());//false
+
+
+
+    //call方法
+    function reverse(str){
+        var arr = Array.prototype.slice.call(str);
+        return arr.reverse().join('');
+    }
+    console.log(reverse('abc'));
+    //js实现栈
+    //数据结构-栈，先进后出
+    function stack(){
+        this.data = [];//保存栈内元素
+        this.top = 0;//记录栈顶位置
+    }
+    //栈的方法
+    stack.prototype = {
+        push: function push(element){
+            this.data[this.top++] = element;
+        },
+        pop: function pop(element){
+            return this.data[--this.top];
+        },
+        length: function(){
+            return this.top;
+        }
+    }
+    //利用栈实现字符串逆序输出
+    function reverseStr(str){
+        var stackArr = new stack();//创建栈实例
+        var arr = str.split('');
+        var len = arr.length;
+        var result = '';
+        for(var i=0;i<len;i++){
+            stackArr.push(arr[i]);
+        }
+        for(var i=0;i<len;i++){
+            result += stackArr.pop(i)
+        }
+        return result;
+    }
+    console.log(reverseStr('sldfjasl'));
+    //递归算法
+    var str = 'xyz',len = str.length,strOut = '';
+    function reverseStr1(str,strOut){
+        if(len<0){
+            return strOut;
+        }
+        strOut += str.charAt(len--);
+        return reverseStr1(str,strOut);
+    }
+    console.log(reverseStr1(str,strOut));
+
+    //数组 栈 队列 链表 树 图 堆 散列表
+
+    //链表顺序输出 123 321
+    var obj = {
+        value:'1',
+        next:{
+            value:'2',
+            next:{
+                value:'3',
+                next:{
+                    value:'4'
+                }
+            }
+        }
+    };
+    console.log(obj.hasOwnProperty('next'));//true 只检索当前对象是否具有某个属性，不会延伸检索原型链
+    var result = '';
+    function objOutput(obj){
+        if(obj.next){
+            result += obj.value;
+            return objOutput(obj.next);
+        }else{
+            return result += obj.value;
+        }
+    }
+    console.log(objOutput(obj));//1234
+    console.log(objOutput(obj).split('').reverse().join(''));//4321
+</script>
+</html>

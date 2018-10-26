@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+	<style type="text/css">
+		.cell{
+			margin: 20px;
+		}
+	</style>
+</head>
+<body>
+<script type="text/javascript">
+/*
+
+function Checking(amount) {
+	this.balance = amount; // 属性
+	this.toString = toString; // 方法
+}
+var account = new Checking(500);
+构造函数必须大写开头
+构造函数中的 this 关键字用来将方法和属性绑定到一个对象的实例上
+new 构造函数（传入的参数）生成了一个对象实例
+
+*/
+
+
+	console.log('a' in {a:'123'});//in关键字用于检索对象key值
+//1.对象转数组
+	//new做了什么
+	function Img(){}
+	console.log(Img.prototype);//Object {constructor:Img(),__proto__:Object}
+	var obj = new Img();
+	console.log(obj);//Img {}   __proto__: Object  Object{constructor:Img(),__proto__:Object}
+	//1、创建一个空对象，同时还继承了该函数的原型
+	//2、将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象）
+	//3、执行构造函数中的代码（为这个新对象添加属性），属性和方法被加入到 this 引用的对象中
+	//4、隐式的返回 this
+	var obj  = {};
+	obj.__proto__ = Img.prototype;
+	Img.call(obj);
+	console.log(obj.__proto__ === Img.prototype);//true
+	//继承
+	function A(){}
+	function B(){A.call(this)}
+	function C(){B.call(this)}
+	//C的原型对象B.prototype B的原型对象A.prototype
+
+	//扩展String对象的方法
+	String.prototype.repeat = String.prototype.repeat || function(num){
+				var result = '';
+				for(var i=0;i<num;i++){
+					result += this;
+				}
+				return result;
+			}
+	console.log('abv'.repeat(2));//abvabv
+
+	var name = 'shao';
+	var obj = {
+		name:'wan',
+		say:function(){
+			console.log(this.name)
+		}
+	}
+	var outer = obj.say;
+	outer();//shao
+	//如何让outer();//wan
+	outer.call(obj)//wan
+	outer.bind(obj)//不执行
+	//bind方法怎么用
+
+//判断数据类型
+//对象的类属性是一个字符串[object class]，判断一个变量的类型
+//原理console.log(Object.prototype.toString);//function toString() { [native code] }
+function getType(o){
+	if(o === null)
+		return "Null";
+	else if(o === undefined)
+		return "Undefined";
+	else
+		return Object.prototype.toString.call(o).slice(8,-1);
+}
+var x;
+console.log(getType(x));//Undefined
+console.log(getType(null));//Null
+console.log(getType(1));//[object Number] | Number
+console.log(getType(""));//[object String] | String
+console.log(getType(false));//[object Boolean] | Boolean
+console.log(getType({}));//[object Object] | Object
+console.log(getType([]));//[object Array] | Array
+console.log(getType(/./));//[object RegExp] | RegExp
+console.log(getType(new Date()));//[object Date] | Date
+console.log(getType(window));//[object Window] | Window
+function f(){}
+console.log(getType(new f()));//[object Object] | Object
+console.log(getType(f));//[object Function] | Function
+
+var x = y = {a:1};
+console.log(x);//1
+console.log(y);//1
+y.a=2;
+console.log(x);//2
+console.log(y);//2
+
+//重写String的Split方法
+String.prototype.customSplit = function(){
+	var arg = this;
+	var arr = [];
+	for(var i=0,len=arg.length;i<len;i++){
+		arr[i] = arg[i];
+	}
+	return arr;
+}
+console.log('abc'.customSplit())
+
+//重写Array的Concat方法
+Array.prototype.costomConcat = function(){
+	// console.log(this)//[1,2,3]
+	// console.log(arguments[0])//[4,5,6]
+	var arr = this,arrLen=this.length;
+	for(var i=0,len=arguments[0].length;i<len;i++){
+		arr[arrLen] = arguments[0][i];
+		arrLen++;
+	}
+	return arr;
+}
+console.log([1,2,3].costomConcat([4,5,6]))
+
+//继承
+function A(){}
+function B(){
+	A.call(this)
+}
+var a = new B();
+console.log(a.constructor);//ƒ B(){A.call(this)}
+//a.constructor == B true
+//a.constructor === B true
+var a = {}
+a.constructor//ƒ Object() { [native code] }
+a.constructor == Object//true
+
+</script>
+</body>
+</html>

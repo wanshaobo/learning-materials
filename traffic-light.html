@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html,body,ul,li{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        ul{
+            text-decoration: none;
+            list-style: none;
+            font-size: 0;
+        }
+        li{
+            display: inline-block;
+            margin-left: 100px;
+        }
+        #red{
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: red;
+        }
+        #yellow{
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: yellow;
+        }
+        #green{
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: green;
+        }
+        #light{
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+        }
+        #light li{
+            font-size: 30px;
+            text-align: center;
+            line-height: 100px;
+            font-weight: bold;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+<div id="time"></div>
+<ul id="light">
+    <li id="red">10S</li>
+    <li id="yellow">0S</li>
+    <li id="green">0S</li>
+</ul>
+<input id="start" type="button" value="开始">
+<input id="stop" type="button" value="停止">
+</body>
+<script>
+    var red = 10;
+    var yellow = 5;
+    var green = 10;
+    //循环：红灯亮10s 黄灯亮5s 绿灯亮10s
+    var timerR = setInterval(function(){
+        $('#red').text(--red + 'S');
+        if(red == 0){
+            red = 10;
+            clearTimeout(timerR);
+        }
+    },1000);
+    $('#yellow').css('background','gray');
+    $('#green').css('background','gray');
+
+    setTimeout(function(){
+        $('#red').css('background','gray');
+        $('#yellow').css('background','yellow').text(yellow + 'S');
+        var timerY = setInterval(function(){
+            $('#yellow').text(--yellow + 'S');
+            if(yellow == 0){
+                yellow = 5;
+                clearTimeout(timerY);
+            }
+        },1000);
+        $('#green').css('background','gray');
+        setTimeout(function(){
+            $('#red').css('background','gray');
+            $('#yellow').css('background','grey');
+            $('#green').css('background','green').text(green + 'S');
+            var timerG = setInterval(function(){
+                $('#green').text(--green + 'S');
+                if(green == 0){
+                    green = 10;
+                    clearTimeout(timerG);
+                }
+            },1000);
+            setTimeout(function(){
+                $('#red').css('background','red').text(red + 'S');
+                var timerR = setInterval(function(){
+                    $('#red').text(--red + 'S');
+                    if(red == 0){
+                        red = 10;
+                        clearTimeout(timerR);
+                    }
+                },1000);
+                $('#yellow').css('background','grey');
+                $('#green').css('background','grey');
+            },10000);
+        },5000);
+    },10000);
+
+    var loop = setInterval(function(){
+        setTimeout(function(){
+            $('#red').css('background','gray');
+            $('#yellow').css('background','yellow').text(yellow + 'S');
+            var timerY = setInterval(function(){
+                $('#yellow').text(--yellow + 'S');
+                if(yellow == 0){
+                    yellow = 5;
+                    clearTimeout(timerY);
+                }
+            },1000);
+            $('#green').css('background','gray');
+            setTimeout(function(){
+                $('#red').css('background','gray');
+                $('#yellow').css('background','grey');
+                $('#green').css('background','green').text(green + 'S');
+                var timerG = setInterval(function(){
+                    $('#green').text(--green + 'S');
+                    if(green == 0){
+                        green = 10;
+                        clearTimeout(timerG);
+                    }
+                },1000);
+                setTimeout(function(){
+                    $('#red').css('background','red').text(red + 'S');
+                    var timerR = setInterval(function(){
+                        $('#red').text(--red + 'S');
+                        if(red == 0){
+                            red = 10;
+                            clearTimeout(timerR);
+                        }
+                    },1000);
+                    $('#yellow').css('background','grey');
+                    $('#green').css('background','grey');
+                },10000);
+            },5000);
+        },10000);
+    },25000);
+
+    $('#start').on('click',function(){loop});
+    $('#stop').on('click',function(){clearInterval(timerR);clearInterval(loop);});
+</script>
+</html>

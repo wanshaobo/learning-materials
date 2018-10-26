@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    //正则表达式匹配所有二级域名是shao.cn和其目录下的网站
+    //\w 元字符用于查找单词字符。单词字符包括：a-z、A-Z、0-9，以及下划线, 包含 _ (下划线) 字符。
+    function isMyWeb(url){
+        if(/\w+\.9game.cn[/]*$/.test(url)){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    //正则校验IP 0-255
+    var ip = 260;
+    var ipReg = /(^\d$|^[1-9]\d$|^1\d{2}$|^2[0-4]\d$|^25[0-5]$)/;
+    //0-9     ^\d$
+    //10-99   ^[1-9]\d$
+    //100-199 ^1\d{2}$
+    //200-249 ^2[0-4]\d$
+    //250-255 ^25[0-5]$
+    console.log(ipReg.test(ip));
+</script>
+</body>
+</html>
