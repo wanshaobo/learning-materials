@@ -1,7 +1,10 @@
 // react theory
 //https://react.docschina.org/
+// https://react.docschina.org/
+// http://nav.react-china.org/
 
 //some question
+
 /*
 1、React.PureComponent与React.Component的异同？
 https://react.docschina.org/docs/react-api.html#reactpurecomponent

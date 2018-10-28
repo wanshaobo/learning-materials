@@ -105,6 +105,10 @@ console.log(SuperType.isPrototypeOf(instance1));//false
 console.log(instance1 instanceof SuperType);//true
 console.log(SuperType.prototype.isPrototypeOf(instance1));//true
 
+//对象遍历
+var obj = {a:1,b:2,c:3}
+Object.keys(obj)//['a','b','c']
+
 
 
 
