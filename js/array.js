@@ -104,8 +104,6 @@ function mostEle(arr){
             mostTimes = obj[item]
         }
     })
-    // 返回一个数组,包含对象自身的所有属性(不含Symbol属性,但是包括不可枚举属性)
-    // Object.getOwnPropertyNames(obj).forEach((item,index)=>{
     Object.keys(obj).forEach((item,index)=>{
         if(obj[item] < mostTimes)
             delete obj[item]
