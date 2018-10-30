@@ -17,13 +17,15 @@ function add () {
         var arg_fn = [].slice.call(arguments);
         return add.apply(null, args.concat(arg_fn));
     }
-    fn.valueOf = function() {
+    fn.toString = function() {//fn.valueOf fn.toString 哪个被重写先执行哪个，都被重写的时候先调用valueOf
         return args.reduce((a, b) => a + b);
     }
     return fn;
 }
 var result = add(1,1)(2)(3)
 console.log(result);//f 7
+console.log(result.toString());//7
+console.log(typeof result.toString());//number
 
 //3
 //每一次接收一个固定参数
@@ -237,6 +239,11 @@ console.log(fn(1, 2, 3, 4));//[1,2,3,4]
     }
 })
 //相当于(a) a.toString()，将括号中的内容转化为字符串
+(function(){
+	if(1){
+		console.log(1);
+	}
+})()//1
 
 //百度 js高阶函数
 

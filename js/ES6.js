@@ -1,16 +1,19 @@
 //es6学习记录
 //https://segmentfault.com/a/1190000002904199
 //http://blog.csdn.net/m0_37576830/article/details/78676107http://blog.csdn.net/m0_37576830/article/details/78676107
+
 //1.默认参数-直接把默认值放在函数声明里
 var link = function(height = 50, color = 'red', url = 'http://azat.co') {
     //
 }
+
 //2.模板对象
 var name = 'Your name is ' + first + ' ' + last + '.';
 var url = 'http://localhost:3000/api/messages/' + id;
 
 var name = `Your name is ${first} ${last}. `;
 var url = `http://localhost:3000/api/messages/${id}`;
+
 //3.多行字符串
 var name = 'w'+
         's'+
@@ -18,6 +21,7 @@ var name = 'w'+
 var name = `w
 s
 b`;
+
 //4.解构赋值
 //对象
 var wanshaobo = {name:'wsb',age:28};
@@ -25,7 +29,9 @@ var {name,age} = wanshaobo
 //数组
 var arr = [1,2,3];
 var [a,b,c] = arr
+
 //5.增强的对象字面量
+
 //6.箭头函数
 
 //7.Promises
@@ -53,8 +59,11 @@ wait1000().then(function() {
     }).then(function() {
         console.log('Wheeyee!')
     });
+
 //8.块作用域和构造let和const
+
 //9. Classes （类）in ES6
+
 //10. Modules （模块）in ES6
 module.exports = {
     port: 3000,

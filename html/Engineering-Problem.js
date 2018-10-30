@@ -46,7 +46,7 @@ getBase64('//upload.jianshu.io/users/upload_avatars/555630/fdd1b798e6b0.jpg',(da
 //flex-direction 决定主轴的方向 row/row-reverse/column/column-reverse
 //flex-wrap 项目排列方式 wrap/nowrap/wrap-reverse
 //justify-content 主轴的对齐方式 flex-start/flex-end/center/space-between/space-around
-//align-items 交叉轴上如何对齐 flex-start/flex-end/center/baseline/stretch   * baseline: 项目的第一行文字的基线对齐。
+//align-items 交叉轴上如何对齐 flex-start/flex-end/center/baseline/stretch   * baseline: 项目的第一行文字的基线对齐。 stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度
 //align-content 定义多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。flex-start/flex-end/center/space-between/space-around/stretch
 //子元素
 //.item{order:1} 定义项目的排列顺序。数值越小，排列越靠前，默认为0。
@@ -56,32 +56,182 @@ getBase64('//upload.jianshu.io/users/upload_avatars/555630/fdd1b798e6b0.jpg',(da
 //.item{flex:none} 是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。 该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。 flex 属性用于设置或检索弹性盒模型对象的子元素如何分配空间。
 //.item { align-self: auto | flex-start | flex-end | center | baseline | stretch; }允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 
-//5、Javascript异步编程方法
-// https://www.cnblogs.com/nullcc/p/5841182.html
-/*
-ES 6以前：
-* 定时器
-* 回调函数
-* 事件监听(事件发布/订阅)
-* Promise对象
+//5、Javascript异步编程方法 https://www.cnblogs.com/nullcc/p/5841182.html
+//回调函数
+function callback(){
+	console.log(1);
+}
+setTimeout(callback,1000)
+//事件监听
+document.getElementById("btn").onclick = callback//传统事件绑定方法 DOM0
+var dom = document.getElementById('id')
+dom.addEventListener('click',callback,false);//addEventListener() DOM2
+dom.attachEvent('onclick',callback);//attachEvent是 IE 有的方法，它不遵循W3C标准
+//发布/订阅
+var EventEmitter = require('events');
+var emitter = new EventEmitter();
+emitter.on('eventType',callback);
+emitter.emit('eventType', "message for you");
+//Promise
+new Promise((resolve,reject)=>{setTimeout(resolve,1000,'hehe')}).then(param => console.log(param))
+//原生js实现Promise 只能处理同步
+function _Promise(){
+	this.status = 'pending';
+	this.msg = 'none';
+	var self = this;
+	var process = arguments[0];
+	process(function(){
+		self.status = 'resolve';
+		self.msg = arguments[0];
+	},function(){
+		self.status = 'reject';
+		self.msg = arguments[0];
+	});
+	return this;
+}
+_Promise.prototype.then = function(){
+	if(this.status == 'resolve'){
+		arguments[0](this.msg);
+	}else if(this.status == 'reject'&& arguments[1]){
+		arguments[1](this.msg);
+	}
+}
+new _Promise(function(resolve,reject){resolve(123)}).then(function(msg){
+	console.log(msg);
+	console.log('success');
+},function(msg){
+	console.log(msg);
+	console.log('fail!');
+});
+//原生js实现Promise 可以处理同步和异步
+function _Promise(){
+	this.status = 'pending';
+	this.statusSave = [];
+	this.msg = 'none';
+	var self = this;
+	var executor = arguments[0];
+	executor(function(){
+		var success = arguments[0]
+		self.status = 'resolved';
+		self.msg = success;
+		for (const { resolve } of self.statusSave) {
+			resolve(success);
+		}
+	},function(){
+		var err = arguments[0];
+		self.status = 'rejected';
+		self.msg = err;
+		for (const { reject } of self.statusSave) {
+			reject(err);
+		}
+	});
+	// return this;
+}
+_Promise.prototype.then = function(){
+	var resolve = arguments[0];
+	var reject = arguments[1];
+	if(this.status == 'resolved'){
+		resolve(this.msg);
+	}else if(this.status == 'rejected'&& reject){
+		reject(this.msg);
+	}else{
+		this.statusSave.push({resolve,reject})
+	}
+}
+new _Promise((resolve,reject) => {setTimeout(resolve,1000,'he')}).then(function(msg){
+	console.log(msg);
+	console.log('success');
+},function(msg){
+	console.log(msg);
+	console.log('fail!');
+});
+//Generator“生成器”函数(协程coroutine)
+// 调用 Generator 函数，返回一个遍历器对象，代表 Generator 函数的内部指针
+// 以后，每次调用遍历器对象的next方法，就会返回一个有着value和done两个属性的对象。
+// ES 7:* async和await
+async function getItem(){
+	await new Promise((resolve) => {setTimeout(resolve, 2000);});
+	console.log(1);
+	return 2 //return语句触发async的then回调
+}
+//async返回promise对象，需要用then回调接收async函数的return值
+getItem().then((value)=>{
+	console.log(value);
+})
 
-ES 6：
-* Generator函数(协程coroutine)
+//6、异步并发  多个异步的操作方案
+Promise.all([new Promise(), new Promise(), new Promise()]).then();
 
-ES 7:
-* async和await
+//7、js自定义方法 ImgLoader多图片预加载 https://blog.csdn.net/zeping891103/article/details/72649718
+function ImgLoader(){
+	this.img = new Object();
+	this.eventTarget = new Object();
+	this.COMPLETE = "COMPLETE";
+	this.PROGRESS = "PROGRESS";
+	this.ERROR = "ERROR";
+}
+ImgLoader.prototype.on = function(eventsName,cb){
+	this.eventTarget[eventsName] = cb
+}
+ImgLoader.prototype.load = function(imgUrl){
+	var img = new Image();
+	this.img[url] = img;
+	img.onload = this.imgLoadedHandle.bind(this);
+	img.onerror = this.imgErrorHandle.bind(this);
+	img.src = imgUrl;
+}
+ImgLoader.prototype.imgLoadedHandle = function(){
+	this.response = {};//{target:{msg:'',data:''},type:{}}
+	this.response.target = {};
+	this.response.type = this.PROGRESS;
+	this.response.target.msg = "加载中！";
+	this.response.target.data = 1;
+	this.trigger(this.PROGRESS, this.response);
+	// 抛出加载成功事件
+	this.response.type = this.COMPLETE;
+	this.response.target.msg = "加载成功！";
+	this.response.target.data = this.img;
+	this.trigger(this.COMPLETE, this.response);
+}
+ImgLoader.prototype.imgErrorHandle = function(evt){
+	this.response = {};
+	this.response.target = {};
+	this.response.type = this.ERROR;
+	this.response.target.msg = "加载失败！";
+	this.response.target.data = evt.target.src;
+	this.trigger(this.ERROR, this.response);
+}
+ImgLoader.prototype.trigger = function(event,params){
+	for(var eventType in this.eventTarget) {
+		var callback = this.eventTarget[eventType];
+		if(eventType == event) {
+			callback(params);
+			break;
+		}
+	}
+}
+//实例
+var imgUrl = "images/1.png";
+function eventHandler(response){
+	var type = response.type;
+	switch (type){
+		case "COMPLETE":
+			break;
+		case "PROGRESS":
+			break;
+		case "ERROR":
+			break;
+		default:
+			break;
+	}
+}
+var loader = new ImgLoader();
+loader.on("COMPLETE",eventHandler);
+loader.on("PROGRESS",eventHandler);
+loader.on("ERROR",eventHandler);
+loader.load(imgUrl);
 
-PS:如要运行以下例子，请安装node v0.11以上版本，在命令行下使用 node [文件名.js] 的形式来运行，有部分代码需要开启特殊选项，会在具体例子里说明。
-
-异步并发
-
-*/
-
-//async 返回结果是promise
-//等多个异步语句执行完的方案
-//http cache相关
-//http 302的过程
-//文字溢出显示省略号
-//纵向的flex布局
+//8、http cache相关
 
 
+//9、http 302的过程

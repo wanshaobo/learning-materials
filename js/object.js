@@ -176,6 +176,63 @@ instance.b = 2;
 instance.c = 3;
 console.log(Reflect.ownKeys(instance));//[ 'name', 'a', 'b', 'c' ]
 
+//9、构造函数方法与原型prototype上的方法
+//定义在构造函数内部的方法,会在它的每一个实例上都克隆这个方法;
+//定义在构造函数的prototype属性上的方法会让它的所有示例都共享这个方法,但是不会在每个实例的内部重新定义这个方法.
+//如果我们的应用需要创建很多新的对象,并且这些对象还有许多的方法,为了节省内存,我们建议把这些方法都定义在构造函数的prototype属性上
+//当然,在某些情况下,我们需要将某些方法定义在构造函数中,这种情况一般是因为我们需要访问构造函数内部的私有变量.
+function SuperType(){
+	this.name = 'abc';
+	this.eat = function(){
+		console.log(1);
+	}
+}
+SubType.prototype.drink = function(){
+	console.log(2);
+}
+
+//10、new一个对象的过程 4步
+var arr = new Array();
+//创建空对象 var obj = {};
+//设置新对象的constructor属性为构造函数的名称 arr.constructor=Array 设置新对象的__proto__属性指向构造函数的prototype对象； obj.__proto__ = Array.prototype;
+//使用新对象调用函数，函数中的this被指向新实例对象：Array.call(arr)
+//将初始化完毕的新对象栈地址，保存到等号左边的变量中
+//注意：若构造函数中返回this或返回值是基本类型（number、string、boolean、null、undefined）的值，则返回新实例对象；若返回值是引用类型的值，则实际返回值为这个引用类型。
+
+//11、构造函数内有无return的理解
+//没有return
+function SuperType(){
+	this.a = 1;
+}
+SuperType.prototype.say = function(){
+	console.log('i am SuperType')
+}
+var instance = new SuperType();
+console.log(instance.a);//1
+instance.say();//i am SuperType
+//有return 返回值的类型 对构造函数没有影响
+function SuperType(){
+	this.a = 1;
+	return 123
+}
+SuperType.prototype.say = function(){
+	console.log('i am SuperType')
+}
+var instance = new SuperType();
+console.log(instance.a);//1
+instance.say();//i am SuperType
+//有return 返回引用类型 构造函数原型上的方法不会被继承
+function SuperType(){
+	this.a = 1;
+	return {a:2}
+}
+SuperType.prototype.say = function(){
+	console.log('i am SuperType')
+}
+var instance = new SuperType();
+console.log(instance.a);//2
+instance.say();//instance.say is not a function
+
 
 
 
