@@ -35,6 +35,35 @@ https://github.com/facebook/react/blob/master/CHANGELOG.md
 16.5.0 (September 5, 2018)
 16.6.0 (October 23, 2018)
 
+7、加入redux的react项目，数据请求放在redux中，还是放在视图层的生命周期方法中
+原则：每个视图层都需要用到的数据，
+数据请求应该放在生命周期方法componentWillMount和componentDidMount
+
+8、组件通信
+https://www.jianshu.com/p/fb915d9c99c4
+嵌套组件通信：
+父子组件：props callback
+跨级组件组件通信：context
+https://react.docschina.org/docs/legacy-context.html#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8context
+在context提供者中添加属性childContextTypes和方法getChildContext，React会向下自动传递参数，任何组件只要在它的子组件中（这个例子中是Button），就能通过定义属性contextTypes来获取参数。
+constructor(props, context)
+componentWillReceiveProps(nextProps, nextContext)
+shouldComponentUpdate(nextProps, nextState, nextContext)
+componentWillUpdate(nextProps, nextState, nextContext)
+componentDidUpdate(prevProps, prevState, prevContext)
+
+非嵌套组件通信 发布/订阅
+兄弟组件
+不在同一个父级中的非兄弟组件
+利用二者共同父组件的 context 对象进行通信
+使用自定义事件的方式
+
+9、state改变触发视图层重新渲染的原理？
+
+10、key的意义
+
+11、mvvm
+
 Dva
 ant Design
 ant design pro

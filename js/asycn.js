@@ -170,3 +170,22 @@ console.log(promises);//[promise{1},promise{2},promise{3}]
 Promise.all(promises).then(function (posts) {
 	console.log(posts);//[1,2,3]
 }).catch(function(reason){});
+
+//11
+var p1 = new Promise(function(resolve,reject){
+	console.log(1)
+	resolve(2)
+})
+var p2 = new Promise(function(resolve,reject){
+	console.log(3)
+	resolve(p1)//resolve函数的参数除了正常的值以外，还可能是另一个 Promise 实例 这时p1的状态就会传递给p2，也就是说，p1的状态决定了p2的状态 执行了p1的resolve(2)
+})
+p1.then((res)=>{
+	console.log(4)
+	console.log(res)
+})
+p2.then((res)=>{
+	console.log(5)
+	console.log(res)
+})
+console.log(6);//1 3 6 4 2 5 2

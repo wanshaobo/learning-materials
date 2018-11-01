@@ -111,3 +111,46 @@ function mostEle(arr){
     return obj;
 }
 console.log(mostEle(arr));//{ a: 2, b: 2 }
+
+//8、不定长度数组乱序化 长度为10000的数组测试 运行的毫秒数 new Date().getTime() Date.now()
+var arr = [1,2,3,4,5,6,7,8,9,10,11];
+//时间复杂度约为 O(n2)，splice()方法会遍历一次
+function shuffle(arr){//10000 14ms
+	var result = [];
+	while(arr.length){
+		var index = parseInt(Math.random()*(arr.length));//Math.random()  0 <= x < 1 16位小数
+		result.push(arr.splice(index,1)[0]);
+	}
+	return result
+}
+//但是这不是真正意义上的完全乱序，一些需求中（比如抽奖）这样的写法会出大问题。
+arr.sort(() => Math.random() > 0.5 ? -1 : 1);//10000 22ms
+Array.prototype.sort.call(arr,() => Math.random() > 0.5 ? -1 : 1)
+//
+function disorder(arr){//10000 9ms
+	if (!Array.prototype.shuffle) {
+		Array.prototype.shuffle = function() {
+			for(var index,tmp,len = this.length; len; index = parseInt(Math.random() * (--len)), tmp = this[len], this[len] = this[index], this[index] = tmp);
+			return this
+		};
+	}
+	arr.shuffle();
+	// return arr.shuffle();
+}
+disorder(arr)
+//演变 时间复杂度为 O(n)
+function shuffle(arr){//10000 9ms
+	for(var index,tmp,len = arr.length; len; index = parseInt(Math.random() * (--len)), tmp = arr[len], arr[len] = arr[index], arr[index] = tmp);
+}
+//演变 时间复杂度为 O(n)
+function shuffle(arr){
+	var index,tmp,len = arr.length;
+	while (len > 2){//极限情况 剩下的2个元素进行交换 也需要随机交换
+		index = parseInt(Math.random() * (--len));
+		tmp = arr[len];
+		arr[len] = arr[index];
+		arr[index] = tmp;
+	}
+	Math.random() > 0.5 ? (tmp = arr[1],arr[1] = arr[0],arr[0] = tmp) : 0;
+}
+shuffle(arr)

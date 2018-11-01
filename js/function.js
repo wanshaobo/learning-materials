@@ -245,5 +245,21 @@ console.log(fn(1, 2, 3, 4));//[1,2,3,4]
 	}
 })()//1
 
+//21
+var name = 'wan';
+var obj = {
+	nama: 'shao',
+	fn: function(){
+		var that = this;
+		this.name = 'bo';
+		return function(){
+			return that.name;
+		}
+	}
+}
+console.log(obj.fn().call(this))
+
+
+
 //百度 js高阶函数
 

@@ -53,3 +53,9 @@ module.exports = {
         }
     })
 );
+
+//https://www.lodashjs.com/
+// Lodash 是一个一致性、模块化、高性能的 JavaScript 实用工具库。
+//响应式编程 函数式编程 设计模式
+//immutable Ramda
+// 函数柯里化 curry 的概念很简单：将一个低阶函数转换为高阶函数的过程就叫柯里化。
