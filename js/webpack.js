@@ -1,3 +1,8 @@
+/*
+https://webpack.docschina.org/
+https://github.com/webpack/webpack/releases 更新日志
+*/
+
 var webpack = {};
 //1、webpack 热刷新开关 devServer.inline
 
@@ -27,3 +32,35 @@ webpack.output = {
 webpack.performance = {
 	hints: false ,// false关闭提示 | "error"适用于生产环境 | "warning"默认值 适用于开发环境
 }
+
+//自动打包
+// watch: true,
+webpack.watchOptions = {
+	poll:1000, //监测修改的时间(ms) 指定毫秒为单位进行轮询 等同于 watch: true,
+	aggregateTimeout:500, //防止重复按键，500毫米内算按键一次
+	ignored: /node_modules/
+}
+
+//框架代码 与 业务代码 拆分
+//单独打包类库文件原因：框架代码稳定性比较高，而业务代码更新迭代快，希望浏览器尽可能长的时间对框架代码进行缓存来减少服务器流量，让用户加载速度更快。
+webpack.entry = {
+	app: path.join(__dirname, 'src/index.js'),
+	vendor: ['vue','react'] //这个entry会单独打包
+}
+webpack.optimization = {
+	runtimeChunk: {
+		name: "manifest"
+	},
+	splitChunks: {
+		cacheGroups: {
+			commons: {
+				name: "vendor",
+				chunks: "initial",
+				minChunks: 2
+			}
+		}
+	}
+}
+
+//d代码分离
+
