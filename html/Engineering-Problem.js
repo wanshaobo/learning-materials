@@ -231,7 +231,169 @@ loader.on("PROGRESS",eventHandler);
 loader.on("ERROR",eventHandler);
 loader.load(imgUrl);
 
-//8、http cache相关
+//8、http cookie
+//服务端操作cookie
+// 不同域名的Cookie是不能互相访问的
+public void setCookie(HttpServletRequest request, HttpServletResponse response, String key,String value) {
+    Cookie cookie = new Cookie(key, value);// 创建一个cookie，cookie的名字是key
+    cookie.setDomain(request.getServerName());
+    cookie.setPath(request.getContextPath());
+    // 设置Cookie的有效期
+    cookie.setMaxAge(Constants.cookieMaxAge);
+    // cookie.setHttpOnly(true);//true 服务器写入了cookie,客户端取不到cookie。
+    // 将cookie对象添加到response对象中，这样服务器在输出response对象中的内容时就会把cookie也输出到客户端浏览器
+    response.addCookie(cookie);
+}
+/*
+Cookie的主要构成如下：
+name:一个唯一确定的cookie名称。通常来讲cookie的名称是不区分大小写的。
+value:存储在cookie中的字符串值。最好为cookie的name和value进行url编码
+domain:cookie对于哪个域是有效的。所有向该域发送的请求中都会包含这个cookie信息。这个值可以包含子域(如：yq.aliyun.com)，也可以不包含它(如：.aliyun.com，则对于aliyun.com的所有子域都有效).
+path: 表示这个cookie影响到的路径，浏览器跟会根据这项配置，像指定域中匹配的路径发送cookie。
+expires:失效时间，表示cookie何时应该被删除的时间戳(也就是，何时应该停止向服务器发送这个cookie)。如果不设置这个时间戳，浏览器会在页面关闭时即将删除所有cookie；不过也可以自己设置删除时间。这个值是GMT时间格式，如果客户端和服务器端时间不一致，使用expires就会存在偏差。
+max-age: 与expires作用相同，用来告诉浏览器此cookie多久过期（单位是秒），而不是一个固定的时间点。正常情况下，max-age的优先级高于expires。
+HttpOnly: 告知浏览器不允许通过脚本document.cookie去更改这个值，同样这个值在document.cookie中也不可见。但在http请求张仍然会携带这个cookie。注意这个值虽然在脚本中不可获取，但仍然在浏览器安装目录中以文件形式存在。这项设置通常在服务器端设置。
+secure: 安全标志，指定后，只有在使用SSL链接时候才能发送到服务器，如果是http链接则不会传递该信息。就算设置了secure 属性也并不代表他人不能看到你机器本地保存的 cookie 信息，所以不要把重要信息放cookie就对了
+
+如果不设置expires和max-age浏览器会在页面关闭时清空cookie
+
+客户端cookie：
+有大小和个数的限制 50个4Kb
+有生命周期
+满足同源策略
+
+ document.cookie="name="+username;
+ document.cookie.split(";")[0].split("=")[1];
+ document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+*/
 
 
-//9、http 302的过程
+//9、http 302的过程 http方法有哪些，异同点
+/*
+ 1	GET	请求指定的页面信息，并返回实体主体。
+ 2	HEAD	类似于get请求，只不过返回的响应中没有具体的内容，用于获取报头
+ 3	POST	向指定资源提交数据进行处理请求（例如提交表单或者上传文件）。数据被包含在请求体中。POST请求可能会导致新的资源的建立和/或已有资源的修改。
+ 4	PUT	从客户端向服务器传送的数据取代指定的文档的内容。
+ 5	DELETE	请求服务器删除指定的页面。
+ 6	CONNECT	HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。
+ 7	OPTIONS	允许客户端查看服务器的性能。
+ 8	TRACE	回显服务器收到的请求，主要用于测试或诊断。
+
+*/
+
+//10、跨域
+/*
+ https://segmentfault.com/a/1190000011145364
+ 1、 通过jsonp跨域
+ 2、 document.domain + iframe跨域
+ 3、 location.hash + iframe
+ 4、 window.name + iframe跨域
+ 5、 postMessage跨域
+ 6、 跨域资源共享（CORS）
+ 7、 nginx代理跨域
+ 8、 nodejs中间件代理跨域
+ 9、 WebSocket协议跨域
+
+jsonp cors WebSocket postMessage
+
+ postMessage是HTML5 XMLHttpRequest Level 2中的API，且是为数不多可以跨域操作的window属性之一，它可用于解决以下方面的问题
+ 页面和其打开的新窗口的数据传递
+ 多窗口之间消息传递
+ 页面与嵌套的iframe消息传递
+ 上面三个场景的跨域数据传递
+
+解决跨域方案，CORS-cross origin resource sharing，即服务器设置响应头：
+请求头 request.header{
+ Origin: http://www.wanshaobo.com/
+}
+响应头 response.header{
+Access-Control-Allow-Origin:http://www.wanshaobo.com/ //允许跨域访问的源 * 支持全域名访问，不安全，部署后需要固定限制为客户端网址
+Access-Control-Allow-Methods:GET, POST, HEAD, PUT, DELETE //限制允许跨域访问的http方法类型，多个以逗号隔开
+Access-Control-Allow-Headers: Origin,Content-Type,Accept,token,X-Requested-With //限制允许跨域访问的http头，包含这里设置的头，才允许跨域访问 比如
+
+Access-Control-Allow-Credentials:true
+}
+
+CORS可以分成两种：简单请求 复杂请求
+一个简单的请求大致如下：
+HTTP方法是下列之一:HEAD GET POST
+HTTP头包含:
+Accept
+Accept-Language
+Content-Language
+Last-Event-ID
+Content-Type，但仅能是下列之一
+    application/x-www-form-urlencoded
+    multipart/form-data
+    text/plain
+任何一个不满足上述要求的请求，即被认为是复杂请求。一个复杂请求不仅有包含通信内容的请求，同时也包含预请求（preflight request）。
+
+
+*/
+
+//11  cache相关 缓存 http缓存
+/*
+http://www.cnblogs.com/dreamingbaobei/p/9804445.html
+注意，我们讨论的所有关于缓存资源的问题，都仅仅针对GET请求。而对于POST, DELETE, PUT这类行为性操作通常不做任何缓存
+浏览器缓存机制
+200 from cache
+304 not modified
+
+meta语法，组织浏览器缓存
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+清除缓存方案一：随机数法 在你的所有静态资源文件后面添加随机时间戳
+<script type="text/javascript" src="https://resources.test.com/js/test.js?version=56965"></script>
+<script type=”text/javascript“ src=”/js/test.js?+Math.random()“></script>
+
+清除缓存方案二：cache-control
+<meta name="Cache-Control" content="no-cache">
+
+响应头 Cache-Control 用来指导浏览器如何管理缓存
+Etag是服务端对不同的文件通过固定的算法生成的一个唯一的hash，当文件被修改时，这个唯一的hash就会发生变化，Last-Modified这个从字面上理解就可以了，他存放的是文件最后的修改时间，这两个都能用来判断当前的文件是否发生了变化。
+
+接下来我们要做的就是如何通过响应头来指导浏览器控制缓存的时间和什么时候发送询问请求询问资源是否过期，这里会涉及到两个响应头
+Expires 指导浏览器缓存文件的时间
+Expires:<http-date> 在此时候之后，缓存过期 服务器会重新发送确认请求
+
+Cache-Control 指导浏览器何时向浏览器确认当前资源是否已过期 默认的是private
+Cache-control: must-revalidate 缓存必须在使用之前验证旧资源的状态，并且不可使用过期资源
+Cache-control: no-cache 在释放缓存副本之前，强制高速缓存将请求提交给原始服务器进行验证
+Cache-control: no-store 缓存不应存储有关客户端请求或服务器响应的任何内容
+Cache-control: no-transform 不得对资源进行转换或转变
+Cache-control: public 表明响应可以被任何对象（包括：发送请求的客户端，代理服务器，等等）缓存
+Cache-control: private 表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）
+Cache-control: proxy-revalidate
+Cache-Control: max-age=<seconds> 设置缓存存储的最大周期，超过这个时间缓存被认为过期(单位秒)。与Expires相反，时间是相对于请求的时间。
+Cache-control: s-maxage=<seconds> 覆盖max-age 或者 Expires 头，但是仅适用于共享缓存(比如各个代理)，并且私有缓存中它被忽略。
+
+expires 是指在某个具体年月日时分秒之前缓存有效
+maxage 是指本地可以缓存多长时间有效，从第一次下载到本地开始计算
+Cache-Control会覆盖Expires
+
+协商缓存 Last-Modified & If-Modified-Since
+*/
+
+//12 前端通信
+/*
+ enctype示例说明（ form , ajax, fetch 三种示例 )
+ form
+ xhr
+ fetch fetch api是基于Promise设计
+
+ SSE Server-Sent Events 服务器推送
+
+ webstock 客户端与服务器双向通信 WebSocket
+
+ postmessage 客户端与客户端页面之间的通信 postMessage
+ 1. window.postMessage() 方法可以安全地实现跨域通信
+ 2.主要用于两个页面之间的消息传送
+ 3. 可以使用iframe与window.open打开的页面进行通信.
+
+ web workers
+ Web Workers 进程通信（html5中的js的后台进程）javascript设计上是一个单线，也就是说在执行js过程中只能执行一个任务, 其他的任务都在队列中等待运行。
+
+*/
+
