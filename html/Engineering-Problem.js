@@ -161,6 +161,18 @@ getItem().then((value)=>{
 
 //6、异步并发  多个异步的操作方案
 Promise.all([new Promise(), new Promise(), new Promise()]).then();
+async function async(){
+	await new Promise(function(){})
+	await new Promise(function(){})
+	await new Promise(function(){})
+	return 1;
+}
+//NodeJS的异步、并发编程方案 事件发布/订阅模式（events）
+var emitter = new events.Emitter();
+emitter.on("event1", function(message){
+	console.log(message);
+});
+emitter.emit("event1","I am message")
 
 //7、js自定义方法 ImgLoader多图片预加载 https://blog.csdn.net/zeping891103/article/details/72649718
 function ImgLoader(){
@@ -396,4 +408,8 @@ Cache-Control会覆盖Expires
  Web Workers 进程通信（html5中的js的后台进程）javascript设计上是一个单线，也就是说在执行js过程中只能执行一个任务, 其他的任务都在队列中等待运行。
 
 */
+
+//mvvm mvc
+
+//event.stopPropagation()起到阻止捕获和冒泡阶段中当前事件的进一步传播。使用event.preventDefault()可以取消默认事件。w3c的方法是e.stopPropagation()，IE则是使用e.cancelBubble = true
 

@@ -259,6 +259,156 @@ var obj = {
 }
 console.log(obj.fn().call(this))
 
+//22、改变this指向
+//函数上下文context：定义时上下文 运行时上下文 改变上下文
+//call 需要把参数按顺序传递进去，而 apply 则是把参数放在数组里。
+// 某个函数的参数数量是不固定的，因此要说适用条件的话，当你的参数是明确知道数量时用 call 。而不确定的时候用 apply，然后把参数 push 进数组传递进去。当参数数量不确定时，函数内部也可以通过 arguments 这个数组来遍历所有的参数。
+func.call(this, arg1, arg2);
+func.apply(this, [arg1, arg2])
+//定义一个 log 方法，让它可以代理 console.log 方法
+function log(msg)　{
+	console.log(msg);
+}
+function log(){
+	console.log.apply(console, arguments);
+};
+function log(){
+	var args = Array.prototype.slice.call(arguments);//[].slice.call(arguments)
+	args.unshift('带自定义前缀');
+	console.log.apply(console, args);
+	// console.log(args.join(' '))
+};
+//MDN的解释是：bind()方法会创建一个新函数，称为绑定函数，当调用这个绑定函数时，绑定函数会以创建它时传入 bind()方法的第一个参数作为 this，传入 bind() 方法的第二个以及以后的参数加上绑定函数运行时本身的参数按照顺序作为原函数的参数来调用原函数。
+//多次bind无效，仅第一次有效。原因是，在Javascript中，多次 bind() 是无效的。更深层次的原因， bind() 的实现，相当于使用函数在内部包了一个 call / apply ，第二次 bind() 相当于再包住第一次 bind() ,故第二次以后的 bind 是无法生效的。
+var bar = function(){
+	console.log(this.x);
+}
+var foo = {
+	x:3
+}
+var sed = {
+	x:4
+}
+var func = bar.bind(foo).bind(sed);
+func(); //3
+var fiv = {
+	x:5
+}
+var func = bar.bind(foo).bind(sed).bind(fiv);
+func();//3
+var obj = {
+    x: 81,
+};
+var foo = {
+    getX: function() {
+        return this.x;
+    }
+}
+console.log(foo.getX.bind(obj)());  //81
+console.log(foo.getX.call(obj));    //81
+console.log(foo.getX.apply(obj)); //81
+/*
+apply 、 call 、bind 三者都是用来改变函数的this对象的指向的；
+apply 、 call 、bind 三者第一个参数都是this要指向的对象，也就是想指定的上下文；
+apply 、 call 、bind 三者都可以利用后续参数传参；
+bind 是返回对应函数，便于稍后调用；apply 、call 则是立即调用 。
+*/
+// call传入null/undefined值，this会指向window
+var value = 'window';
+var obj = {
+	value: 'obj'
+}
+function show(num1, num2) {
+	console.log(this.value);
+	console.log(num1 + num2);
+}
+show(10,100); //window 110
+show.call(obj,10,100); //obj 110
+show.call(null,10,100); //window  110
+show.apply(obj, [10, 100]);//obj 110
+show.apply(null, [10, 100]);//window 110
+//call的实现原理：将函数show设置为对象obj的属性；执行该函数；删除该函数
+const obj = {
+	a: 1,
+	b: 2,
+	show: function(num1, num2) {
+		console.log(this.value);
+		console.log(num1 + num2);
+	}
+};
+Function.prototype._call = function () {
+	var ctx = arguments[0] || window;
+	ctx.fn = this;
+	var args = [];
+	for (var i = 1; i < arguments.length; i++) {
+		args.push('arguments[' + i + ']');
+	}
+	var result = eval('ctx.fn(' + args + ')');//[1,2,3]+'' => 1,2,3 数组和字符串拼接调用了数组的toString方法 [1,2,3].toString()+''
+	delete ctx.fn;
+	return result;
+}
+show._call(obj,1,12)//
+Function.prototype._applay = function () {
+	var ctx = arguments[0] || window;
+	ctx.fn = this;
+	var result;
+	if(arguments[1]){
+		var args = [];
+		arguments[1].forEach((item,index)=>{
+			args.push('arguments[1][' + index + ']')
+		});
+		result = eval('ctx.fn(' + args + ')');
+	}else{
+		result = ctx.fn();
+	}
+	delete ctx.fn;
+	return result;
+}
+show._applay(obj,[1,12])
+//bind
+function foo(c, d) {
+	this.b = 100
+	console.log(this.a)
+	console.log(this.b)
+	console.log(c)
+	console.log(d)
+}
+var func = foo.bind({a: 1}, '1st');// 我们将foo bind到{a: 1}
+func('2nd'); // 1 100 1st 2nd
+func.call({a: 2}, '3rd'); // 1 100 1st 3rd 即使再次call也不能改变this。
+// 当 bind 返回的函数作为构造函数的时候，bind 时指定的 this 值会失效，但传入的参数依然生效。 所以使用func为构造函数时，this不会指向{a: 1}对象，this.a的值为undefined。如下
+new func('4th'); //undefined 100 1st 4th
+function foo(c, d) {
+	this.b = 100
+	console.log(this.a)
+	console.log(this.b)
+	console.log(c)
+	console.log(d)
+}
+Function.prototype._bind = function (ctx) {
+	if (typeof this !== "function")
+		throw new TypeError('error');
+	var self = this;
+	var args = Array.prototype.slice.call(arguments, 1);
+	const fn = function () {
+		var arg_fn = Array.prototype.slice.call(arguments);
+		// 返回函数的执行结果
+		// 判断函数是作为构造函数还是普通函数
+		// 构造函数this instanceof fn返回true，将绑定函数的this指向该实例，可以让实例获得来自绑定函数的值。
+		// 当作为普通函数时，this 指向 window，此时结果为 false，将绑定函数的 this 指向 ctx
+		return self.apply(this instanceof fn ? this : ctx, args.concat(arg_fn));
+	}
+	var empty = function () {};// 创建空函数
+	empty.prototype = this.prototype;// empty函数的prototype为绑定函数的prototype
+	fn.prototype = new empty();// 返回函数的prototype等于empty函数的实例实现继承
+	// 以上三句相当于Object.create(this.prototype)
+	return fn;
+}
+var func = foo._bind({a: 1}, '1st');
+func('2nd');  // 1 100 1st 2nd
+func.call({a: 2}, '3rd'); // 1 100 1st 3rd
+new func('4th');  //undefined 100 1st 4th
+
 
 
 //百度 js高阶函数

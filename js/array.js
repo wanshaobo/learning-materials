@@ -9,6 +9,27 @@ var a2 = a1.sort();
 a1; // ['A', 'B', 'C']
 a2; // ['A', 'B', 'C']
 a1 === a2; // true, a1和a2是同一对象
+//类（伪）数组使用数组方法
+Array.prototype.slice.call(document.getElementsByTagName("*"));
+
+//0、实现原生push方法
+Array.prototype._push = function(){
+	for(var i=0,len=arguments.length; i<len; i++){
+		this[this.length] = arguments[i];
+	}
+	return this.length;
+}
+Array.prototype._push = function(){
+	var args = Array.prototype.slice.call(arguments);
+	var _len = this.length;
+	for(var i=0,len=args.length; i<len; i++){
+		this[_len+i] = args[i];
+	}
+	return this.length;
+}
+var arr = [1,2,3]
+console.log(arr._push(4,5,6));//6
+console.log(arr);//[ 1, 2, 3, 4, 5, 6 ]
 
 //1、判断数组是数组
 var arr = [1,2,3];

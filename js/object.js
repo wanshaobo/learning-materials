@@ -197,7 +197,7 @@ var arr = new Array();
 //设置新对象的constructor属性为构造函数的名称 arr.constructor=Array 设置新对象的__proto__属性指向构造函数的prototype对象； obj.__proto__ = Array.prototype;
 //使用新对象调用函数，函数中的this被指向新实例对象：Array.call(arr)
 //将初始化完毕的新对象栈地址，保存到等号左边的变量中
-//注意：若构造函数中返回this或返回值是基本类型（number、string、boolean、null、undefined）的值，则返回新实例对象；若返回值是引用类型的值，则实际返回值为这个引用类型。
+//注意：若构造函数中返回this或返回值是基本类型（undefined null Boolean String Number）的值，则返回新实例对象；若返回值是引用类型的值，则实际返回值为这个引用类型。
 
 //11、构造函数内有无return的理解
 //没有return
@@ -232,6 +232,8 @@ SuperType.prototype.say = function(){
 var instance = new SuperType();
 console.log(instance.a);//2
 instance.say();//instance.say is not a function
+
+
 
 
 
