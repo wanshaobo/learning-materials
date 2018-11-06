@@ -343,50 +343,6 @@ Content-Type，但仅能是下列之一
 
 */
 
-//11  cache相关 缓存 http缓存
-/*
-http://www.cnblogs.com/dreamingbaobei/p/9804445.html
-注意，我们讨论的所有关于缓存资源的问题，都仅仅针对GET请求。而对于POST, DELETE, PUT这类行为性操作通常不做任何缓存
-浏览器缓存机制
-200 from cache
-304 not modified
-
-meta语法，组织浏览器缓存
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Cache-Control" content="no-cache">
-<meta http-equiv="Expires" content="0">
-
-清除缓存方案一：随机数法 在你的所有静态资源文件后面添加随机时间戳
-<script type="text/javascript" src="https://resources.test.com/js/test.js?version=56965"></script>
-<script type=”text/javascript“ src=”/js/test.js?+Math.random()“></script>
-
-清除缓存方案二：cache-control
-<meta name="Cache-Control" content="no-cache">
-
-响应头 Cache-Control 用来指导浏览器如何管理缓存
-Etag是服务端对不同的文件通过固定的算法生成的一个唯一的hash，当文件被修改时，这个唯一的hash就会发生变化，Last-Modified这个从字面上理解就可以了，他存放的是文件最后的修改时间，这两个都能用来判断当前的文件是否发生了变化。
-
-接下来我们要做的就是如何通过响应头来指导浏览器控制缓存的时间和什么时候发送询问请求询问资源是否过期，这里会涉及到两个响应头
-Expires 指导浏览器缓存文件的时间
-Expires:<http-date> 在此时候之后，缓存过期 服务器会重新发送确认请求
-
-Cache-Control 指导浏览器何时向浏览器确认当前资源是否已过期 默认的是private
-Cache-control: must-revalidate 缓存必须在使用之前验证旧资源的状态，并且不可使用过期资源
-Cache-control: no-cache 在释放缓存副本之前，强制高速缓存将请求提交给原始服务器进行验证
-Cache-control: no-store 缓存不应存储有关客户端请求或服务器响应的任何内容
-Cache-control: no-transform 不得对资源进行转换或转变
-Cache-control: public 表明响应可以被任何对象（包括：发送请求的客户端，代理服务器，等等）缓存
-Cache-control: private 表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）
-Cache-control: proxy-revalidate
-Cache-Control: max-age=<seconds> 设置缓存存储的最大周期，超过这个时间缓存被认为过期(单位秒)。与Expires相反，时间是相对于请求的时间。
-Cache-control: s-maxage=<seconds> 覆盖max-age 或者 Expires 头，但是仅适用于共享缓存(比如各个代理)，并且私有缓存中它被忽略。
-
-expires 是指在某个具体年月日时分秒之前缓存有效
-maxage 是指本地可以缓存多长时间有效，从第一次下载到本地开始计算
-Cache-Control会覆盖Expires
-
-协商缓存 Last-Modified & If-Modified-Since
-*/
 
 //12 前端通信
 /*
