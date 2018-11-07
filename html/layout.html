@@ -69,9 +69,9 @@
         }
         /*清除浮动代码*/
         .clearfloat:after{
-            display:block;
             clear:both;
             content:"";
+            display:block;
             visibility:hidden;
             height:0
         }
@@ -161,7 +161,7 @@
 </div>
 
 <!-- https://www.cnblogs.com/nxl0908/p/7245460.html -->
-<!--浮动的后果：子元素浮动，父元素高度塌陷，导致父元素下面的兄弟元素跑上来了-->
+<div>浮动的后果：子元素浮动，父元素高度塌陷，导致父元素下面的兄弟元素跑上来了</div>
 <div style="background:#000080;border:1px solid red;">
     <div class="left" style="float:left;width:20%;height:80px;background:#DDD">Left</div>
     <div class="right" style="float:right;width:30%;height:80px;background:#DDD">Right</div>

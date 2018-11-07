@@ -62,7 +62,19 @@ componentDidUpdate(prevProps, prevState, prevContext)
 
 10、key的意义
 
-11、mvvm
+11、mvvm mvm
+
+为什么setState是异步的
+setState之后什么时候触发render
+
+nat穿透
+
+判断{}是空对象
+
+深拷贝一个对象
+
+shouldComponentUpdate(){
+对比两个对象是否相等的方法
 
 Dva
 ant Design

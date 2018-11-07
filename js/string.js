@@ -11,10 +11,26 @@ for(var item of arr){//item是元素
 	console.log(item);//a b c
 }
 
+for in
+for of 区别
+
+
 // javascript原生遍历方法的建议用法：
 // 用for循环遍历数组
 // 用for-in遍历对象
 // 用for-of遍历类数组对象（ES6）
 // 用Object.keys()获取对象属性名的集合
 
-str.charAt(0)
+//连字符命名规范的字符串 转换成 驼峰命名规范的字符串 abc-def-ghi-ss abcDefGhiSs
+var str = 'abc-def-ghi-ss';
+function strToCame(str){
+	return str.replace(/\-[a-z]/g,(value, index, self) => value.charAt(1).toUpperCase());//箭头函数没有arguments对象
+}
+console.log(strToCame(str));//abcDefGhiSs
+function strToCamel(str){
+	while(str.indexOf('-') != -1){
+		var index = str.indexOf('-');
+		str = str.slice(0,index) + str.charAt(index+1).toUpperCase() + str.slice(index+2);
+	}
+	return str;
+}

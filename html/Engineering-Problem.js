@@ -72,79 +72,9 @@ var EventEmitter = require('events');
 var emitter = new EventEmitter();
 emitter.on('eventType',callback);
 emitter.emit('eventType', "message for you");
+
 //Promise
-new Promise((resolve,reject)=>{setTimeout(resolve,1000,'hehe')}).then(param => console.log(param))
-//原生js实现Promise 只能处理同步
-function _Promise(){
-	this.status = 'pending';
-	this.msg = 'none';
-	var self = this;
-	var process = arguments[0];
-	process(function(){
-		self.status = 'resolve';
-		self.msg = arguments[0];
-	},function(){
-		self.status = 'reject';
-		self.msg = arguments[0];
-	});
-	return this;
-}
-_Promise.prototype.then = function(){
-	if(this.status == 'resolve'){
-		arguments[0](this.msg);
-	}else if(this.status == 'reject'&& arguments[1]){
-		arguments[1](this.msg);
-	}
-}
-new _Promise(function(resolve,reject){resolve(123)}).then(function(msg){
-	console.log(msg);
-	console.log('success');
-},function(msg){
-	console.log(msg);
-	console.log('fail!');
-});
-//原生js实现Promise 可以处理同步和异步
-function _Promise(){
-	this.status = 'pending';
-	this.statusSave = [];
-	this.msg = 'none';
-	var self = this;
-	var executor = arguments[0];
-	executor(function(){
-		var success = arguments[0]
-		self.status = 'resolved';
-		self.msg = success;
-		for (const { resolve } of self.statusSave) {
-			resolve(success);
-		}
-	},function(){
-		var err = arguments[0];
-		self.status = 'rejected';
-		self.msg = err;
-		for (const { reject } of self.statusSave) {
-			reject(err);
-		}
-	});
-	// return this;
-}
-_Promise.prototype.then = function(){
-	var resolve = arguments[0];
-	var reject = arguments[1];
-	if(this.status == 'resolved'){
-		resolve(this.msg);
-	}else if(this.status == 'rejected'&& reject){
-		reject(this.msg);
-	}else{
-		this.statusSave.push({resolve,reject})
-	}
-}
-new _Promise((resolve,reject) => {setTimeout(resolve,1000,'he')}).then(function(msg){
-	console.log(msg);
-	console.log('success');
-},function(msg){
-	console.log(msg);
-	console.log('fail!');
-});
+
 //Generator“生成器”函数(协程coroutine)
 // 调用 Generator 函数，返回一个遍历器对象，代表 Generator 函数的内部指针
 // 以后，每次调用遍历器对象的next方法，就会返回一个有着value和done两个属性的对象。
@@ -305,6 +235,15 @@ secure: 安全标志，指定后，只有在使用SSL链接时候才能发送到
  7、 nginx代理跨域
  8、 nodejs中间件代理跨域
  9、 WebSocket协议跨域
+ 10、图像Ping
+ 11、Comet
+
+CORS Cross-Origin Resource Sharing
+深层原理
+请求 xhr.setRequestHeader("Origin", "http://www.wanshaobo.com")
+如果服务器认为这个请求可以接受，会响应如下
+响应 Access-Control-Allow-Origin:http://www.wanshaobo.com
+如果没有这个头部，或者有这个头部但信息不匹配，浏览器会驳回请求，注意是浏览器的拦截行为，而非后端。注意：此时请求和响应都不包含cookie信息
 
 jsonp cors WebSocket postMessage
 
@@ -369,3 +308,37 @@ Content-Type，但仅能是下列之一
 
 //event.stopPropagation()起到阻止捕获和冒泡阶段中当前事件的进一步传播。使用event.preventDefault()可以取消默认事件。w3c的方法是e.stopPropagation()，IE则是使用e.cancelBubble = true
 
+选择器分类
+!importent
+#id
+.class
+标签选择器
+全局选择器 *
+组合选择器: div,p || div p || div>p || div+p || p~ul
+属性选择器
+伪类选择器
+
+css优先级
+!important > 行内样式1000 > ID选择器100 > 类选择器10 > 标签1 > 通配符 > 继承 > 浏览器默认属性
+同一级别中后写的会覆盖先写的样式
+
+引入CSS样式方法及优先级
+内联定义 > 链入内部CSS<head></head>中的<style></style> > 链入外部CSS<link type="text/css" rel="stylesheet"  href="css文件的存放地址"> > 导入样式@import
+
+Boolean(' ');//true
+Boolean('')//false
+
+...args 数组
+arguments 类数组对象
+
+[]
+
+七层网络协议
+
+正则的一些匹配
+边缘 临界匹配
+abc-abc-acb  acbBadBad replace
+
+面向对象编程：继承 类 多态
+
+'abc'.match(/./)
