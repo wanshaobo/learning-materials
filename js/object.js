@@ -19,6 +19,7 @@ function SubType(){
 }
 SubType.prototype = new SuperType();
 var instance = new SubType();
+console.log(instance.constructor);//SuperType
 //问题一：父类构造函数中定义的属性(父类原型对象定义的属性)被子类实例共享，子类任何一个实例都可以修改这个属性。
 //问题二：创建子类实例时，不能像父类构造函数传递参数
 
@@ -105,9 +106,10 @@ function SuperType(){
 SuperType.prototype.age = 18;
 var instance1 = new SuperType();
 instance1.sex = 'man';
-console.log(instance1.hasOwnProperty('name'));//true 实例属性
-console.log(instance1.hasOwnProperty('age'));//false 原型属性
+console.log(instance1.hasOwnProperty('name'));//true 原型属性
+console.log(instance1.hasOwnProperty('age'));//false 原型对象属性
 console.log(instance1.hasOwnProperty('sex'));//true 实例属性
+console.log(instance1.constructor);//SuperType
 
 //7、__proto__ 实例原型的prototype
 //对象实例的__proto__指向构造函数的prototype(原型)
@@ -232,6 +234,31 @@ SuperType.prototype.say = function(){
 var instance = new SuperType();
 console.log(instance.a);//2
 instance.say();//instance.say is not a function
+
+//12、深拷贝 deep copy
+// $.extend( [deep ], target, object1 [, objectN ] )
+//$.extend( object1, object2 );合并两个对象，并修改第一个对象，并且第二个对象中的同名属性会覆盖第一个对象中的引用
+//$.extend( true, object1, object2 ); 采用递归方式合并两个对象，并修改第一个对象。
+//$.extend( {}, defaults, options ); 合并 defaults 和 options 对象，并且不修改 defaults 对象。这是常用的插件开发模式。
+// JSON.parse(JSON.stringify(a));
+function deepCopy(src, res) {
+	var res = res || {};
+	for (var key in src) {
+		if (typeof src[key] === 'object') {
+			res[key] = (src[key].constructor === Array) ? [] : {};
+			deepCopy(src[key], res[key]);
+		} else {
+			res[key] = src[key];
+		}
+	}
+	return res;
+}
+var a = {a:1,b:2,c:[{d:2}]}
+var b = deepCopy(a,{e:3})
+var c = deepCopy(a)
+console.log(a);
+console.log(b);
+console.log(c);
 
 
 

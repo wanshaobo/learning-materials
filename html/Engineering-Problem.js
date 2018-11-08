@@ -336,9 +336,6 @@ arguments 类数组对象
 七层网络协议
 
 正则的一些匹配
-边缘 临界匹配
-abc-abc-acb  acbBadBad replace
+边缘 临界匹配 \b \B
 
 面向对象编程：继承 类 多态
-
-'abc'.match(/./)

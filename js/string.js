@@ -23,10 +23,10 @@ for of 区别
 
 //连字符命名规范的字符串 转换成 驼峰命名规范的字符串 abc-def-ghi-ss abcDefGhiSs
 var str = 'abc-def-ghi-ss';
-function strToCame(str){
+function strToCamel(str){
 	return str.replace(/\-[a-z]/g,(value, index, self) => value.charAt(1).toUpperCase());//箭头函数没有arguments对象
 }
-console.log(strToCame(str));//abcDefGhiSs
+console.log(strToCamel(str));//abcDefGhiSs
 function strToCamel(str){
 	while(str.indexOf('-') != -1){
 		var index = str.indexOf('-');

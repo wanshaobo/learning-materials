@@ -189,3 +189,49 @@ p2.then((res)=>{
 	console.log(res)
 })
 console.log(6);//1 3 6 4 2 5 2
+
+//12 定时器 闭包
+//https://blog.csdn.net/weixin_38409093/article/details/78604187 dom元素绑定的几种方法
+for(var i = 0;i<5;i++){
+	setTimeout(function(){console.log(i)},1000*i);//每间隔一秒打印一个5，打印五次
+}
+for(var i = 0;i<5;i++){
+	setTimeout(function(){console.log(i)},1000);//一秒后打印5个5
+}
+for(var i = 0;i<5;i++){
+	setTimeout((function(res){
+		return function(){
+			console.log(res);
+		}
+	})(i),1000);//一秒后打印0 1 2 3 4
+}
+for(var i = 0;i<5;i++){
+	setTimeout((function(res){//传参的自执行匿名函数
+		return function(){
+			console.log(res);
+		}
+	})(i),1000*i);//每一秒后打印一个数字，总共打印5次，分别是：0 1 2 3 4
+}
+for(var i = 0;i<5;i++){
+	setTimeout((function(){//不传参的自执行匿名函数
+		var res = i;
+		return function(){
+			console.log(res)
+		}
+	})(),1000*i);//每一秒后打印一个数字，总共打印5次，分别是：0 1 2 3 4
+}
+for(var i = 0;i<5;i++){
+	setTimeout((function(res){
+		return function(){
+			console.log(res);
+		}
+	})(i),1000);//一秒后 0 1 2 3 4
+}
+for(var i = 0;i<5;i++){
+	function foo(res){
+		setTimeout(function(){
+			console.log(res)
+		},1000*i);//每一秒后打印一个数字，总共打印5次，分别是：0 1 2 3 4
+	}
+	foo(i);
+}
