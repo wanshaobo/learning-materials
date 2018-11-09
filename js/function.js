@@ -95,19 +95,32 @@ curry(1,2,3);//[2,3]
 //8
 var divs = document.getElementsByTagName('div');
 for (var i = 0, len = divs.length; i < len; i++) {
-    divs[i].onclick = (function(i) {
+    divs[i].onclick = function() {
+        console.log(i);
+    };
+}
+for (var i = 0, len = divs.length; i < len; i++) {
+    divs[i].onclick = (function(parm) {
         return function() {
-            console.log(i);
+            console.log(parm);
         };
     })(i);
 }
 for (var i = 0; i < divs.length; i++) {
-    (function(i){
-        divs[i].onclick=function(){
-            console.log(i);
+    (function(parm){
+        divs[parm].onclick=function(){
+            console.log(parm);
         }
     })(i);
 };
+for (var i = 0, len = divs.length; i < len; i++) {
+    divs[i].onclick = (function() {
+        var res = i;
+        return function(){
+            console.log(res);
+        }
+    })();
+}
 
 //9
 function f() {
@@ -409,6 +422,94 @@ func('2nd');  // 1 100 1st 2nd
 func.call({a: 2}, '3rd'); // 1 100 1st 3rd
 new func('4th');  //undefined 100 1st 4th
 
+//23、bind http://www.cnblogs.com/heshan1992/p/6667596.html
+//scene 1
+var a = 1;
+function Obj(){
+    this.a = 2;
+}
+var obj = new Obj();
+var abc = function (){
+    console.log(this.a)
+}
+abc();//1
+//scene 2
+var a = 1;
+function Obj(){
+    this.a = 2;
+}
+var obj = new Obj();
+var abc = (function (){
+    console.log(this.a)
+}).bind(obj)
+abc();//2
+//scene 3
+var a = 1;
+function Obj(){
+    this.a = 2;
+}
+var obj = new Obj();
+var abc = (function (b,c,d){
+    console.log(this.a + b + c + d)
+}).bind(obj)
+abc(1,2,3);//8
+//scene 4
+Function.prototype._bind = function(){
+    return this
+}
+var a = 1;
+function Obj(){
+    this.a = 2;
+}
+var obj = new Obj();
+var abc = (function (b,c,d){
+    console.log(this.a + b + c + d)
+})._bind(obj)
+abc(1,2,3);//7
+//scene 5
+var a = 1;
+function Obj(){
+    this.a = 2;
+}
+var obj = new Obj();
+var abc = (function (b,c,d){
+    console.log(this.a + b + c + d)
+}).bind(obj)(1,2,3)//8
+//scene 6
+Function.prototype._bind = function(context){
+    var self = this;
+    return function(){
+        return self.apply(context);
+    };
+};
+var a = 1;
+function Obj(){
+    this.a = 2;
+}
+var obj = new Obj();
+console.log(obj);//Obj {a: 2}
+var abc = (function (b,c,d){
+    console.log(this.a);//2
+    console.log(b);//undefined
+    console.log(this.a + b + c + d)//NaN
+})._bind(obj)
+abc(1,2,3)
+//scene 7
+Function.prototype._bind = function(context){
+    var self = this;
+    return function(){
+        return self.apply(context,arguments);
+    };
+};
+var a = 1;
+function Obj(){
+    this.a = 2;
+}
+var obj = new Obj();
+var abc = (function (b,c,d){
+    console.log(this.a + b + c + d)
+})._bind(obj)//得到function(){return self.apply(context,arguments);};
+abc(1,2,3)//8
 
 
 //百度 js高阶函数

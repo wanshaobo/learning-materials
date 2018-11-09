@@ -235,3 +235,149 @@ for(var i = 0;i<5;i++){
 	}
 	foo(i);
 }
+
+//13
+//scene 1
+console.log(1)//当前队列
+new Promise(function(resolve,reject){
+	console.log(2)//当前队列
+	resolve()
+	console.log(3);//当前队列
+}).then(function(){
+	console.log(4);//微队列
+})
+setTimeout(function(){console.log(5)},0)//宏队列
+console.log(6);//当前队列
+// 1 2 3 6 4 5
+//scene 2
+console.log(1)
+new Promise(function(resolve,reject){
+	console.log(2)
+	resolve()
+	console.log(3);
+	process.nextTick(()=>{console.log(7)})
+}).then(function(){
+	console.log(4);
+})
+setTimeout(function(){console.log(5)},0)
+console.log(6);//1 2 3 6 7 4 5
+//scene 3
+console.log(1)
+new Promise(function(resolve,reject){
+	console.log(2)
+	resolve()
+	console.log(3);
+	process.nextTick(()=>{console.log(7)})
+}).then(function(){
+	console.log(4);
+	process.nextTick(()=>{console.log(8)})
+})
+setTimeout(function(){console.log(5)},0)
+console.log(6);//1 2 3 6 7 4 8 5
+//scene 4
+console.log(1)
+new Promise(function(resolve,reject){
+	process.nextTick(()=>{console.log(9)})
+	console.log(2)
+	resolve()
+	console.log(3);
+	process.nextTick(()=>{console.log(7)})
+}).then(function(){
+	console.log(4);
+	process.nextTick(()=>{console.log(8)})
+})
+setTimeout(function(){console.log(5)},0)
+console.log(6);//1 2 3 6 9 7 4 8 5
+//scene 5
+console.log(1)
+new Promise(function(resolve,reject){
+	process.nextTick(()=>{console.log(9)})
+	console.log(2)
+	resolve()
+	console.log(3);
+	process.nextTick(()=>{console.log(7)})
+}).then(function(){
+	process.nextTick(()=>{console.log(10)})
+	console.log(4);
+	process.nextTick(()=>{console.log(8)})
+})
+setTimeout(function(){console.log(5)},0)
+console.log(6);//1 2 3 6 9 7 4 10 8 5
+//scene 6
+console.log(1)
+new Promise(function(resolve,reject){
+	process.nextTick(()=>{console.log(9)})
+	console.log(2)
+	resolve()
+	console.log(3);
+	process.nextTick(()=>{console.log(7)})
+}).then(function(){
+	process.nextTick(()=>{console.log(10)})
+	console.log(4);
+	process.nextTick(()=>{console.log(8)})
+})
+setTimeout(function(){
+	process.nextTick(()=>{console.log(11)})
+	console.log(5)
+},0)
+console.log(6);//1 2 3 6 9 7 4 10 8 5 11
+//scene 7
+console.log(1)
+new Promise(function(resolve,reject){
+	process.nextTick(()=>{console.log(9)})
+	console.log(2)
+	resolve()
+	console.log(3);
+	process.nextTick(()=>{console.log(7)})
+}).then(function(){
+	process.nextTick(()=>{console.log(10)})
+	console.log(4);
+	process.nextTick(()=>{console.log(8)})
+})
+setTimeout(function(){
+	process.nextTick(()=>{console.log(11)})
+	console.log(5)
+	process.nextTick(()=>{console.log(12)})
+},0)
+console.log(6);//1 2 3 6 9 7 4 10 8 5 11 12
+//scene 8
+console.log(1)
+new Promise(function(resolve,reject){
+	process.nextTick(()=>{console.log(9)})
+	console.log(2)
+	resolve()
+	console.log(3);
+	process.nextTick(()=>{console.log(7)})
+	setTimeout(function(){console.log(13)},0)
+}).then(function(){
+	process.nextTick(()=>{console.log(10)})
+	console.log(4);
+	process.nextTick(()=>{console.log(8)})
+})
+setTimeout(function(){
+	process.nextTick(()=>{console.log(11)})
+	console.log(5)
+	process.nextTick(()=>{console.log(12)})
+},0)
+console.log(6);//1 2 3 6 9 7 4 10 8 13 5 11 12
+//9
+console.log(1)
+new Promise(function(resolve,reject){
+	process.nextTick(()=>{console.log(9)})
+	console.log(2)
+	resolve()
+	console.log(3);
+	process.nextTick(()=>{console.log(7)})
+	setTimeout(function(){console.log(13)},0)
+}).then(function(){
+	process.nextTick(()=>{console.log(10)})
+	console.log(4);
+	process.nextTick(()=>{console.log(8)})
+	setTimeout(function(){console.log(14)},0)
+})
+setTimeout(function(){
+	process.nextTick(()=>{console.log(11)})
+	console.log(5)
+	process.nextTick(()=>{console.log(12)})
+},0)
+console.log(6);//1 2 3 6 9 7 4 10 8 13 5 14 11 12
