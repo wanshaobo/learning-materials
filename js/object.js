@@ -260,6 +260,58 @@ console.log(a);
 console.log(b);
 console.log(c);
 
+//13、冻结 freeze 只能冻结值类型的数据，深层数据需要遍历冻结 Object.freeze()冻结的是值，因此可以将变量的引用替换掉
+var obj = {a:1}
+Object.freeze(obj);
+obj.a = 2;
+console.log(obj);//{a:1}
+//
+var obj = {a:{b:1}}
+Object.freeze(obj);
+obj.a.b = 2;
+console.log(obj);//{ a: { b: 2 } }
+//
+var obj = {
+	a:1,
+	b:{
+		c:2
+	}
+}
+Object.freeze(obj);
+obj.a = 2
+obj.b.c = 3;
+console.log(obj);//{ a: 1, b: { c: 3 } }
+Object.freeze(obj.b)
+obj.a = 2
+obj.b.c = 4;
+console.log(obj);//{ a: 1, b: { c: 3 } }
+//
+var obj = {
+	a:1,
+	b:{
+		c:2
+	}
+}
+function freeze(obj){
+	Object.freeze(obj);
+	Object.values(obj).forEach(function (value,index) {
+		if(typeof value === 'object'){
+			freeze(value);
+		}
+	})
+}
+freeze(obj)
+obj.a = 2
+obj.b.c = 3;
+console.log(obj);//{ a: 1, b: { c: 2 } }
+//对象的扩展、密封和冻结。
+Object.preventExtensions();//阻止对象扩展，让一个对象变的不可扩展，也就是永远不能再添加新的属性
+Object.isExtensible();//判断一个对象是否可扩展，即是否可以给它添加新属性
+Object.seal();//让一个对象密封，并返回被密封后的对象。密封对象是指那些不能添加新的属性，不能删除已有属性，以及不能修改已有属性的可枚举性、可配置性、可写性，但可以修改已有属性的值的对象。
+Object.isSealed();//判断一个对象是否是密封的（sealed）
+Object.freeze();//这个方法比 Object.seal 更绝，冻结对象是指那些不能添加新的属性，不能修改已有属性的值，不能删除已有属性，以及不能修改已有属性的可枚举性、可配置性、可写性的对象。也就是说，这个对象永远是不可变的。
+Object.isFrozen();//判断一个对象是否被冻结（frozen）
+
 
 
 

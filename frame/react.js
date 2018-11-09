@@ -1,10 +1,42 @@
 //https://react.docschina.org/ https://react.docschina.org/ http://nav.react-china.org/
-/*
-1、React.PureComponent与React.Component的异同？ https://react.docschina.org/docs/react-api.html#reactpurecomponent
-shouldComponentUpdate(nextProps,nextState,{})
+var React = {
+	Children: {
+		map: mapChildren,
+		forEach: forEachChildren,
+		count: countChildren,
+		toArray: toArray,
+		only: onlyChild
+	},
+
+	createRef: createRef,
+	Component: Component,
+	PureComponent: PureComponent,
+
+	createContext: createContext,
+	forwardRef: forwardRef,
+
+	Fragment: REACT_FRAGMENT_TYPE,
+	StrictMode: REACT_STRICT_MODE_TYPE,
+	unstable_AsyncMode: REACT_ASYNC_MODE_TYPE,
+	unstable_Profiler: REACT_PROFILER_TYPE,
+
+	createElement: createElementWithValidation,
+	cloneElement: cloneElementWithValidation,
+	createFactory: createFactoryWithValidation,
+	isValidElement: isValidElement,
+
+	version: ReactVersion,
+
+	__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ReactSharedInternals
+};
+
+//1、React.PureComponent与React.Component的异同？ https://react.docschina.org/docs/react-api.html#reactpurecomponent
+function shouldComponentUpdate(nextProps,nextState,{}){
+
+}
 //PureComponent
-PureComponent组件内部重写了 shouldComponentUpdate，但进行的是shallow comparison，数组和对象数据会失效：
-不同场景使用不同方案：
+//PureComponent组件内部重写了 shouldComponentUpdate，但进行的是shallow comparison，数组和对象数据会失效：
+//不同场景使用不同方案：
 //场景一：使用concat方法，返回新数组，改变了栈地址，shouldComponentUpdate会判断前后状态发生了变化
 this.setState(prevState => ({
 	words: prevState.words.concat(['marklar'])
@@ -14,7 +46,8 @@ function updateColorMap(colormap) {
 	return Object.assign({}, colormap, {right: 'blue'});
 }
 
-2、setState方法
+//2、setState方法
+//接收两个参数，第一个参数是对象 或者 是 返回值为对象的函数，第二个参数是回调
 //场景一：film改变，虽然没有在setState方法中显式重写，但setState重写了其他state，也会触发film重新渲染
 this.state.film.video.info.user[0] = 5;
 this.setState({
@@ -29,23 +62,31 @@ this.setState({
 	film: this.state.film,
 },()=>{console.log(this.state.film)});
 
-3、react纯组件
+//3、react纯组件
+/*
 不需要管理状态state，数据直接通过props传入
 https://www.cnblogs.com/libin-1/p/6275507.html
 创建组件的最终方案，无状态函数的纯组件
 https://segmentfault.com/a/1190000010519159
+*/
 
-4、react创建组件的方法？
+
+//4、react创建组件的方法？
+/*
+
 ES5写法React.createClass
 ES6写法React.Component
 无状态的函数式写法（纯组件-SFC）
 
 一个函数的返回结果只依赖于它的参数，并且在执行过程里面没有副作用，我们就把这个函数叫做纯函数
+*/
 
-5、react 16 新特性
-https://www.jianshu.com/p/af0ae26eac18
+//5、react 16 新特性 https://www.jianshu.com/p/af0ae26eac18
 
-6、react 版本升级介绍
+
+//6、react 版本升级介绍
+/*
+
 https://github.com/facebook/react/blob/master/CHANGELOG.md
 16.0.0 (September 26, 2017)
 16.1.0 (November 9, 2017)
@@ -54,12 +95,18 @@ https://github.com/facebook/react/blob/master/CHANGELOG.md
 16.4.0 (May 23, 2018)
 16.5.0 (September 5, 2018)
 16.6.0 (October 23, 2018)
+*/
 
-7、加入redux的react项目，数据请求放在redux中，还是放在视图层的生命周期方法中
+//7、加入redux的react项目，数据请求放在redux中，还是放在视图层的生命周期方法中
+/*
+
 原则：每个视图层都需要用到的数据，
 数据请求应该放在生命周期方法componentWillMount和componentDidMount
+*/
 
-8、组件通信
+//8、组件通信
+/*
+
 https://www.jianshu.com/p/fb915d9c99c4
 嵌套组件通信：
 父子组件：props callback
@@ -79,25 +126,55 @@ componentDidUpdate(prevProps, prevState, prevContext)
 使用自定义事件的方式
 
 父组件调用子组件的方法：在父组件中使用子组件，给子组件加上ref属性，通过this.refs.child.func()调用
+*/
 
-9、state改变触发视图层重新渲染的原理？
+//9、setState改变触发视图层重新渲染的原理？
+/*
+https://segmentfault.com/a/1190000014118419 Ant design的Notification源码分析
+https://segmentfault.com/a/1190000014131698 React中setState真的是异步的吗
+异步的核心原因，diff算法
+要做的事情：改变this.state；将新的state合并到状态更新队列中，合并多个state；根据更新队列和shouldComponent的状态来判断是否需要更新组件，触发render
+setState之后，触发render的时机
 
-10、key的意义
+简化的setState的调用栈
+this.setState(newState) =>
+newState存入pending队列 =>
+调用enqueueUpdate =>
+是否处于批量更新模式 =>
+是的话将组件保存到dirtyComponents
+不是的话遍历dirtyComponents，调用updateComponent,更新pending state or props
+*/
+Component.prototype.setState = function (partialState, callback) {
+  !(typeof partialState === 'object'
+	  || typeof partialState === 'function' +
+	  '' || partialState == null) ?
+	  invariant(false, 'setState(...): takes an object of state variables to update or a function which returns an object of state variables.') : void 0;
+  this.updater.enqueueSetState(this, partialState, callback, 'setState');
+};
 
-11、ref应用场景
+//10、key的意义
+
+//11、ref应用场景
+/*
 ref有两种使用方式：设置回调函数(官方推荐) || 设置string
-
 设置回调函数：子组件中input框自动获取焦点
 这个事件在一进来这个子组件页面的时候，componentDidMount 生命周期中使用 ，并且为了保证每次进来的时候，input框都获取到焦点，需要在componentWillReceiveProps生命周期中使用
 
 设置string：获取dom元素的innerHTML
+*/
 
-12、react获取dom三种方法
+
+
+
+//12、react获取dom三种方法
+/*
 js 常规dom操作方式，通过id获取dom
 react原生函数findDOMNode获取dom
 通过ref来定位一个组件，切记ref要全局唯一（类似id）
+*/
 
-13、babel转码react后
+
+//13、babel转码react后
 return <div></div>  ---->   return createElement('div')
 
 mvvm mvm
@@ -111,15 +188,11 @@ nat穿透
 
 深拷贝一个对象
 
-shouldComponentUpdate(){
-对比两个对象是否相等的方法
-
 Dva
 ant Design
 ant design pro
 umijs
 
-
-
+/*
 
 */
