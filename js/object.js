@@ -9,6 +9,10 @@ Object.prototype.toString.call(fn);//”[object Function]”
 Object.prototype.toString.call(date);//”[object Date]”
 Object.prototype.toString.call(arr);//”[object Array]”
 
+console.log({} instanceof Object)
+console.log({}.constructor === Object)
+console.log(Object.prototype.toString.call({}) === '[object Object]')
+
 //1、原型链继承
 function SuperType(){
 	this.name = 'super';
