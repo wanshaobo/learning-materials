@@ -23,6 +23,24 @@ Math.max.apply(null, [1, 2, 3, 4, 5, 8, 1, 1]);//8
 Math.max(...[1, 2, 3, 4, 5, 8, 1, 1]);//8 扩展运算符（spread）是三个点（...）
 Math.max(1, 2, 3, 4, 5, 8, 1, 1);//8
 
-//绑定事件方法 DOM0 DOM2 w3c标准 IE异同
-
 -10 >>> 0//把-10转化为无符号整数
+
+//判断NaN是NaN 三种方法
+isNaN(NaN)
+NaN === NaN//false
+Array.prototype.includes(NaN)
+
+var arr = [NaN];
+arr.indexOf(NaN);//-1
+
+console.log(typeof null);//object
+console.log(typeof undefined);//undefined
+console.log(typeof NaN);//number
+console.log(typeof true);//boolean
+typeof undefined == 'undefined' //true
+
+function isNull(tmp){
+	if (!tmp && typeof tmp != "undefined" && tmp != 0){
+		alert("null");
+	}
+}

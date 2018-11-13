@@ -51,9 +51,94 @@ var s = Array.prototype.filter.call(arr,(ele, index, arro2) => ele%2 == 0)
 console.log(s);//[ 2, 4, 6, 8 ]
 
 //3、去重
-var arr = ['apple', 'strawberry', 'banana', 'pear', 'apple', 'orange', 'orange', 'strawberry'];
+var arr = [1,1,'1','1',0,0,'0','0','true','true',true,true,false,false,'false','false','undefined','undefined',undefined,undefined,null,null,'null','null',NaN,NaN,'NaN','NaN'];
+//schme 0 api法 时间自由度：未知 兼容NaN
+console.log(Array.from(new Set(arr)));//[1, "1", 0, "0", "true", true, false, "false", "undefined", undefined, null, "null", NaN, "NaN"]
+console.log([...new Set(arr)]);       //[1, "1", 0, "0", "true", true, false, "false", "undefined", undefined, null, "null", NaN, "NaN"]
+//schme 1 对象键值法 时间自由度：O(n*2) 兼容NaN
+function unique(arr){
+	var obj = {}, res = [];
+	for (var i=0,len=arr.length; i<len; i++) {
+		var item = arr[i];
+		var type = typeof item;
+		if (!obj[item]) {//obj[item]会调用item的toString()，导致obj[1] --> obj['1']
+			obj[item] = [type];
+			res.push(item);
+		} else if (obj[item].indexOf(type) == -1) {//obj[item].indexOf()不会调用item的toString()
+			obj[item].push(type);
+			res.push(item);
+		}
+	}
+	return res;
+}
+console.log(unique(arr));//[1, "1", 0, "0", "true", true, false, "false", "undefined", undefined, null, "null", NaN, "NaN"]
+//schme 2 时间自由度：O(n*2) 兼容NaN
+function unique(arr){
+	var res = [],flag = true;
+	for(var i=0,len=arr.length;i<len;i++){
+		if(arr[i] === arr[i]){
+			(res.indexOf(arr[i]) == -1) ? res.push(arr[i]) : null;
+		}else{
+			(flag && res.indexOf(arr[i]) == -1) ? res.push(arr[i]) : null;
+			flag = false;
+		}
+	}
+	return res
+}
+console.log(unique(arr));//[1, "1", 0, "0", "true", true, false, "false", "undefined", undefined, null, "null", NaN, "NaN"]
+//schme 3 缺点：时间自由度：O(n*2) 无法筛选出NaN
+arr.indexOf(NaN);//-1
 var r = arr.filter((element, index, self) => self.indexOf(element) === index);
-console.log(r);
+console.log(r);//[1, "1", 0, "0", "true", true, false, "false", "undefined", undefined, null, "null", "NaN"]
+//schme 4 对象法，不能区分string 和 真值，比如"undefined"  undefined
+function unique(arr){
+	var res = [], obj = {};
+	for(var i=0,len=arr.length;i<len;i++){
+		if(!obj[arr[i]]){
+			obj[arr[i]] = true;
+			res.push(arr[i])
+		}
+	}
+	return res
+}
+console.log(unique(arr));//[1, 0, "true", false, "undefined", null, NaN]
+//schme 5 对象法，不能区分string 和 真值，比如"undefined"  undefined
+function unique(arr){
+	var obj = {}
+	return arr.reduce((res,item) => {
+		obj[item] ? null : obj[item] = true && res.push(item);
+		return res
+	},[])
+}
+console.log(unique(arr));//[1, 0, "true", false, "undefined", null, NaN]
+//schme 6 数组下标法 时间自由度：O(n*2) 结果返回全部NaN
+function unique(arr){
+	var res = [];
+	for(var i=0,len=arr.length;i<len;i++){
+		if(res.indexOf(arr[i]) == -1){
+			res.push(arr[i])
+		}
+	}
+	return res;
+}
+console.log(unique(arr));//[1, "1", 0, "0", "true", true, false, "false", "undefined", undefined, null, "null", NaN, NaN, "NaN"]
+//scene 7 排序后相邻去除法 时间自由度：O(n) 排序成功，但改变了原数组顺序
+function unique(arr){
+	arr.sort();
+	var temp=[arr[0]],nanFlag = true;
+	for(var i = 1; i < arr.length; i++){
+		if(arr[i] !== temp[temp.length-1]){
+			temp.push(arr[i]);
+			if(!(arr[i] === temp[temp.length-1]) && nanFlag){
+				temp.pop();
+				nanFlag = false;
+			}
+		}
+	}
+	return temp;
+}
+console.log(unique(arr));//[0, "0", 1, "1", "NaN", NaN, false, "false", null, "null", "true", true, "undefined", undefined]
+//scene 8 时间自由度：O(n) 兼容NaN 不改变了原数组顺序
 
 //4、扁平化
 //Number类型的数组
@@ -175,3 +260,7 @@ function shuffle(arr){
 	Math.random() > 0.5 ? (tmp = arr[1],arr[1] = arr[0],arr[0] = tmp) : 0;
 }
 shuffle(arr)
+
+//数组过滤空值：false null 0 "" undefined NaN
+var arr = [false,null,0,'',undefined,NaN,1,true,'1']
+console.log(arr.filter(item => !!item));//[1, true, "1"]
