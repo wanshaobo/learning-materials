@@ -308,6 +308,7 @@ Content-Type，但仅能是下列之一
 
 //event.stopPropagation()起到阻止捕获和冒泡阶段中当前事件的进一步传播。使用event.preventDefault()可以取消默认事件。w3c的方法是e.stopPropagation()，IE则是使用e.cancelBubble = true
 
+/*
 选择器分类
 !importent
 #id
@@ -339,3 +340,5 @@ arguments 类数组对象
 边缘 临界匹配 \b \B
 
 面向对象编程：继承 类 多态
+
+cors 深层原理和过程

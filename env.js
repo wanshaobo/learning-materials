@@ -22,12 +22,5 @@ var table = {
 		value:8
 	}
 }
-var arr = [1,[2,[3]]];
-function flatten(arr){
-	return arr.reduce((res,item) => res.concat(Array.isArray(item) ? flatten(item) : item),[])
-}
-function flatten(arr){
-	return arr.reduce((res,item) => res.concat(Array.isArray(item) ? flatten(item) : item),[]);
-}
-console.log(flatten(arr))
+
 

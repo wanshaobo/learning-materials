@@ -455,7 +455,7 @@
     <li style="width: 50px;height: 50px;border:1px solid #ff6700">5</li>
     <li style="width: 50px;height: 50px;border:1px solid #ff6700">6</li>
     <li style="width: 50px;height: 50px;border:1px solid #ff6700">7</li>
-    <li style="width: 50px;height: 50px;border:1px solid #ff6700">8</li>
+    <li style="width: 50px;height: 50px;border:1px solid #ff6700">18</li>
 </ul>
 
 <!--纵向flex布局-->
@@ -480,7 +480,10 @@
     </div>
     <div style="background: #5555ff;flex-basis: 50px;">2</div>
 </div>
-
+<div style="width: 450px; height: 150px;border: 1px solid #ff7777;position: relative;left: 44px;">
+    <div style="display: inline-block;width: 100px; height: 50px;border: 1px solid #ff7777"></div>
+    <div id="getPisiton" style="display: inline-block;width: 100px; height: 50px;border: 1px solid #ff7777"></div>
+</div>
 <div style="margin-top: 50px;">文字溢出显示省略号</div>
 <div style="
 width: 100px;
@@ -492,4 +495,26 @@ white-space: nowrap;/*不换行*/
 
 
 </body>
+<script>
+    var ele = document.getElementById('getPisiton');
+    function getPosition(dom){
+    	var res = dom.getBoundingClientRect()
+    	res = {
+    		x: 0,//元素左边距离浏览器网页可浏览区域左部距离
+            y: 0,//元素顶部距离浏览器网页可浏览区域顶部距离
+            width: 0,//包括border 和 padding
+            height: 0,//包括border 和 padding
+            top: 0,//元素顶部距离浏览器网页可浏览区域顶部距离
+            right: 0,//元素右边距离浏览器网页可浏览区域左边距离
+            bottom: 0,//元素底部距离浏览器网页可浏览区域顶部距离
+            left: 0//元素左边距离浏览器网页可浏览区域左部距离
+        }
+	    console.log(dom.clientWidth);//元素宽度，不包括border 和 padding
+	    console.log(dom.clientHeight);//元素高度，不包括border 和 padding
+	    console.log(dom.client);//子元素顶部距离父元素顶部距离
+    }
+    document.body.addEventListener('click',function(){
+    	getPosition(ele)
+    },false)
+</script>
 </html>
