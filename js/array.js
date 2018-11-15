@@ -37,6 +37,7 @@ console.log(Array.isArray(arr));
 console.log(arr instanceof Array);
 console.log(arr.constructor === Array);
 console.log(Object.prototype.toString.call(arr) === '[object Array]');//‘[object Array]’
+Array.prototype.isPrototypeOf([]);//Array是不是[]的原型链
 
 //2、数字转字符串
 var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -54,7 +55,7 @@ console.log(s);//[ 2, 4, 6, 8 ]
 var arr = [1,1,'1','1',0,0,'0','0','true','true',true,true,false,false,'false','false','undefined','undefined',undefined,undefined,null,null,'null','null',NaN,NaN,'NaN','NaN'];
 //schme 0 api法 时间自由度：未知 兼容NaN
 console.log(Array.from(new Set(arr)));//[1, "1", 0, "0", "true", true, false, "false", "undefined", undefined, null, "null", NaN, "NaN"]
-console.log([...new Set(arr)]);       //[1, "1", 0, "0", "true", true, false, "false", "undefined", undefined, null, "null", NaN, "NaN"]
+console.log([...new Set(arr)]);//扩展运算符[1, "1", 0, "0", "true", true, false, "false", "undefined", undefined, null, "null", NaN, "NaN"]
 //schme 1 对象键值法 时间自由度：O(n*2) 兼容NaN
 function unique(arr){
 	var obj = {}, res = [];
