@@ -1,4 +1,5 @@
 //https://react.docschina.org/ https://react.docschina.org/ http://nav.react-china.org/
+//1、React对象属性和方法
 var React = {
 	Children: {
 		map: mapChildren,
@@ -30,7 +31,7 @@ var React = {
 	__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ReactSharedInternals
 };
 
-//1、React.PureComponent与React.Component的异同？ https://react.docschina.org/docs/react-api.html#reactpurecomponent
+//2、React.PureComponent与React.Component的异同？ https://react.docschina.org/docs/react-api.html#reactpurecomponent
 function shouldComponentUpdate(nextProps,nextState,{}){
 
 }
@@ -175,7 +176,14 @@ react原生函数findDOMNode获取dom
 
 
 //13、babel转码react后
-return <div></div>  ---->   return createElement('div')
+//return <div></div>  ---->   return createElement('div')
+
+/*
+
+生命周期
+UNSAFE_componentWillReceiveProps() --> getDerivedStateFromProps
+
+react 组件如何继承
 
 mvvm mvm
 
@@ -193,6 +201,5 @@ ant Design
 ant design pro
 umijs
 
-/*
 
 */
