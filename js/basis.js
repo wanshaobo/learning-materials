@@ -44,3 +44,7 @@ function isNull(tmp){
 		alert("null");
 	}
 }
+
+// https://github.com/mqyqingfeng/Blog
+// https://juejin.im/user/58e4b9b261ff4b006b3227f4/posts
+// https://juejin.im/post/59278e312f301e006c2e1510

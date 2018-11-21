@@ -349,16 +349,28 @@ const obj = {
 		console.log(num1 + num2);
 	}
 };
-Function.prototype._call = function () {
+Function.prototype._call = function() {
 	var ctx = arguments[0] || window;
 	ctx.fn = this;
+	ctx.fn();
+	delete ctx.fn;
+}
+//如何给一个函数传递不定参？ 或者说怎么把不定长的数组转换成多个参数传递给函数？？ 三种办法： eval、apply和es6 的解构语法
+/*
+eval('obj.fn('+ args +')');
+obj.fn.apply(obj, args);
+obj.fn(…args);//es6解构语法
+*/
+Function.prototype._call = function () {
+	var ctx = arguments[0] || window;//如果第一个参数为null，this指向window
 	var args = [];
+	ctx.fn = this;
 	for (var i = 1; i < arguments.length; i++) {
 		args.push('arguments[' + i + ']');
 	}
 	var result = eval('ctx.fn(' + args + ')');//[1,2,3]+'' => 1,2,3 数组和字符串拼接调用了数组的toString方法 [1,2,3].toString()+''
 	delete ctx.fn;
-	return result;
+	return result;//函数调用是有返回值的
 }
 show._call(obj,1,12)//
 Function.prototype._applay = function () {
@@ -479,8 +491,8 @@ var abc = (function (b,c,d){
 Function.prototype._bind = function(context){
     var self = this;
     return function(){
-        return self.apply(context);
-    };
+		return self.apply(context);
+	};
 };
 var a = 1;
 function Obj(){
