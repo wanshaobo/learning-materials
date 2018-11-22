@@ -1,9 +1,44 @@
 /*快手*/
 //1、HTML常见行内元素有哪些？block，inline-block，inline三者之间有什么区别？
+/*
+行内元素有：a b span img input select strong（强调的语气）
+内联元素和块级元素：
+内联元素是不可以控制宽和高、margin等；并且在同一行显示，不换行。
+块级元素是可以控制宽和高、margin等，并且会换行。
+inline：使用此属性后，元素会被显示为内联元素，元素则不会换行。
+block：使用此属性后，元素会被现实为块级元素，元素会进行换行。
+inline-block：是使元素以块级元素的形式呈现在行内。意思就是说，让这个元素显示在同一行不换行，但是又可以控制高度和宽度，这相当于内敛元素的增强。
+要注意的是IE6 不支持inline-block
+*/
 
 //2、HTML5新增了哪些标签，input新增了哪些类型？
+/*
+http://www.runoob.com/html/html5-new-element.html
+http://www.runoob.com/tags/tag-input.html
+autocomplete
+autofocus
+form
+formaction
+formenctype
+formmethod
+formnovalidate
+formtarget
+height
+list
+max
+maxlength
+min
+multiple
+name
+pattern
+placeholder
+required
+step
+width
+*/
 
 //3、什么是BFC(Block Formatting Context)，什么情况下会产生BFC？
+///https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context
 
 //4、写CSS实现左右两列登高容器布局，要求元素实际占用的高度以两列中较高的为准(如果左侧元素内容高度为100px，右侧元素内容高度为200px)，则左右容器实际占用高度都为200px
 
