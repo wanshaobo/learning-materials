@@ -67,36 +67,5 @@ grep -v 'ntfs' print.txt 不包含ntfs
 cp 1.txt A 将1.txt文件复制到A文件夹下
 cp A B -r 如果是文件夹复制，需要递归操作
 find / -name '*s' 在根目录下按照文件名找文件
+todo 学习节点 人工智能+py高级\第1章 python基础\第1节 linux操作系统基础\02.linux命令以及vim编辑器 02-tar压缩和解压缩、which命令
 */
-
-var a = 1,b = 2;
-if(!a || !b){
-	console.log(1);
-}else{
-	console.log(2);
-}
-//2
-
-var a = 0,b = 2;
-if(!a || !b){
-	console.log(1);
-}else{
-	console.log(2);
-}
-//2
-
-var a = 1,b = 0;
-if(!a || !b){
-	console.log(1);
-}else{
-	console.log(2);
-}
-//2
-
-var a = 0,b = 0;
-if(!a || !b){
-	console.log(1);
-}else{
-	console.log(2);
-}
-//2
