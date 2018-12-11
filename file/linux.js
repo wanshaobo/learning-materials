@@ -67,5 +67,93 @@ grep -v 'ntfs' print.txt 不包含ntfs
 cp 1.txt A 将1.txt文件复制到A文件夹下
 cp A B -r 如果是文件夹复制，需要递归操作
 find / -name '*s' 在根目录下按照文件名找文件
-todo 学习节点 人工智能+py高级\第1章 python基础\第1节 linux操作系统基础\02.linux命令以及vim编辑器 02-tar压缩和解压缩、which命令
+tar -cvf python.tar *.py 打包
+tar -xvf python.tar 解包
+tar -zcvf python.tar.gz *.py 压缩打包
+tar -zxvf python.tar.gz 解压缩包
+ll === ll -la
+tar -jcvf xx.tar.bz2 *.py 压缩打包（比gz大一点）
+tar -jxvf python.tar.bz2 解压缩包
+zip zzz.zip *py
+unzip zzz.zip
+压缩率：gz > bz2 > zip
+tar -zxvf python.tar.gz -C wan/ 解压缩包到指定目录
+unzip -d wan/ zzz.zip 解压缩包到指定目录
+which ls 查看命令所在路径
+linux的所有命令都是 /bin 目录下的一个可执行文件
+cal 查看日历calendar
+cal -y 2018 查看2018年所有日历
+date 查看当前日期
+date > date.txt 控制台打印的日期存储到date.txt
+cal -y 2018 > date.txt 控制台打印的日历存储到date.txt
+date "+%Y===%m===%d"
+date "+%y===%m===%d"
+date "+%y年%m月%d日"
+ps 任务管理器
+ps -aux 所有运行程序显示出来
+top
+q 退出
+htop
+kill -9 pid 强制结束进程
+reboot
+shutdown -h now
+shutdown -h +10 10分钟后关机
+shutdown -h 20:20 定时20:20关机
+init0 关机
+init 6 重启
+sudo snap install tree
+sudo apt install tree
+df
+df -h 查看硬盘的使用情况
+du
+du -h 查看当前路径文件夹的容量
+ifconfig 每个网卡信息
+sudo apt install net-tools
+ifconfig ens33 172.16.7.138 修改网卡ip
+ping 172.16.7.138
+ifconfig | grep 172
+liunx是多用户多任务操作系统
+sudo useradd wan -m 创建账户，-m并在home目录下创建wan家目录(文件夹)
+ls /home/ 查看账户文件夹，但并不是所有文件夹都是账户
+cat /etc/passwd 查看账户
+su wan01 切换账户
+su - wan01 切换账户同时切换到家目录
+sudo passwd wan01 设置账户密码
+whoami 查看当前是哪个用户
+who 查看当前登录的用户，多个计算机登录了这台计算机
+exit 退出当前账户到主用户
+ssh wanshaobo@172.16.7.13 远程登录某个电脑
+ctrl + shift + t 终端下打开两个标签，利于切换用户
+alt +1 | alt + 2 切换账户标签
+windows系统没有ssh命令 需要安装xmanager xshell
+sudo userdel wan 删除用户
+sudo userdel -r wan 删除用户同时删除家目录
+sudo -s 切换到超级管理员root
+sudo root 无法切换，不知道密码
+$ 普通用户
+# 超级管理员
+cat /etc/group 查看组
+sudo groupadd wan03 创建组
+sudo groupdel wan03 删除组
+groupmod tab键多次，可以查看所有组
+cat /etc/group | grep sudo 查找组中带sudo的关键字
+cat /etc/group | grep adm 查找组中带adm的关键字
+sudo usermod -a -G adm wan01把一个用户加入到一个组中(-a add 添加)(-G adm 指定一个组)
+sudo usermod -a -G sudo wan01把一个用户加入到一个组中(-a add 添加)(-G adm 指定一个组)
+chown 修改文件的拥有者
+chgrp wan01 1.py 修改文件所属的组
+dre-re-r-- 文件权限 第一位 d文件及 - 文件 第二三四位 文件拥有者的权限 第五六七位 同组者的权限 第八九十位 其他人的权限
+-re-re-r-- rwx可读可写可执行
+修改权限：字母法ugo(user group other) 数字法(421 rwx 可取1 2 3 4 5 6 7)
+chmod u=rwx 2.py
+chmod u=x 2.py
+chmod g=x 2.py
+chmod r=x 2.py
+chmod u=r,g=r,o=r 2.py
+chmod u=,g=,o= 2.py
+chmod 137 2.py 拥有者只有执行权限，同组者有可写可执行权限，其他人拥有可读可写可执行权限
+
+就业班 进程 线程 协成 网络编程
+
+todo 学习节点
 */
