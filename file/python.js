@@ -66,9 +66,9 @@ float浮点型
 complex复数
 布尔类型：true false
 string字符串
-List列表
-Tuple元祖
-Dictionary字典
+List列表 [1,2,3] 增删改查
+Tuple元祖 (value,value) 只能查
+Dictionary字典 {"name":"wan","age":18}
 
 age = input("输入：")
 age_num = int(age)
@@ -317,7 +317,7 @@ arr = ['a',1,2,'b']
 列表的增删改查
 arr.append('c')
 arr.insert(0,'d')
-arr.exetend([5,6,7])
+arr.exetend([5,6,7])#相当于concat
 arr = [1,2] + [3,4]
 arr.pop() 删除末尾，并返回
 arr.remove('a') 删除第一个出现的
@@ -329,5 +329,144 @@ if 'haha' in arr
 	print()
 if 'haha' not in arr
 	print()
-todo C:\Users\wanshaobo\Desktop\人工智能+py高级\第1章 python基础\第2节 python语法基础\03.字符串、列表、字典\视频 10-名字管理系统
+
+if num==1:
+	pass
+elif num==2:
+	pass
+else:
+	print()
+
+字典
+infor = {key:value,key:value}
+infor = {'name:'wan','QQ':345'tel':136,'age':18}
+print("name\tQQ\tweichat\taddr")
+print("%s\t%d\t%d\t%d"%(inofr["name"],inofr["QQ"],inofr["weichat"],inofr["addr"]))
+del infor["QQ"]
+inofr["QQ"] infor.get("QQ") 后者不报异常
+len(infor)
+infor.keys()#["name","age"] python2
+infor.keys()#dict_keys(["name","age"]) python3
+if "QQ" in infor.keys():
+	print()
+infor.values()#["wan",18] python2
+infor.values()#dict_keys(["wan",18]) python3
+infor.items#dict_items([("name","wan"),("age",18)])
+
+nums = [1,2,3]
+for temp in nums:
+	print(temp)
+else:#for循环完之后执行else
+	print("=====")
+
+for temp in nums:
+	print(temp)
+	break#下面的else不会执行
+else:
+	print("=====")
+
+元祖
+a = (11,22)
+a[0],a[1]#11 22
+b = a#a (11,22)
+c,d = a#c 11 d 22
+for A,B in a:
+	print(A,B)
+
+nums = [1,2,3]
+type(nums)#list
+numss = [1,2,3]
+type(numss)#tuple
+
+def func():
+	a = 1
+	b = 2
+	return a,b#相当于返回一个元祖(a,b)
+
+wendu = 0
+def get_wendu():
+	global wendu#使用全局变量，但是如果没有修改这个全局变量(列表 字典 除外)，可以不用这个关键字
+	wendu = 33
+def print_wendu():
+	print('%d'%wendu)
+get_wendu()
+print_wendu()
+
+函数调用之前的全局变量都可以拿到
+g_wendu 定义一个全局变量
+
+函数文档说明
+ipython3 htlp(print) 查看帮助信息 q退出
+def test():
+	"函数文档说明"
+def test():
+	"""函数文档说明"""#推荐使用这种形式
+def test():
+	'函数文档说明'
+htlp(test) 查看自定义函数的帮助信息
+
+函数缺省参数，所有缺省参数必须放在形参最后
+def add(a,b=2):
+	print(a+b)
+
+def add(a,b=22,c=33)
+	print(a+b+c)
+add(11,c=44)#跳过了b的实参 c=44 命名参数
+
+def add(a,d,b=22,c=33):
+	print()
+add(d=11,a=22,c=44)
+
+不定长参数
+def add(a,*args):
+	print(a)#1
+	print(args)#(2,3,4) 元祖
+add(1,2,3,4)
+
+(1,)#如果一个元祖只有一个元素，末尾必须写一个,
+
+def add(a,b,c=33,*args):
+	print()#1 2 3 (4,5)
+add(1,2,3,4,5)
+
+def add(a,b,c=33,*args,**kwargs):
+	print()#1 2 3 (4,5) {}
+add(1,2,3,4,5)
+
+def add(a,b,c=33,*args,**kwargs):
+	print()#1 2 3 () {'x':4,'y':5}
+add(1,2,3,x=4,y=5)
+
+def add(a,b,c=33,*args,**kwargs):
+	print()#1 2 3 (6,7,8) {'x':4,'y':5}
+add(1,2,3,6,7,8,x=4,y=5)
+
+def add(a,b,*args):
+	res = a + b
+	for num in args:
+		res += num
+	print('res=%d'%res)
+
+拆包
+def add(a,b,c=3,*args,**kwargs):
+	print()#1 2 3 (4,5,6) {'name':'wan','age':18}
+A = (4,5,6)
+B = {'name':'wan','age':18}
+add(1,2,3,*A,**B)#传递元祖和字典 *A和**B称为拆包
+
+引用#所有类型都是引用
+a = 100#a-栈地址指针 100-堆空间 c和c++是独立存储的
+b = a#b-栈地址指针
+id(a)#内存空间地址
+id(b)
+
+不可变类型：数字(int long float complex) str tuple
+可变类型：list dict
+
+字典的key类型只能是不可变类型
+{'name':'wan',100:'hehe',(1,2,3):123}
+
+拖库
+
+todo C:\Users\wanshaobo\Desktop\人工智能+py高级\第1章 python基础\第2节 python语法基础\06.匿名函数、文件操作
 */

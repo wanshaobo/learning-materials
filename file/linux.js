@@ -123,7 +123,7 @@ whoami 查看当前是哪个用户
 who 查看当前登录的用户，多个计算机登录了这台计算机
 exit 退出当前账户到主用户
 ssh wanshaobo@172.16.7.13 远程登录某个电脑
-ctrl + shift + t 终端下打开两个标签，利于切换用户
+ctrl + shift + t 终端下打开新的标签，利于切换用户
 alt +1 | alt + 2 切换账户标签
 windows系统没有ssh命令 需要安装xmanager xshell
 sudo userdel wan 删除用户
@@ -242,8 +242,6 @@ windows连Ubuntu系统 win+r \\175.**.*.**
 ssh服务器两个电脑都需要安装才能登陆成功
 
 就业班 进程 线程 协成 网络编程
-
-todo 学习节点
 */
 
 /*
@@ -282,4 +280,11 @@ vi有3个模式：插入模式、命令模式、低行模式。
 
 /*
 vi 1.py +11 直接编辑第11行
+*/
+
+/*
+vim
+shift ^ 回到行首
+shift $ 回到行尾
+shift # 查找下一个该单词
 */
