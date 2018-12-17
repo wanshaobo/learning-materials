@@ -4,6 +4,7 @@ Ubuntu-terminal
 ctrl shift + 窗口变大
 ctrl - 窗口变小
 ls 查看当前路径的文件和文件夹
+ls ../  查看上一级目录的文件和文件夹
 pwd
 tree /
 ls / 根目录的内容

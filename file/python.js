@@ -1,4 +1,7 @@
 /*
+动态类型语言
+既支持面向过程，又支持面向对象
+面向对象的三个基本要素：封装(类) 继承(子类继承父类) 多态(定义的时候不确定调用谁)
 爬虫 服务器 AI
 不需要编译直接执行，因为有Python解释器
 gcc test.c
@@ -466,7 +469,460 @@ id(b)
 字典的key类型只能是不可变类型
 {'name':'wan',100:'hehe',(1,2,3):123}
 
-拖库
+列表排序
+nums = [22,3,1,666,5,334,68]
+nums.sort() 升序
+nums.sort(reverse=True) 降序
+nums.reverse() 倒序 逆序
 
-todo C:\Users\wanshaobo\Desktop\人工智能+py高级\第1章 python基础\第2节 python语法基础\06.匿名函数、文件操作
+python 使用 lambda 来创建匿名函数
+存储字典的列表按照age排序
+infors = [{'name':'b','age':10},{'name':'a','age':5},{'name':'c','age':15}]
+infors.sort(key=lambda x:x['name'])#按照匿名函数进行排序
+infors = [{'name':'a','age':5},{'name':'b','age':10},{'name':'c','age':15}]
+
+def test(a,b,func):
+	res = func(a,b)
+	return res
+num = test(11,22,lambda x,y:x+y)#33
+
+python  的 input 当做一个表达式运行#coding=utf-8
+python3 的 input 当做一个字符串
+
+func_new = input('请输入一个匿名函数：')#python
+func_new = eval(input('请输入一个匿名函数：'))#python3
+
+交换
+a = 4
+b = 5
+
+#任何语言通用
+#c = 0
+c = a
+a = b
+b = c
+
+#任何语言通用
+a = a+b
+b = a-b
+a = a-b
+
+#python 独有
+a,b = b,a#等号先执行右边
+
+a = 100
+def test(num):
+	num+=num#100不可变数据类型
+	print(num)
+test(a)
+print(a)
+#200 100
+
+a = [100]
+def test(num):
+	num+=num#合并列表 []可变数据类型
+	print(num)
+test(a)
+print(a)
+#[100,100] [100,100]
+
+a = [100]
+def test(num):
+	num = num + num#定义了一个新的变量 =是引用
+	print(num)
+test(a)
+print(a)
+#[100,100] [100]
+
+linux 一切(设备)皆文件 鼠标 键盘 显示器
+文本文件
+r-只读-文件必须存在 w-只写-文件不存在则创建-文件存在先删除内容 a-文件末尾追加append-文件可以不存在
+b表示二进制-比如打开图片
+rb-只读-文件必须存在 wb-只写-文件可以不存在 ab-文件末尾追加append-文件可以不存在
++ 可读可写
+r+-只读-文件必须存在 w+-只写-文件可以不存在 a+-文件末尾追加append-文件可以不存在
+rb+-只读-文件必须存在 wb+-只写-文件可以不存在 ab+-文件末尾追加append-文件可以不存在
+open('1.txt','r')#读
+f = open('1.txt','w')#写
+f.close()
+
+f = open('test.py','r')#'import a'
+f.read()
+f.read(1)#读一个字节 i
+f.read(1)#m
+f.read(1)#p
+f.read(1)#o
+f.read(2)#rt
+f.close()
+f.readline()#读取一行 返回字符串
+f.readlines()#读取全部返回一个列表，每个元素为每一行
+
+f = open('test.py','w')
+f.write('hehe')
+f.write('\nhehe')
+f.close()
+
+open('test.py') 等价于 open('test.py','r')
+
+a.b.c.py a.b.c[复件].py
+filename = 'a.b.c.py'
+position = filename.rfind('.')
+newname = filename[:position] + '[复件]' + filename[position:]
+
+读5G文件，操作系统内存只有2G
+5G --> 100M --> 5G
+读取大文件:
+while True:
+	content = file.read(1024)
+	if len(content) == 0:
+		break
+	new_file.write(content)
+
+文件的定位读写，改变读取指针
+'1234
+5678
+9123'
+f = open('test.py')
+seek(offset,index)#index 0-文件开头 1-当前位置 2-文件末尾 #offset 正数向右偏移 负数向左偏移 python3不支持负数
+f.seek(2,0)#2 从0开始指向第二个字符
+f.readline()#34
+f.read()#5678\n 9123
+f.seek(0,0)#0 从0开始指向第零个字符
+f.tell()#获取当前读取指针索引
+
+touch mkdir rm mv
+import os
+os.rename('old_file.py','new_file.py')
+of.remove('old_file.py')
+os.mkdir('abc')
+os.rmdir('abc')
+os.getcwd()#返回当前绝对路径
+os.chdir('/home/wsb')#change 之后的所有操作都是在这个路径下执行
+os.chdir('../')
+os.listdir('./')#当前路径下所有文件名放入列表中
+
+批量重命名
+[wanshaob]-1.py
+[wanshaob]-2.py
+[wanshaob]-3.py
+[wanshaob]-4.py
+import os
+file_names = os.listdir('movie')
+os.chdir('movie')
+for name in file_names:
+	os.rename(name,'[wan]-'+name)
+
+import os
+file_names = os.listdir('movie')
+for name in file_names:
+	old_file_name = 'movie' + '/' + name
+	new_file_name = 'movie' + '/' + '[wan]-' + name
+	os.rename(old_file_name,new_file_name)
+
+OOP-Object Oriented Programming
+类和对象
+类的三个组成部分：类名 一组数据 允许对进行操作的方法(行为)
+
+#创建类
+class Cat:
+	'''定义一个Cat类'''
+	#属性
+	#方法
+	def eat(self):
+		print()
+	def introduce(self):#第一个参数是self，也可以是其他名字，表示实例
+		print('%s age : %d'%(self.name,self.age))
+#创建对象
+tom = Cat('tom',10)
+tom.eat()
+tom.name = 'tom'#对象添加属性
+tom.age = 13#对象添加属性
+tom.introduce()
+
+#创建类
+class Cat:
+	'''定义一个Cat类'''
+	#初始化对象
+	def __init_(self,new_name,new_age):
+		print('每实例化一次执行一次')
+		self.name = new_name
+		self.age = new_age
+	#方法
+	def eat(self):
+		print()
+	def introduce(self):#第一个参数是self，也可以是其他名字，表示实例
+		print('%s age : %d'%(self.name,self.age))
+#创建对象
+tom = Cat('tom',10)
+tom.eat()
+tom.introduce()
+
+#创建类
+class Cat:
+	'''定义一个Cat类'''
+	#初始化对象
+	def __init_(self,new_name,new_age):
+		print('每实例化一次执行一次')
+		self.name = new_name
+		self.age = new_age
+	#def __str__(self):
+		#pass
+	#方法
+	def eat(self):
+		print()
+	def introduce(self):#第一个参数是self，也可以是其他名字，表示实例
+		print('%s age : %d'%(self.name,self.age))
+#创建对象
+tom = Cat('tom',10)
+tom1 = Cat('tom1',11)
+print(tom)#没有重写__str__，可以看到对象在内存中的位置 <__main__.Cat object at 0x7f19be25ac50>
+
+#创建类
+class Cat:
+	'''定义一个Cat类'''
+	#初始化对象
+	def __init_(self,new_name,new_age):
+		print('每实例化一次执行一次')
+		self.name = new_name
+		self.age = new_age
+	def __str__(self):
+		return 'haha'
+	#方法
+	def eat(self):
+		print()
+	def introduce(self):#第一个参数是self，也可以是其他名字，表示实例
+		print('%s age : %d'%(self.name,self.age))
+#创建对象
+tom = Cat('tom',10)
+tom1 = Cat('tom1',11)
+print(tom)#重写__str__ haha
+
+#创建类
+class Cat:
+	'''定义一个Cat类'''
+	#初始化对象
+	def __init_(self,new_name,new_age):
+		print('每实例化一次执行一次')
+		self.name = new_name
+		self.age = new_age
+	def __str__(self):#获取对象描述信息，可以重写__str__
+		return '$s age:%d'%(self.name,self.age)
+	#方法
+	def eat(self):
+		print()
+	def introduce(self):#第一个参数是self，也可以是其他名字，表示实例
+		print('%s age : %d'%(self.name,self.age))
+#创建对象
+tom = Cat('tom',10)
+tom1 = Cat('tom1',11)
+print(tom)#重写__str__ haha
+
+infor = ['a','b','c']
+str(infor)#'abc'
+
+#创建类
+class Cat:
+	#初始化对象
+	def __init_(self,new_name,new_age):
+		self.name = new_name
+		self.age = new_age
+	def __str__(self):#获取对象描述信息，可以重写__str__
+		return '$s age:%d'%(self.name,self.age)
+	#方法
+	def get_name(self):用方法对外暴露 cat.get_name() 比直接用属性获取 cat.name 安全
+		return self.name
+	def get_age(self):
+		return self.age
+
+隐藏属性-私有属性
+class Dog:
+	def set_age(self,new_age):
+		if new_age>0 and new_age<=100:
+			self.age = new_age
+		else:
+			self.age = 0
+	def get_age(self):
+		return self.age
+
+私有方法
+class Dog:
+	#私有方法
+	def __send_msg(self):
+		print('---正在发送短信---')
+	#公有方法
+	def send_msg(self,money):
+		if money>1000:
+			self.__send_msg()
+		else:
+			print('余额不足')
+
+class Dog:
+	def __del__(self):#程序退出时调用 || 对象销毁前调用(引用计数为0调用)
+		print('del me')
+
+dog1 = Dog()#引用计数 1
+dog2 = Dog()#引用计数 2
+del dog1
+del dog2
+
+import sys
+sys.getrefcount(Dog)#获取类的引用计数 比实际个数大于1
+
+继承 重写
+class Animal:#基类
+	def eat(self):
+		print('eat')
+class Dog(Animal):#子类
+	def bark(self):
+		print('wang')
+class Xiaotianquan(Dog):#孙子类
+	def fly(self):
+		print('fly')
+	def bark(self):#重写
+		print('da jiao')
+		Dog.bark(self)#调用被重写的父类的方法
+		#super().bark()#调用被重写的父类的方法
+class Cat(Animal):#子类
+	def catch(self):
+		print('抓老鼠')
+
+私有属性和方法不会被继承
+class A:
+	def __nint__(self):
+		self.num1 = 100
+		self.__num2 = 200
+	def test1(self):
+		print('1')
+	def __test2(self):
+		print('2')
+	def test3(self):
+		self.__test2()
+		self.__num2
+class B:
+	def test4(self):
+		#self.__test2() 禁止调用
+		#self.__num 禁止调用
+b = B()
+b.__test2()#Error
+b.__num2#Error
+
+多继承
+#def Base: 经典类 python
+#def Base(object): 新式类 python3
+def Base:#默认继承object --> def Base(object) object是最顶层基类 python3
+	def test(self):
+		print('base')
+class A(Base):
+	def test1(self):
+	print('test1')
+class B(Base):
+	def test2(self):
+	print('test2')
+class C(A,B):
+	pass
+c = C()
+c.test1()
+c.test2()
+c.test()
+
+def Base(object):
+	def test(self):
+		print('base')
+class A(Base):
+	def test(self):
+		print('A')
+class B(Base):
+	def test(self):
+		print('B')
+class C(A,B):
+	def test(self):
+		print('C')
+c = C()
+c.test()#C
+
+def Base(object):
+	def test(self):
+		print('base')
+class A(Base):
+	def test(self):
+		print('A')
+class B(Base):
+	def test(self):
+		print('B')
+class C(A,B):
+	pass
+c = C()
+c.test()#A
+
+def Base(object):
+	def test(self):
+		print('base')
+class A(Base):
+	pass
+class B(Base):
+	def test(self):
+		print('B')
+class C(A,B):
+	pass
+c = C()
+c.test()
+print(C.__mor__)#调用C3算法 查找的优先顺序根据C3算法得出的，而非看到的AB先后顺序 元祖 (<class '__main__.c'>,<class '__main__.A'>,<class '__main__.B'>,<class '__main__.Base'>,<class 'object'>)
+
+多态 定义时的类型和运行时的类型不一样
+方法-类中的函数
+函数-def定义的格式
+class Dog(object):
+	def print_self(self):
+		print('1')
+class Xiaotianquan(Dog):
+	def print_self(self):
+		print('2')
+def introduce(temp):
+	temp.print_self()#这个是多态，定义的时候不知道调用的谁，但执行的时候知道调用谁
+dog1 = Dog()
+dog2 = Xiaotianquan()
+introduce(dog1)
+introduce(dog2)
+
+理解多态，手机的不同主题
+
+类属性 实例属性
+class Tool(object):
+	#类属性 定义类的时候只创建一次，定义实例的时候不再创建 多个实例共享
+	num = 0
+	def __init__(self,new_name):
+		#实例属性 定义实例的时候创建 每个实例单独私有
+		self.name = new_name
+		#操作类属性
+		Tool.num += 1
+tool1 = Tool('1')
+tool1 = Tool('2')
+tool1 = Tool('3')
+print(Tool.num)#3
+
+实例方法 类方法 静态方法
+class Game(object):
+	#类属性
+	num = 0
+	#实例方法-操作实例属性
+	def __init__(self):#self不是关键字 self用来接收对象
+		#实例属性
+		self.name = 'hehe'
+	#类方法-操作类属性
+	@classmethod#装饰器@classmethod
+	def add_num(cls):#cls不是关键字 cls用来接收类的引用
+		cls.num = 100
+	#静态方法-完成基本功能，与类和实例没有关系
+	@staticmethod
+	def print_menu():#可以不需要任何参数，与类和实例没有关系
+		print('123')
+game = Game()
+Game.add_num()#类名可以调用类方法
+#game.add_num() 类创建的对象同样可以调用类方法
+print(Game.num)#100
+Game.print_menu()#通过类名调用静态方法
+game.print_menu()#通过实例对象调用静态方法
+
+
+todo C:\Users\wanshaobo\Desktop\人工智能+py高级\第1章 python基础\第2节 python语法基础\09.面向对象3、异常、模块\视频 01-设计4s店类-1.flv
 */
