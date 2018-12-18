@@ -923,6 +923,252 @@ print(Game.num)#100
 Game.print_menu()#通过类名调用静态方法
 game.print_menu()#通过实例对象调用静态方法
 
+设计模式：简单工厂模式 工厂方法模式
+《python的设计模式》
 
-todo C:\Users\wanshaobo\Desktop\人工智能+py高级\第1章 python基础\第2节 python语法基础\09.面向对象3、异常、模块\视频 01-设计4s店类-1.flv
+class CarStore(object):
+	def __init__(self):
+		self.factory = Factory()
+	def order(self,car_type):
+		return self.factory.select_car_by_type(car_type)
+class Factory(object):#简单工厂模式-额外添加一个类Factory，让CarStore和Car解耦
+	def select_car_by_type(car_type):#使用函数完成解耦 对类CarStore不产生影响
+		'''返回一个汽车的引用'''
+		if car_type == 'sonata':
+			return Suonata()
+		elif car_type == 'mingtu':
+			return Mingtu()
+		elif car_type == 'ix35':
+			return Ix35()
+class Car(object):
+	def move(self):
+		print('car move')
+	def music(self):
+		print('listen music')
+	def stop(self):
+		print('car stop')
+class Suonata(Car):
+	pass
+class Mingtu(Car):
+	pass
+class Ix35(Car):
+	pass
+
+class Dog(object):
+	def __init__(self):
+		print('---init---')
+	def __del__(self):
+		print('---del---')
+	def __str__(self):
+		print('---str---')
+	def __new__(cls):#重写了父类object的__new__ cls此时是Dog指向的那个类对象
+		print('---new---')
+		print(id(cls))
+print(id(Dog))#类的内存地址等于上面一句话
+xtq = Dog()#'---new---'
+#Dog()干的三件事情：创建一个对象 调用__nint__方法 返回对象的引用
+
+class Dog(object):
+	def __init__(self):
+		print('---init---')
+	def __del__(self):
+		print('---del---')
+	def __str__(self):
+		print('---str---')
+	def __new__(cls):#重写了父类object的__new__ cls此时是Dog指向的那个类对象
+		print('---new---')
+		return object.__new__(cls)
+xtq = Dog()#new init del
+#Dog()干的三件事情：
+调用__new__方法创建一个对象，然后找了一个变量来接收__new__的返回值，这个返回值表示创建出来的对象的引用
+调用__nint__方法，传入上一步创建出来的引用
+返回对象的引用
+#构造方法：创建对象并初始化
+#__new__创建对象 __init__初始化
+
+单例-单例模式
+class Dog(object):
+	__instance = None#类的私有属性
+	__init_flag = False
+	def __new__(cls,name):
+		if cls.__instance == None:
+			cls.__instance = object.__new__(cls)
+			return cls.__instance
+		else:
+			return cls.__instance
+	def __init__(self,name):
+		if Dog.__init_flag == False:
+			self.name = name
+			Dog.__init_flag == True
+a = Dog('wangcai');
+print(a.name)#wangcai
+b = Dog('xtq');
+print(b.name)#wangcai
+#id(a) == id(b)# True 单例
+
+异常
+try:
+	open('aaaa.txt')#异常语句
+	print(num)#异常语句
+	print(1)#不执行
+except (NameError,FileNotFoundError):#python3用一个except捕获多个异常用元祖
+	print('------')#捕获到异常
+except Exception as res:#捕获其他异常，上面没有捕获到全部异常
+	print('------')#捕获到异常
+	print(res)#异常名称
+else:
+	print('没有异常才执行')
+finally:
+	print('finally')#是否有异常，都会执行
+print(2)#2 不受异常影响
+
+import time
+try:
+	f = open('a.txt')
+except:#python2中的写法，可以捕获到所有异常
+	print('没有这个文件')
+except Exception:#python3中的写法，可以捕获到所有异常
+	print('没有这个文件')
+
+import time
+try:
+	f = open('test.txt')
+	try:
+		while True:
+			content = f.readline()
+			if len(content) = 0:
+				break
+			time.sleep(2)#程序暂停2s
+			print(content)
+	except:
+		pass
+	finally:
+		f.close()#任何情况下都必须关闭文件
+		print('close file')
+except Exception:
+	priont('---')
+
+抛出自定义异常
+class ShortInputException(Exception):
+	'''自定义异常类'''
+	def __init__(self, length, atleast):
+		#super().__init__()
+		self.length = length
+		self.atleast = atleast
+def main():
+	try:
+		s = input('请输入：')
+		if len(s) < 3:
+			#raise引发一个自定义的异常
+			raise ShortInputException(len(s), 3)
+	exception ShortInputException as res:#res指向对象的实例
+		print('ShortInputException：输入的长度是%d,长度至少应该是%d'%(res.length,res.atleast))
+	else:
+		print('no except')
+
+异常处理中抛出异常#异常处理中不想处理这个异常了
+class Test(object):
+	def __init__(self,switch):
+		self.switch = switch
+	def calc(self,a,b):
+		try:
+			return a/b
+		except Exception as result:
+			if self.switch:
+				print('catch exception')
+				print(result)
+			else:
+				#重新抛出这个异常，触发默认的异常处理
+				raise
+a = Test(True)
+a.cala(11,0)
+a.switch = False
+a.calc(11,0)
+
+if为假: '' None [] {} 0 False
+if为真: 1 -1 'a'
+#0-假 非0-真
+
+模块
+import random
+import os
+os.__file__#'usr/lib/python3.5/os.py'
+#查看系统自带的所有模块 cd usr/lib/python3.5/
+sudo apt install python3-pip
+sudo apt install python-pip
+pip -V
+pip3 -V
+sudo pip install pygame
+sudo pip3 install pygame
+abc-cpython-3.5.pyc#用c语言写的python解释器的3.5版本的字节码
+
+import mudule1
+mudule1.func()
+
+from module1 import func
+func()
+
+from module1 import *
+from module2 import *#后导入模块的同名方法会覆盖先导入的模块方法
+func1()
+func2()
+
+import time as t#起个别名叫t
+t.sleep(3)
+import zhegemokuaidemingzitexiechang as m#长名称的模块起个别名叫m
+
+abc.py
+#print(__name__)#别人调用是abc 自己执行该文件是__main__
+if __name__ == '__main__':#系统变量
+	#自己执行，别人调用不执行，做自己模块测试用
+	test1()
+	test2()
+
+import xxx
+class ClassName(object):
+	'''some words'''
+	def __init__(self,arg):
+		super(ClassName, self).__init__()
+		self.arg = arg
+def xxxx():
+	pass
+def main():
+	pass
+if __name__ == '__namin__':
+	main()
+
+abc.py
+#此时对外只暴露test1，test2和num通过这种方式（from abc import *）无法访问
+__all__ = ['test1']#from abc import *
+def test1():
+	print(1)
+def test2():
+	print(2)
+num = 100
+
+包-具有很多相似功能模块的集合场所
+infordisplay.py TestMsg/recvmsg.py TestMsg/sendmsg.py TestMsg/__init__.py
+#有这个文件__init__.py的文件夹TestMsg叫做包
+__init__.py
+__all__ = ['sendmsg']#这句话表示可以使用from sendmsg import test1
+print(1)#import TestMsg会这行这句话
+import . import sendmag#python3
+
+模块的发布 安装
+TestMsg/ setup.py
+#setup.py
+from distutils.core import setup
+setup(name="wan",version="1.0",description="",author="",py_modules=['TestMsg.sendmsg','TestMsg.recvmsg'])#命名参数传参
+
+python3 setup.py build
+python3 setup.py sdist
+
+sudo python setup.py install
+
+cd ~/Desktop
+
+
+
+
+todo C:\Users\wanshaobo\Desktop\人工智能+py高级\第1章 python基础\第2节 python语法基础\10.加强练习\视频 04-给程序传参数.flv
 */
