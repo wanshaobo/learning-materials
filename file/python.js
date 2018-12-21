@@ -4,24 +4,19 @@
 面向对象的三个基本要素：封装(类) 继承(子类继承父类) 多态(定义的时候不确定调用谁)
 爬虫 服务器 AI
 不需要编译直接执行，因为有Python解释器
-gcc test.c
-./a.out
 
 sudo apt install python3
 sudo apt install python
 sudo apt install python-minimal
 
-ipython ipython3 进入python交互模式
-exit() 退出
+#进入和退出 交互式编程
+ipython ipython3
+exit()  exit
 
-python3
+#脚本式编程
+将代码写入 hello.py文件中
 
-ipython 支持命令ls ll等
-exit
-
-ipython3 支持命令ls ll等
-exit
-
+#注释
 #表示注释
 '''
 多行注释
@@ -30,53 +25,31 @@ exit
 多行注释
 """
 
-python无法执行带有中文字符的程序
+#python2无法执行带有中文字符的程序，需要加上文件编码格式声明，官方推荐第二种
 #coding=utf-8
 #-*- coding:utf-8 -*-
 
-height = input("请输入你的身高");
+#输入 输出
+height = input("请输入你的身高")
+print("height:%s"%height)#%s称为格式符号
+height = int(input("请输入你的身高"))#用户的输入都被存储为字符串
+print("height:%d"%height)#%d称为格式符号
 
-height = 18
-print("height:%d"%height)
-
-name = 'wan'
-print("name:%s"%name)
-
-python2中input采集并执行，python3中input采集并存储
-
-python2
-a = raw_input("请输入：")
-
-age = 18;
-if age>18:
-	print('')
-
-a = 100
-b = 3.14
-c = 'wan'
-type(a)
-int
-type(b)
-float
-type(c)
-str
-
-数据类型：6种
-数字：4种
-int有符号整型
-long长整型 也可以代表八进制和十六进制
-float浮点型
-complex复数
-布尔类型：true false
-string字符串
-List列表 [1,2,3] 增删改查
-Tuple元祖 (value,value) 只能查
-Dictionary字典 {"name":"wan","age":18}
-
-age = input("输入：")
-age_num = int(age)
-if age_num>18:
-	print('')
+#数据类型：6种
+Number 数字：4种
+int 有符号整型#type(10) int
+long 长整型 也可以代表八进制和十六进制
+float 浮点型#type(3.14) float
+complex 复数
+True/False 布尔类型
+str 字符串#type('wan') str
+list列表 [1,2,3] 增删改查
+tuple元祖 (value,value) 只能查
+dict 字典 {"name":"wan","age":18}
+set 集合 {1,2,3}
+不可变类型（3 个）：Number（数字）、String（字符串）、Tuple（元组）；
+可变类型（3 个）：List（列表）、Dictionary（字典）、Set（集合）。
+#字典的key类型只能是不可变类型{'name':'wan',100:'hehe',(1,2,3):123}
 
 函数
 int()
@@ -94,58 +67,44 @@ crd()
 hex()
 oct()
 
-cp 1.py 2.py
-
-if age>18:
-	print()
-else:
-	print()
-
-标识符规则：
+#标识符规则：
 由字母、下划线和数字组成，且数字不能开头
 区分大小写
 推荐下划线命名english_score
 小驼峰enghishiScore
 大驼峰EnghishiScore
 
+#查看所有关键字
 import keyword
-keyword,kwlist
+keyword.kwlist
 关键字：
+False True None
 and as assert
 break
-class
-continue
+class continue
 def del
-elif else except exec
-finally False
-for from
+elif else except
+finally for from
 globle
 if in import is
 lambda
-not or None
-pass print
-raise return True
+nonlocal not or
+pass
+raise return
 try
 while with
 yield
 
-变量名不能和关键字冲突
-
-运算符：+ - * / // % **
+#运算符：+ - * / // % **
 9//2 4 取整除 返回商的整数部分
 2**4 幂 2的4次方
 2**10 1024
 2**16 65536
 'H'*10 "HHHHHHHHH"
 
-name = 'wan'
-age = 18
-add = 'shan'
-print('姓名%s，年龄%d，住址%s,'%(name,age,add))
-
-常用的格式符号
+#常用的格式符号
 %c 字符
-%s 通脱str()字符串转换来格式化
+%s 通过str()字符串转换来格式化
 %i 有符号十进制整数
 %d 有符号十进制整数
 %u 无符号十进制整数
@@ -159,12 +118,6 @@ print('姓名%s，年龄%d，住址%s,'%(name,age,add))
 
 != <> 都是不等于 python3没有<>
 逻辑运算符：and or not
-if true or false
-	print()
-
-if true and false
-	print()
-
 if not (a>0 and <=50):
 	print()
 
@@ -241,9 +194,6 @@ name = 'wan'
 for i in name:
 	print(i)
 
-break 跳出整个循环
-continue 跳出本次循环
-
 数字占一个字节
 字符串每个字符占一个字符，并且末尾占一个字节
 '100' 1 0 0 \0
@@ -260,7 +210,7 @@ name='wanshaobo'
 name[2] n 下标
 name[len(name)-1] name[-1]
 
-切片
+#切片
 name='wanshaobo'
 name[2:3] n 默认步长1可以省略
 name[1:-1] anshaob
@@ -463,12 +413,6 @@ b = a#b-栈地址指针
 id(a)#内存空间地址
 id(b)
 
-不可变类型：数字(int long float complex) str tuple
-可变类型：list dict
-
-字典的key类型只能是不可变类型
-{'name':'wan',100:'hehe',(1,2,3):123}
-
 列表排序
 nums = [22,3,1,666,5,334,68]
 nums.sort() 升序
@@ -643,7 +587,7 @@ tom.introduce()
 class Cat:
 	'''定义一个Cat类'''
 	#初始化对象
-	def __init_(self,new_name,new_age):
+	def __init__(self,new_name,new_age):
 		print('每实例化一次执行一次')
 		self.name = new_name
 		self.age = new_age
@@ -661,7 +605,7 @@ tom.introduce()
 class Cat:
 	'''定义一个Cat类'''
 	#初始化对象
-	def __init_(self,new_name,new_age):
+	def __init__(self,new_name,new_age):
 		print('每实例化一次执行一次')
 		self.name = new_name
 		self.age = new_age
@@ -706,7 +650,7 @@ class Cat:
 		self.name = new_name
 		self.age = new_age
 	def __str__(self):#获取对象描述信息，可以重写__str__
-		return '$s age:%d'%(self.name,self.age)
+		return '%s age:%d'%(self.name,self.age)
 	#方法
 	def eat(self):
 		print()
@@ -747,12 +691,12 @@ class Dog:
 私有方法
 class Dog:
 	#私有方法
-	def __send_msg(self):
+	def __send__msg(self):
 		print('---正在发送短信---')
 	#公有方法
 	def send_msg(self,money):
 		if money>1000:
-			self.__send_msg()
+			self.__send__msg()
 		else:
 			print('余额不足')
 
@@ -894,7 +838,7 @@ class Tool(object):
 		#实例属性 定义实例的时候创建 每个实例单独私有
 		self.name = new_name
 		#操作类属性
-		Tool.num += 1
+		Tool.num += 1#实例方法修改类属性，只能通过类对象调用修改
 tool1 = Tool('1')
 tool1 = Tool('2')
 tool1 = Tool('3')
@@ -1119,7 +1063,7 @@ import zhegemokuaidemingzitexiechang as m#长名称的模块起个别名叫m
 
 abc.py
 #print(__name__)#别人调用是abc 自己执行该文件是__main__
-if __name__ == '__main__':#系统变量
+if __name__ == '__main__':#系统变量 用python3的命令行方式执行
 	#自己执行，别人调用不执行，做自己模块测试用
 	test1()
 	test2()
@@ -1167,8 +1111,206 @@ sudo python setup.py install
 
 cd ~/Desktop
 
+给程序传参
+abc.py
+name = 'wan'
+print('wodemingzi%s'%name)
 
+python3 abc.py params1 params2
+import sys
+print(sys.argv)#argv用来接收程序运行时输入的指令，并存入列表中 ['abc.py','params1','params2']
 
+python3 abc.py wanshaobo
+import sys
+name = sys.argv[1]
+print('your name %s'%name)
 
-todo C:\Users\wanshaobo\Desktop\人工智能+py高级\第1章 python基础\第2节 python语法基础\10.加强练习\视频 04-给程序传参数.flv
+列表推导式-列表生成式
+a = []
+i = 10
+while i<=77:
+	a.append(i)
+	i+=1
+
+for i in range(10,78):
+	print(i)#10-77
+
+range(3)#range返回列表 [0,1,2]
+range(10,14)#[10,11,12,13]
+range(10,18,2)#2是步长 [10,12,14,16]
+range(10,18,3)#3是步长 [10,13,16]
+
+python2
+range的风险：python2要了很大的内存空间，会报错
+range(1,1000000000000)#MemoryError
+
+python3
+range的风险：python3没有风险
+range(1,10)#不返回列表
+
+列表生成式
+a = [i for i in range(1,18)]#for只控制循环次数
+a#[1,2,3,...,17]
+
+b = [11 for i in range(1,18)]#for只控制循环次数 [11,11,11,...,11]
+c = [i for i in range(10)]#[0,1,...,9]
+d = [i for i in range(10) if i%2 == 0]#[0,2,4,6,8]
+e = [i for i in range(3) for j in range(2)]#[0,0,1,1,2,2]
+f = [(i,j) for i in range(3) for j in range(2)]#[(0,0),(0,1),(1,0),(1,1),(2,0),(2,1)]
+g = [(i,j,k) for i in range(3) for j in range(2) for k in range(3)]
+#[(0,0,0),(0,0,1),(0,0,2),
+(0,1,0),(0,1,1),(0,1,2),
+(1,0,0),(1,0,1),(1,0,2),
+(1,1,0),(1,1,1),(1,1,2),
+(2,0,0),(2,0,1),(2,0,2),
+(2,1,0),(2,1,1),(2,1,2)]
+
+集合
+a = (11,22,33,11,22,33)#type(a) tuple
+a#(11,22,33,11,22,33)
+b = [11,22,33,11,22,33]#type(b) list
+b#[11,22,33,11,22,33]
+c = {11,22,33,11,22,33}#type(c) set
+c#{11,22,33}
+
+list：增删改查
+tuple：只读
+set：没有重复数据
+dict
+
+列表去重
+a = [11,22,33,11,22,33]
+b = []
+for i in a:
+	if i not in b:
+		b.append(i)
+
+a = list(set(a))
+
+ipython3
+b = {1,2,3}
+b.tab查看所有api
+add pop remove update
+help(b.add)#查看api的用法
+
+infor = [{"name":"wan","age":18}]
+def save_2_file():
+	f = open('backup.date','w')
+	f.write(str(infor))
+	f.close()
+
+def load_infor():
+	global infor
+	try:
+		f = open('backup.date')#找不到文件，捕获错误不做处理
+		infor = eval(f.resd())
+		f.close()
+	except Exception:
+		pass
+#bug 漏删场景
+a = [1,2,3,4,5,6,7,8]
+for i in a:
+	if i==3 or i==4:
+		a.remove(i)
+a#[1,2,4,5,6,7,8]
+
+#bug 防止在循环的过程中删除元素产生bug的方式
+a = [1,2,3,4,5,6,7,8]
+b = []
+for i in a:
+	if i==3 or i==4:
+		b.append(i)
+for i in b:
+	a.remove(i)
+a#[1,2,5,6,7,8]
+
+#子类重写父类的两个方法
+class A(object):
+	def __init__(self,a,b,c,d):
+		pass
+class B(A):
+	def __init__(self,a):
+		#A.__init__(self,a,100,200,'./1.png')
+		#super.__init__()
+
+python2 python3
+input() 3+4
+7 "3+4"
+python2 可以使用 raw_input 提取字符串的输入
+
+结束一个程序exit()
+结束一个函数return
+结束一个循环break continue
+
+import sys
+sys.path#导入模块路径的优先顺序
+'/usr/bin'
+'/usr/lib/python35.zip'
+'/usr/lib/python3.5'
+
+#自定义添加模块搜索路径
+sys.path.append("/home")
+
+交互模式，外部修改文件后，交互中文件没有更新的解决方案：
+from imp import *
+reload(test.py)
+
+#循环导入
+B.py
+import A
+A.py
+importB
+#ImportError
+
+c.py
+import A
+import B
+
+is 是比较两个引用是否指向了同一个对象（引用比较） 判断内存地址
+== 是比较两个对象是否相等 判断内容
+a = [1,2,3]
+b = a
+b == a#True
+a is b#True
+c = copy.deepcopy(a)
+a == c#True
+a is c#False
+
+a = [1,2,3]
+b = [1,2,3]
+a == b#True
+a is b#False
+id(a) id(b) 内存地址不相等
+
+a = [1]
+b = a
+id(a) == id(b)#True浅拷贝
+
+import copy
+a = [1]
+b = copy.deepcopy(a)
+id(a) == id(b)#False 深拷贝
+
+a = [1,2,3]
+b = [4,5,6]
+c = [a,b]
+d = copy.deepcopy(c)
+id(c) == id(d)#False
+c[0] == d[0]#False
+
+a = [1,2,3]
+b = [4,5,6]
+c = [a,b]
+d = copy.copy(c)#copy() 可变类型
+id(c) == id(d)#False 浅拷贝
+c[0] == e[0]#True
+
+a = [1,2,3]
+b = [4,5,6]
+c = (a,b)
+d = copy.copy(c)#copy() 不可变类型
+id(c) == id(d)#True
+c[0] == e[0]#True
+
+todo C:\Users\wanshaobo\Desktop\人工智能+py高级\第2章 python核心编程\第1节.python核心编程\第1节.python核心编程\01.python高级1\视频 08-不同进制的讲解_recv
 */

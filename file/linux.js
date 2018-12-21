@@ -51,7 +51,8 @@ tree 以目录树的方式显示文件夹中的内容
 mkdir A/B/C/test.txt -p 自动创建test.txt文件依赖的文件目录
 rmdir B 删除文件夹
 rmdir B 无法删除Directory not empty
-rm B -r 递归删除 B文件夹下面有文件 B是文件夹
+rm B -r recursion-递归删除 B文件夹下面有文件 B是文件夹
+rm B -rf force-强制删除
 ln 源文件 链接文件 建立硬链接文件
 ln -s 源文件 链接文件 建立软链接文件
 mv 1.txt 2.txt 重命名1为2
@@ -92,7 +93,7 @@ date "+%y===%m===%d"
 date "+%y年%m月%d日"
 ps 任务管理器
 ps -aux 所有运行程序显示出来
-top
+top 查看进程 cpu使用率
 q 退出
 htop
 kill -9 pid 强制结束进程
@@ -281,6 +282,8 @@ vi有3个模式：插入模式、命令模式、低行模式。
 
 /*
 vi 1.py +11 直接编辑第11行
+vi 1.py 打开当前文件夹中的文件
+vi ../1.py 打开上级目录中的文件
 */
 
 /*
@@ -289,3 +292,4 @@ shift ^ 回到行首
 shift $ 回到行尾
 shift # 查找下一个该单词
 */
+
