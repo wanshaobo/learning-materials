@@ -1312,5 +1312,562 @@ d = copy.copy(c)#copy() 不可变类型
 id(c) == id(d)#True
 c[0] == e[0]#True
 
-todo C:\Users\wanshaobo\Desktop\人工智能+py高级\第2章 python核心编程\第1节.python核心编程\第1节.python核心编程\01.python高级1\视频 08-不同进制的讲解_recv
+正数：原码 = 反码 = 补码
+负数：反码 = 符号位不变，其他位取反
+	  补码 = 反码 + 1
+1 的原码：0000 0000 0000 0001
+-1的原码：1000 0000 0000 0001
+-1的反码：1111 1111 1111 1110
+-1的补码：1111 1111 1111 1111
+
+位运算
+5<<1 左移 相当于二倍 10
+8>>1 右移 相当于除二 4
+
+私有化
+class Test(object):
+	def __init__(self):
+		self.num = 100
+t = Test();
+t.num = 200
+print(t.num)#200
+
+class Test(object):
+	def __init__(self):
+		self.__num = 100#外面无法访问
+t = Test();
+print(t.num)#AttributeError:'Test' object has no attribute '__num'
+dir(t)#查看所有私有属性
+print(t._Test__num)#100 名字重整 私有属性的名字重整规则_ClassName__attr
+
+class Test(object):
+	def __init__(self):
+		self.__num = 100#外面无法访问
+t = Test();
+t.__num = 200#相当于额外添加了属性
+print(t.num)#200
+
+#获取和设置私有属性的方法
+class Test(object):
+	def __init__(self):
+		self.__num = 100# __ 相当于其他语言的private 子类无法访问这个私有属性
+	def setNum(self,newNum):
+		self.__num = newNum
+	def getNum(self):
+		return self.__num
+t = Test();
+print(t.getNum())#100
+t.setNum(50)
+print(t.getNum())#50
+
+私有属性__attr和私有方法__get()子类都无法使用和继承
+
+property属性 相当于其他语言的setter getter
+class Test(object):
+	def __init__(self):
+		self.__num = 100
+	def getNum(self):
+		return self.__num
+	def setNum(self,newNum):
+		self.__num = newNum
+	num = property(getNum,setNum)
+t = Test();
+t.num = 200
+print(t.num)
+
+装饰器
+class Test(object):
+	def __init__(self):
+		self.__num = 100
+	@property
+	def num(self):
+		return self.__num
+	@num.setter
+	def num(self,newNum):
+		if isinstance(newNum, int):
+			self.__num = newNum
+		else:
+			print('error:不是整形数字')
+	num = property(getNum,setNum)
+t = Test();
+t.num = 200
+print(t.num)
+
+迭代器
+可迭代对象: list tuple dict set str
+for item in 'abcd':
+	print(item)
+for temp in [1,2,3,4]:
+	print(item)
+a = [x for x in range(10)]
+a#[01,2,3,..,9]
+b = (x for in range(10))
+b#b是生成器 <generator object <genexpr>>
+
+可以使⽤ isinstance() 判断⼀个对象是否是 Iterable 对象
+from collections import Iterable
+isinstance([], Iterable)#True
+isinstance({}, Iterable)#True
+isinstance('abcd', Iterable)#True
+isinstance(100, Iterable)#False
+isinstance((x for x in range(10)), Iterable)#True (x for x in range(10) 生成器
+
+def test(number):
+	print(1)
+	def test_in():
+		print(2)
+		print(number+100)
+	print(3)
+	return test_in
+test()#1 3
+
+def test(number):
+	print(1)
+	def test_in():
+		print(2)
+		print(number+100)
+	print(3)
+	return test_in
+res = test(100)#1 3
+res()#2 200
+
+闭包实际例子
+def line_conf(a,b):
+	def line(x):
+		return a*x + b
+	return line
+line1 = line_conf(1,1)#x+1
+line1 = line_conf(4,5)#4x+5
+print(line1(5))#6
+print(line2(5))#25
+
+装饰器
+def test1():
+	print(1)
+def test1():
+	print(2)
+test1()#2
+
+def foo():
+	print(1)
+foo = lambda x: x+1
+print(foo(1))#2 foo这个名字指向了另外一个匿名函数
+
+开放封闭原则：
+开放-对扩展开发
+封闭-已实现的功能代码块不能删不能动
+
+def verify(func):
+	def inner():
+		print('验证')
+		func()
+	return inner
+def f1():
+	print(1)
+innerFunc = verity(f1)
+innerFunc()
+
+def verify(func):
+	def inner():
+		print('验证')
+		func()
+	return inner
+#下面一行语句等价于 f1 = verify(f1)
+@verify
+def f1():
+	print(1)
+@verify
+def f2():
+	print(2)
+f1()
+f2()
+
+再议装饰器
+def makeBold(fn):
+	print(4)
+	def wrapped():
+		print(1)
+		return '<html>' + fn() + '</html>'
+	return wrapped
+def makeItalic(fn):
+	print(5)
+	def wrapped():
+		print(2)
+		return '<body>' + fn() + '</body>'
+	return wrapped
+@makeBold test = makeBold(test)
+@makeItalic test = makeItalic(test)
+def test():
+	print(3)
+	return 'hello world'
+print(6)
+res = test()#5 4 6 1 2 3
+print(res)#<html><body>hello world</body></html>
+
+装饰器的执行时间
+def w1(func):
+	print('正在装饰')
+	def inner('正在验证'):
+		print(2)
+		func()
+	return inner
+@w1#只要python解释器执行到了这行代码，就会自动的进行装饰 f1 = w1(f1)
+def f1():
+	print(3)
+#在调用f1之前，已经进行装饰了
+#正在装饰
+
+不定长传参
+def func(functionName):
+	def func_in(*args,**kwargs):
+		functionName(*args,**kwargs)
+	return func_in
+@func
+def test(a,b,c):
+	print()
+test(1,2,3)
+
+装饰器对带有返回值的函数进行装饰
+def func(functionName):
+	def func_in():
+		res = functionName()#保存返回来的hehe
+		return res#把hehe返回去
+	return func_in
+@func
+def test():
+	return 'hehe'
+res = test()
+print(res)
+
+通用装饰器：解决不定参 返回值 问题
+def func(functionName):
+	def func_in(*args,**kwargs):
+		print('--记录日志--')
+		print('--权限验证--')
+		res = functionName(*args,**kwargs)
+		return res
+	return func_in
+
+带有参数的装饰器
+def func_arg(arg):
+	def func(functionName):
+		def func_in(*args,**kwargs):
+			print('--记录日志--')
+			res = functionName(*args,**kwargs)
+			return res
+		return func_in
+	return func
+@func_arg('hehe')
+def test():
+	print()
+
+作用域
+globals()#ipython3 环境下 查看当前命名空间所有全局变量
+locals()
+
+LEGB规则#全局变量和局部变量重名
+locals 局部变量
+enclosing function 外部嵌套函数的命名空间 闭包中常见
+globals 全局变量
+builtins 内建模块 内嵌模块 print input dir(__builtin__)
+
+num = 100
+def test1():
+	num = 200
+	def test2():
+		num = 300
+		print(num)
+	return test2
+res = test1()
+res()#300
+
+num = 100
+def test1():
+	num = 200
+	def test2():
+		print(num)
+	return test2#闭包
+res = test1()
+res()#200
+
+num = 100
+def test1():
+	def test2():
+		print(num)
+	return test2
+res = test1()
+res()#100
+
+动态语言
+动态添加属性和方法
+class Test(object):
+	pass
+t = Test()
+dir(t)#查看私有属性
+t.name = 'wan'#动态添加属性
+
+['__class__',
+ '__delattr__',
+ '__dict__',
+ '__dir__',
+ '__doc__',
+ '__eq__',
+ '__format__',
+ '__ge__',
+ '__getattribute__',
+ '__gt__',
+ '__hash__',
+ '__init__',
+ '__init_subclass__',
+ '__le__',
+ '__lt__',
+ '__module__',
+ '__ne__',
+ '__new__',
+ '__reduce__',
+ '__reduce_ex__',
+ '__repr__',
+ '__setattr__',
+ '__sizeof__',
+ '__str__',
+ '__subclasshook__',
+ '__weakref__']
+
+class Person(object):
+	def __init__(self,newName,newAge):
+		self.name = newName
+		self.age = newAge
+laowan = Person('laowan',100)
+laowan.addr = 'beijing'#实例对象添加属性
+Person.num = 100#类添加属性
+def run(self):
+	print('%s is run'%self.name)
+import types
+laowang.run = types.MethodType(run,laowan)#实例对象添加实例方法
+laowang.run()
+help(types.MethodType)
+
+静态方法
+@staticmethon
+def testStatic():
+	print('--static method--')
+Person.abc = testStatic#类添加静态方法
+Person.abc()
+
+类方法
+@classmethon
+def testClass(cls):
+	print('--class method--')
+Person.def = testClass#类添加类方法
+Person.def()
+
+__slots__
+禁止实例对象添加属性
+class Person(object):
+	__slots__ = ('name','age')#该类动态添加的属性只能是这两个
+
+生成器
+a = [x*2 for x in range(10)]#列表生成式 [0,2,4,6,8,...,18]
+a = [x*2 for x in range(1000000000000)]#程序崩溃
+需要一个非常大的列表，但不想占用太内存空间，用生成器
+#创建生成器第一种方式
+b = (x*2 for x in range(10))#<generator object <genexpr> at 0x111122223333>
+next(b)#0 真正的生成，需要的时候才生成，占用了极小的内存空间
+next(b)#2
+next(b)#3
+...
+next(b)#18
+next(b)#StopIteration 异常
+#创建生成器第二种方式
+斐波拉契数列 1 1 2 3 5 8 13 21 34 ...
+#有yield的函数成为生成器
+def createNum():
+	print(1)
+	a,b = 0,1
+	for i in range(5):
+		print(2)
+		yield b
+		print(3)
+		a,b = b,a+b
+		print(4)
+c = createNum()
+print('------')
+d = next(c)#1 2
+print('------',d)#1
+e = next(c)#3 4 2
+print('------',e)#1
+f = next(c)#3 4 2
+print('------',f)#2
+g = next(c)#3 4 2
+print('------',g)#3
+h = next(c)#3 4 2
+print('------',h)#5
+
+def createNum():
+	print('--start--')
+	a,b = 0,1
+	for i in range(5):
+		print('--1--')
+		yield b
+		print('--2--')
+		a,b = b,a+b
+		print('--3--')
+	print('--stop--')
+a = createNum()
+for num in a:
+	print(num)
+'''
+--start--
+--1--
+1
+--2--
+--3--
+--1--
+1
+--2--
+--3--
+--1--
+2
+--2--
+--3--
+--1--
+3
+--2--
+--3--
+--1--
+5
+--2--
+--3--
+--stop--
+'''
+
+def createNum():
+	print('--start--')
+	a,b = 0,1
+	for i in range(5):
+		print('--1--')
+		yield b
+		print('--2--')
+		a,b = b,a+b
+		print('--3--')
+	print('--stop--')
+a = createNum()#创建一个生成器对象
+res = a.__next__()#等价于next(a)
+print(res)
+'''
+--start--
+--1--
+1
+'''
+
+def test():
+	i = 0
+	while i<5:
+		temp = yield i
+		print(temp)
+		i += 1
+t = test()
+t.__next__()
+t.__next__()#None 0
+t.__next__()#None 1
+t.__next__()#None 2
+#haha 给 yield i 语句的结果
+t.send('haha')#haha 3
+
+def test():
+	i = 0
+	while i<5:
+		temp = yield i
+		print(temp)
+		i += 1
+t = test()
+t.__next__()#第一次不能用send
+#haha 给 yield i 语句的结果
+t.send('haha')#haha 0
+
+def test():
+	i = 0
+	while i<5:
+		temp = yield i
+		print(temp)
+		i += 1
+t = test()
+#haha 给 yield i 语句的结果
+t.send(None)# 0 第一次用send只能传None
+t.send('haha')#haha 1
+t.__next__()#None 2
+
+多任务：协程(最快) 进程 线程
+#生成器完成多任务，这是三种多任务模式之一，协程
+def test1():
+	while True:
+		print('--1--')
+		yield None
+def test2():
+	while True:
+		print('--2--')
+		yield None
+t1 = test1()
+t2 = test2()
+while True:
+	t1.__next__()
+	t2.__next__()
+#1 2 1 2 1 2 ...
+
+class Test(object):
+	def __call__(self):
+		print('--test--')
+t = Test()
+t()#--test--
+
+类方法回顾：__new__ __init__ __del__ __str__ __slots__ __call__
+
+类装饰器
+class Test(object):
+	def __init__(self,func):
+		print(1)
+		self.__func = func#对象添加私有属性
+	def __call__(sefl):
+		print(2)
+		self.__func()
+@Test #test = Test(test)
+def test():
+	print('test')
+
+类是对象，class定义的时候也是一个对象
+1.py
+class Person(object):
+	num = 8
+	print('---test---')
+	def __init__(self):
+		self.name = 'abc'
+python3 1.py#---test---
+
+type动态创建类 class创建实例对象 type创建了class type是元类
+Tets = type('Test',(),{})#()不继承任何类 {}默认无属性
+
+def printNum(sefl):
+	print(self.num)
+Test = type('Test',(),{'printNum':printNum})
+t = Test()
+t.num = 100
+t.printNum()#100
+
+class Animal:
+	def eat(self):
+		print('eat')
+Cat = type('Cat',(Animal,),{})#创建继承类
+c = Cat()
+c.eat()#eat
+
+c.__calss__#__main__.Cat 当前对象的类型
+Cat.__calss__#type 当前对象的类型
+type.__calss__#type 当前对象的类型
+
+__metacalss__ 属性
+
+hasattr(Cat,'name')
+
+
+todo 人工智能+py高级\第2章 python核心编程\第1节.python核心编程\第1节.python核心编程\03.python高级3\视频 04-14 没有看
 */
