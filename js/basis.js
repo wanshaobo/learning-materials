@@ -45,6 +45,52 @@ function isNull(tmp){
 	}
 }
 
+
+var arr = [1,2,3],arr1 = [],num = 1,str = 'aa';
+arr1 = arr.map(parseInt);
+console.log(arr1);//[1, NaN, NaN]
+console.log(NaN == NaN);//false  原因是 NaN 与所有值都不相等，包括它自己。
+console.log(Number.NaN);//NaN
+console.log(NaN);//NaN
+console.log(isNaN(num));//false
+
+console.log(isNaN(NaN));//true
+console.log(isNaN(new Object()));//true
+console.log(isNaN(undefined));//true
+console.log(isNaN(str));//true
+console.log(isNaN('str'));//true
+console.log(isNaN(''));//false 相当于undefined
+console.log(isNaN('a'));//true
+
+console.log([1<2<3,3<2<1]);//[true, true]
+console.log(1<2<3);//true
+console.log(3<2<1);//true
+console.log(3<2);//false
+//false为0
+//非0值都是true
+console.log(false < 1);//true
+console.log(false > 1);//false
+console.log(true < 1);//false
+console.log(true < 3);//true
+console.log(true > 3);//false
+console.log(true > 1);//false
+
+console.log('12' > '9');//false   字符串按位比较
+console.log('12' < '9');//true
+
+console.log(parseInt(12.5) == parseFloat(1.25));//12.5 1.25 false
+console.log(Number('') == parseFloat(''));//0 NaN false
+console.log(isNaN('abc') == NaN);//false
+console.log(typeof NaN === 'number');//true
+console.log(typeof NaN);//number
+console.log(isNaN('abc'));//true
+
+var a = 1;
+function a(b) {
+	console.log(b);
+}
+a(2);//a is not a function 由于函数声明提前了，又赋值了1，a成为变量
+
 // https://github.com/mqyqingfeng/Blog
 // https://juejin.im/user/58e4b9b261ff4b006b3227f4/posts
 // https://juejin.im/post/59278e312f301e006c2e1510

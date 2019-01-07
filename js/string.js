@@ -11,8 +11,8 @@ for(var item of arr){//item是元素
 	console.log(item);//a b c
 }
 
-for in
-for of 区别
+// for in
+// for of 区别
 
 
 // javascript原生遍历方法的建议用法：

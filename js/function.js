@@ -523,6 +523,19 @@ var abc = (function (b,c,d){
 })._bind(obj)//得到function(){return self.apply(context,arguments);};
 abc(1,2,3)//8
 
+//24
+function sum(){
+	var len = arguments.length,sum = 0;
+	for(var i=0;i<len;i++){
+		if(typeof arguments[i] == 'number'){
+			sum += arguments[i];
+		}
+	}
+	console.log(sum);
+	return sum;
+}
+sum('a',10,3,'',4,5);
+
 
 //百度 js高阶函数
 
