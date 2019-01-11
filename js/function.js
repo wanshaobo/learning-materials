@@ -1,3 +1,16 @@
+//获取函数的形参个数 functionName.length
+function abc(){
+
+}
+console.log(abc.length)//0
+function abc(a){
+
+}
+console.log(abc.length)//1
+function abc(a,b){
+
+}
+console.log(abc.length)//2
 //1
 function add(a){
     return function (b){
@@ -67,7 +80,7 @@ Number.prototype.add = function(){
 console.log(new Number(1).add(2,3,4,5));//15
 
 //6
-//不定参数&不定执行次数的加法器
+//不定参数&不定执行次数的加法器 累加器
 function add(){
     var args = Array.prototype.slice.call(arguments);
     var fn = function(){
@@ -536,6 +549,130 @@ function sum(){
 }
 sum('a',10,3,'',4,5);
 
+//25 记忆函数
+/*
+纯函数：只要是同一种输入就能得到唯一一个相同的结果的函数
+记忆函数：当输入的参数不变时，我们就可以采用缓存的结果，当输入参数有所变化时才重新计算
+通过闭包来缓存计算的参数和结果，通过参数的变化与否来决定是否重新计算
+*/
+//scene 1 缺点：原函数只能传递一个参数
+function add(params){
+	//这是一个纯函数
+	//do something
+}
+function memorize(fn) {
+	var cachedArg;
+	var cachedResult;
+	return function(arg) {
+		if (cachedArg === arg) {
+			console.log('memory');
+			return cachedResult;
+		}
+		console.log('init');
+		cachedArg = arg;
+		cachedResult = fn(arg);
+		return cachedResult;
+	};
+}
+var newAdd = memorize(add);
+newAdd('wan');//init
+console.log('---')//---
+newAdd('wan')//memory
+console.log('---')
+newAdd('shao')//init
+console.log('---')
+newAdd('shao')//memory
+//scene 2 原函数能传递多个参数
+function twoArrayIsEquel(arr01,arr02){
+	if(arr01.length !== arr02.length){
+		return false;
+	}
+	return arr01.every(function(item01,index01){
+		return arr02.some(function(item02,index02){
+			return item01 === item02;
+		});
+	});
+}
+function add(){
+	//这是一个纯函数
+	//do something
+}
+function memorize(fn) {
+	var cachedArg;
+	var cachedResult;
+	return function() {
+		var args = Array.prototype.slice.call(arguments)
+		if (cachedArg === args) {
+			console.log('memory');
+			return cachedResult;
+		}else{
+			if(Array.isArray(cachedArg) && Array.isArray(args) && twoArrayIsEquel(cachedArg,args)){
+				console.log('memory');
+				return cachedResult;
+			}
+		}
+		console.log('init');
+		cachedArg = args;
+		cachedResult = fn.apply(this,args);
+		return cachedResult;
+	};
+}
+var newAdd = memorize(add);
+newAdd(1,2,3)
+newAdd(1,2,3)
+//scene 3
+function factorial1(n){
+	if(n === 0 || n === 1){
+		return 1;//函数出口
+	}
+	return n*factorial1(n-1)
+}
+function memorize(fn){
+	var cache = {};  //对象的查找速度比数组快，对象是key-value进行查找。
+	return function() {
+		var params = Array.prototype.join.call(arguments);  //使得params值唯一。
+		if(cache[params]){
+			console.log('memory');
+			return cache[params];
+		}else{
+			console.log('init');
+			cache[params] = fn.apply(this, arguments);
+			return cache[params];
+		}
+	}
+}
+var newF = memorize(factorial1);//传入后，factorial就具有了函数记忆的功能。传入参数
+newF(5);
+newF(4);
+newF(5);
+newF(4);
+//
+function memorize(f){
+	var cache = {}; //将值保存在闭包内
+	return function(){
+		//将实参转换为字符串形式，并将其用做缓存的键
+		var key = arguments.length + Array.join.call(arguments,",");
+		if(key in cache)
+			return cache[key];
+		else
+			return cache[key] = f.apply(this,arguments);
+	};
 
+}
+
+//26 函数重载 闭包实现重载
+//一组具有相同名字、不同参数列表的函数（方法）
+function addMethod(object, name, fn) {
+	var old = object[name]; //把前一次添加的方法存在一个临时变量old里面
+	object[name] = function() { // 重写了object[name]的方法
+		// 如果调用object[name]方法时，传入的参数个数跟预期的一致，则直接调用
+		if(fn.length === arguments.length) {
+			return fn.apply(this, arguments);
+			// 否则，判断old是否是函数，如果是，就调用old
+		} else if(typeof old === "function") {
+			return old.apply(this, arguments);
+		}
+	}
+}
 //百度 js高阶函数
 

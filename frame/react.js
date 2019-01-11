@@ -1,4 +1,12 @@
-//https://react.docschina.org/ https://react.docschina.org/ http://nav.react-china.org/
+//https://react.docschina.org/
+//https://react.docschina.org/
+//http://nav.react-china.org/
+//https://github.com/reactjs React Community
+
+//todo
+//https://github.com/react-guide 高质量的 React 相关文档和翻译
+//https://github.com/react-guide/react-basic React 设计思想
+
 //1、React对象属性和方法
 var React = {
 	Children: {

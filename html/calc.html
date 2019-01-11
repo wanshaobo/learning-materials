@@ -69,6 +69,10 @@
 </body>
 <script src="jquery-3.1.0.min.js"></script>
 <script>
-    //
+	document.onkeyup = function(e) {
+		var e = e || window.event;
+		var str = String.fromCharCode(e.keyCode)
+		console.log(navigator)
+	};
 </script>
 </html>

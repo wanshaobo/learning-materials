@@ -91,11 +91,11 @@ https://www.cnblogs.com/liyongshuai/p/7197962.html
 https://www.jianshu.com/p/1b4068ccd505
 */
 
-//3.排序算法
-//3.1冒泡法（1升序2降序）
+//3.排序算法-升序-精通前三个即可，点到为止
+//3.1冒泡排序-每次相邻元素遍历调整顺序
 var array=[1,10,4,62,7,4,11,50,7,3,33];
-function bubbleSort(array){
-    var len=array.length;
+function bubbleSort(arr){
+    var len=arr.length;
     for(var i=0;i<len;i++){
         for (var j = 0; j < len - 1 - i; j++) {
             if (arr[j] > arr[j+1]) {        //相邻元素两两对比
@@ -107,74 +107,37 @@ function bubbleSort(array){
     }
     return array;
 }
-//冒泡升序排列
-function bubbleSort(arr) {
-    var len = arr.length, j;
-    var tempExchangVal;
-    while (len > 0) {
-        for (j = 0; j < len - 1; j++) {
-            if (arr[j] > arr[j + 1]) {
-                tempExchangVal = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = tempExchangVal;
-            }
-        }
-        len--;
-    }
-    return arr;
+//3.2选择排序-每次遍历找到最小元素向前插入到合适位置
+function selectionSort(arr){
+	var len = arr.length;
+	for(var i=0;i<len-1;i++){
+		var minIndex = i;
+		for(var j=i+1;j<len;j++){
+			if(arr[j] < arr[minIndex]){
+				minIndex = j
+			}
+		}
+		if(minIndex != i){
+			arr[i] = arr[i] + arr[minIndex];
+			arr[minIndex] = arr[i] - arr[minIndex];
+			arr[i] = arr[i] - arr[minIndex];
+		}
+	}
+	return arr
 }
-bubbleSort(arrNum);
-//3.2选择排序，首先在待排序序列中找到最小元素，放入储存有序序列中。同时从待排序序列中删除这个元素.
-var array=[1,10,4,62,7,4,11,50,7,3,33];
-function selectSort1(array){
-    var newArray = [],min;
-    while(array.length > 0){
-        min=Math.min.apply(null,array);
-        newArray.push(min);
-        array.splice(array.indexOf(min),1)
-    }
-    return newArray;
-}
-function selectSort2(array){
-    var newArray = [],min;
-    while(array.length > 0){
-        min=Math.max.apply(null,array);//扩展运算符取代apply方法 Math.max(...array)
-        newArray.push(min);
-        array.splice(array.indexOf(min),1)
-    }
-    return newArray;
-}
-//3.3插入排序：将一个数据插入到已经排好序的有序数据中，从而得到一个新的、个数加一的有序数据
-var array=[1,10,4,62,7,4,11,50,7,3,33];
-function insertSort(array){
-    for(var i=1;i<array.length;i++){
-        if(array[i]<array[i-1]){
-            var insert=array[i];
-            var j=i-1;
-            array[i]=array[j];
-            while(j>=0&&insert<array[j]){
-                array[j+1]=array[j];
-                j--;
-            }
-            array[j+1]=insert;
-        }
-    }
-    return array;
-}
-function insertSort(array){
-    for(var i=1,j;i<array.length;i++){
-        j=i;
-        var v=array[j];
-        while(array[j-1]>v){
-            array[j]=array[j-1];
-            j--;
-            if(j===0){
-                break;
-            }
-        }
-        array[j]=v;
-    }
-    return array;
+//3.3插入排序-找到基准索引向前插入到已经序列化的位置
+function insertionSort(arr){
+	var len = arr.length;
+	for(var i=1;i<len;i++){
+		for(var j=i;j>0;j--){
+			if(arr[j] < arr[j-1]){
+				arr[j] = arr[j] + arr[j-1];
+				arr[j-1] = arr[j] - arr[j-1];
+				arr[j] = arr[j] - arr[j-1];
+			}
+		}
+	}
+	return arr
 }
 //3.4快速排序
 function quickSort(arr){
@@ -595,7 +558,7 @@ for(var i=lower,len=upper-lower;i<=len;i++){
 //引申：判断两个不重复数组是否相同
 var arr01 = ['a','b'];
 var arr02 = ['a','b','c'];
-function compareAnswer(arr01,arr02){
+function twoArrayIsEquel(arr01,arr02){
     if(arr01.length !== arr02.length){
         return false;
     }
@@ -605,7 +568,7 @@ function compareAnswer(arr01,arr02){
         });
     });
 }
-console.log(compareAnswer(arr01,arr02));//false
+console.log(twoArrayIsEquel(arr01,arr02));//false
 //every() 方法使用指定函数检测数组中的所有元素是否都符合指定条件
 console.log([1,2,3].every((item) => item <= 3));//true
 //some() 方法会依次执行数组的每个元素：如果有一个元素满足条件，则表达式返回true , 剩余的元素不会再执行检测。
