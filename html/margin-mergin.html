@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>margin-merge</title>
+    <style>
+        *{
+            margin: 0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+
+<div>CSS 外边距合并：外边距合并指的是，当两个垂直外边距相遇时，它们将形成一个外边距。合并后的外边距的高度等于两个发生合并的外边距的高度中的较大者。</div>
+<div>外边距折叠的三种基本情况：相邻元素之间 && 父元素与其第一个或最后一个子元素之间 && 空的块级元素</div>
+<a href="http://www.w3school.com.cn/css/css_margin_collapsing.asp">w3school</a>
+<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing">developer</a>
+
+<div>场景一：垂直兄弟元素margin取大</div>
+<div style="border: 1px solid #CC00CC; width: 100px; height: 100px; margin-bottom: 10px;"></div>
+<div style="border: 1px solid #5555ff; width: 100px; height: 100px; margin-top: 20px;"></div>
+
+<div>场景二：兄弟元素，上元素为空，上元素margin-bottom失效</div>
+<div style="margin-top: 100px; margin-bottom: 100px;"></div>
+<div>下元素</div>
+
+<div>场景三：当父元素没有margin border padding，子元素margin取代父元素margin，父子元素上边缘贴合</div>
+<div>父子元素marin合并解决方案：BFC方案，父元素设置overflow: hidden;</div>
+<div>
+    <div style="border: 1px solid #CC00CC; width: 100px; height: 100px; margin-top: 20px;"></div>
+</div>
+
+<div>场景四：当父元素有margin，没有border，子元素和父元素margin-top取大，父子元素上边缘贴合</div>
+<div>父子元素marin合并解决方案：BFC方案，父元素设置overflow: hidden;</div>
+<div style="margin-top: 10px; width: 100px; height: 100px;">
+    <div style="border: 1px solid #ff7777; margin-top: 20px; width: 100px; height: 100px;"></div>
+</div>
+
+</body>
+</html>

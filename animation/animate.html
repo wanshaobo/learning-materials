@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html,body{
+            margin: 0;
+            height:100%;
+        }
+        .ani-box {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: red;
+        }
+        #bar01 {
+            width: 100px;
+            height: 100px;
+            background: green;
+            animation: move 5s linear infinite alternate;
+            position: absolute;
+            top: 0;
+            left: -100px;
+        }
+        @keyframes move {
+            0% {
+                left: -100px;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        #bar02 {
+            width: 100px;
+            height: 100px;
+            background: yellow;
+            animation: move02 5s linear infinite alternate;
+            position: absolute;
+            top: 200px;
+            left: 0;
+        }
+        @keyframes move02 {
+            0% {
+                left: 0;
+            }
+            100% {
+                left: calc(100% - 100px);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="ani-box">
+    <div id="bar01"></div>
+    <div id="bar02"></div>
+</div>
+</body>
+</html>
