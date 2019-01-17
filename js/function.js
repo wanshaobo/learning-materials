@@ -674,5 +674,19 @@ function addMethod(object, name, fn) {
 		}
 	}
 }
+
+//27 节流函数-高触发频率事件:滚动事件 触摸事件
+var scheduledAnimationFrame = false;
+const onScroll = e => {
+	if (scheduledAnimationFrame)
+		return
+	scheduledAnimationFrame = true
+	window.requestAnimationFrame(timestamp => {
+		scheduledAnimationFrame = false
+		function a(timestamp){console.log(timestamp);}
+	})
+}
+window.addEventListener('scroll', onScroll)
+
 //百度 js高阶函数
 

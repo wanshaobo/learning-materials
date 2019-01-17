@@ -77,4 +77,14 @@ http://test.iqiyi.com/vr/three.js/examples/webvr_video.html
 https://threejs.org/examples/#webgl_gpgpu_birds
 https://threejs.org/examples/#webgl_animation_cloth
 http://www.utovr.com/
+
+HTML5新增的定时器requestAnimationFrame
+window.requestAnimationFrame() 方法告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。该方法使用一个回调函数作为参数，这个回调函数会在浏览器重绘之前调用。
+大多数电脑显示器的刷新频率是60Hz，大概相当于每秒钟重绘60次。因此，最平滑动画的最佳循环间隔是1000ms/60，约等于16.6ms
+requestAnimationFrame采用系统时间间隔，保持最佳绘制效率，不会因为间隔时间过短，造成过度绘制，增加开销；也不会因为间隔时间太长，使用动画卡顿不流畅，让各种网页动画效果能够有一个统一的刷新机制，从而节省系统资源，提高系统性能，改善视觉效果
+浏览器UI线程队列
+
+setTimeout(function(){console.log(1);});//函数放入异步队列
+console.log(0);
+浏览器先执行完同步队列里的任务，才会去执行异步队列中的任务
 */

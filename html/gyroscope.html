@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>手机陀螺仪监听</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .title{
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        .value{
+            font-size: 18px;
+            color: #ff7777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div>http://10.3.81.117/learning-materials/html/gyroscope.html</div>
+<div class="title">移动设备水平放置时，绕z轴旋转的角度，数值为0度到360度。</div>
+<div class="value">alpha:<span id="alpha"></span><br/></div>
+
+
+<div class="title">移动设备水平放置时，绕X轴旋转的角度，数值为-180度到180度。</div>
+<value class="value">beta:<span id="beta"></span><br/></value>
+
+<div class="title">移动设备水平放置时，绕Y轴旋转的角度，数值为-90度到90度。</div>
+<class class="value">gamma:<span id="gamma"></span><br/></class>
+
+</body>
+<script>
+	if (window.DeviceOrientationEvent) {
+		window.addEventListener('deviceorientation', function (event) {
+			var a = document.getElementById('alpha'),
+				b = document.getElementById('beta'),
+				g = document.getElementById('gamma'),
+				alpha = event.alpha,
+				beta = event.beta,
+				gamma = event.gamma;
+
+			a.innerHTML = Math.round(alpha);
+			b.innerHTML = Math.round(beta);
+			g.innerHTML = Math.round(gamma);
+
+		}, false);
+	} else {
+		document.querySelector('body').innerHTML = '你的浏览器不支持陀螺仪';
+	}
+</script>
+</html>
