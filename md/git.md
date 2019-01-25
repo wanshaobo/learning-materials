@@ -46,6 +46,7 @@ git push origin --delete tag v1.5.3 # 有待验证
 ###### 撤销git add . 撤销commit 不删除工作空间改动代码
 git reset HEAD^
 git reset --mixed HEAD^;//--mixed 默认参数，可有可有
+git reset fb39ad77;//回滚到指定的commitID
 
 ###### ^表示撤销一次commit，^^表示回退两次commit，也可以有多次，同时可以用~n表示
 git reset HEAD^
@@ -60,6 +61,7 @@ git reset --soft HEAD^
 
 ###### 撤销git add . 撤销commit 删除工作空间改动代码
 git reset --hard HEAD^
+git reset --hard fb39ad77;//回滚到指定的commitID
 
 ###### 修改commit注释
 git commit --amend
@@ -96,8 +98,12 @@ git config --global alias.co checkout
 git config --global alias.ci commit
 git config --global alias.br branch
 
-
 #### 5、fetch 从一个代码仓库下载对象和引用
-
 > git pull # git fecht && git merge
+
+#### 6、远程仓库代码回滚
+git log -3 查看提交的记录
+git reset --hard HEAD^ 回滚本地代码到上一次提交成功的时候(删除本地代码修改 && add && commit)
+git push -f 强制提交本地回滚后的代码到当前分支远程仓库，此时远程仓库代码回滚成功
+git push -f origin feature 强制提交本地回滚后的代码到指定分支远程仓库，此时远程仓库代码回滚成功
 

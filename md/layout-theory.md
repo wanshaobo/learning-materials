@@ -28,3 +28,72 @@ https://www.jianshu.com/p/1702af88e9e7
 >box-sizing: content-box|border-box|inherit:
 
 >position: absolute|fixed|relative|static|sticky|inherit|initial
+
+#### 3 空页面仅有一个div元素撑满屏幕
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>video demo</title>
+    <style type="text/css">
+        #box{
+            width: 100%;
+            height: 100%;
+            background: #57a900;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div id="box"></div>
+</body>
+</html>
+```
+#### 4 空页面有两个兄弟元素，第一个div元素撑满屏幕
+```html
+<!DOCTYPE html>
+<html lang="en"  xmlns:Qvideo>
+<head>
+    <meta charset="UTF-8">
+    <title>video demo</title>
+    <style type="text/css">
+        #box{
+            width: 100%;
+            height: 100%;
+            background: #57a900;
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="box">这是一个满屏元素</div>
+<div id="box1">这个元素只能在第二屏显示</div>
+</body>
+</html>
+```
+
+#### 5 宽高未知图片撑满屏幕-图片水平垂直居中
+>图片高度超过屏幕高度，图片自适应宽度；图片宽度超过屏幕宽度，图片自适应高度；
+width: 200px;
+height: 200px;
+object-fit: cover;
+
+object-fit: fill; 
+object-fit: contain; 
+object-fit: cover; 
+object-fit: none; 
+object-fit: scale-down; 
+
+fill: 中文释义“填充”。默认值。替换内容拉伸填满整个contentbox,不保证保持原有的比例。
+contain: 中文释义“包含”。保持原有尺寸比例。保证替换内容尺寸一定可以在容器里面放得下。因此，此参数可能会在容器内留下空白。
+cover: 中文释义“覆盖”。保持原有尺寸比例。保证替换内容尺寸一定大于容器尺寸，宽度和高度至少有一个和容器一致。因此，此参数可能会让替换内容（如图片）部分区域不可见（上面讲解的例子就是如此）。
+none: 中文释义“无”。保持原有尺寸比例。同时保持替换内容原始尺寸大小。
+scale-down: 中文释义“降低”。就好像依次设置了none或contain, 最终呈现的是尺寸比较小的那个。
+
+与background-position类似，object-position的值类型为<position>类型值。也就是说，CSS3的相对坐标设定样式支持的。
+object-position 默认值是50% 50%，也就是居中效果
+注：目前IE应该还不支持object-fit和object-position属性
