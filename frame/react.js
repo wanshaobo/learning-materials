@@ -7,6 +7,8 @@
 //https://github.com/react-guide 高质量的 React 相关文档和翻译
 //https://github.com/react-guide/react-basic React 设计思想
 
+//https://blog.csdn.net/weixin_39939012/article/details/80926134
+
 //1、React对象属性和方法
 var React = {
 	Children: {
@@ -135,6 +137,10 @@ componentDidUpdate(prevProps, prevState, prevContext)
 使用自定义事件的方式
 
 父组件调用子组件的方法：在父组件中使用子组件，给子组件加上ref属性，通过this.refs.child.func()调用
+
+组件层级嵌套到比较深，可以使用上下文getChildContext来传递信息，这样在不需要将函数一层层往下传，任何一层的子级都可以通过this.context直接访问。
+
+location.param
 */
 
 //9、setState改变触发视图层重新渲染的原理？

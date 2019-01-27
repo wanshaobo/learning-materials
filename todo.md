@@ -1,35 +1,9 @@
-自动打包提高效率，排除公共文件的轮训，比如react、公共静态js
 [
   new UglifyJsPlugin({
     exclude: /\/excludes/
   })
 ]
 exclude /node_module/
-不需要手动打包，每次按保存键自动打包
-自动打包方案一：配置watchOptions
-watchOptions:{
-    poll:1000,//监测修改的时间(ms)
-    aggregeateTimeout:500, //防止重复按键，500毫米内算按键一次
-    ignored:/node_modules/,//不监测
-    ignored:/common/js/,//不监测
-    hot:inline
-}
-
-devServer:{
-    contentBase:path.resolve(__dirname, 'dist'),
-    host:'10.125.30.11',
-    compress:true,
-    port: 8080
-}
-自动打包方案二：配置watchOptions在终端中输入：webpack --watch 进行打包
-
-
-webpack
-https://webpack.docschina.org/configuration/dev-server/#devserver-inline
-devServer.inline
-devServer.lazy
-webpack-dev-server --inline=false
-webpack-dev-server --inline=true
 
 模块拆分的方案：
 react自带的childRout 按需加载
@@ -62,3 +36,9 @@ rem
 bootstrap
 
 new webpack.BannerPlugin('hezihao版权所有！')
+
+前端单页面拆分多个单页面
+原因：项目大，动态编译耗时大，最终打包文件不断变大
+每次发布版本必须全量发布，即使是改动一点点的功能，无法按模块发布前端代码
+
+cookie如何跨域
