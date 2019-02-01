@@ -1,9 +1,4 @@
-[
-  new UglifyJsPlugin({
-    exclude: /\/excludes/
-  })
-]
-exclude /node_module/
+
 
 模块拆分的方案：
 react自带的childRout 按需加载
@@ -35,10 +30,18 @@ console.log(set);
 rem
 bootstrap
 
-new webpack.BannerPlugin('hezihao版权所有！')
-
 前端单页面拆分多个单页面
 原因：项目大，动态编译耗时大，最终打包文件不断变大
 每次发布版本必须全量发布，即使是改动一点点的功能，无法按模块发布前端代码
 
 cookie如何跨域
+
+css js分离
+
+用 webpack 实现持久化缓存
+https://blog.csdn.net/osdfhv/article/details/79017338
+
+// 使用import语法动态导入
+		// https://babeljs.io/docs/en/babel-plugin-syntax-dynamic-import/#installation
+		// Support for the experimental syntax 'dynamicImport' isn't currently enabled
+		// Add @babel/plugin-syntax-dynamic-import (https://git.io/vb4Sv) to the 'plugins' section of your Babel config to enable parsing.
