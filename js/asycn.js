@@ -1,8 +1,28 @@
-//事件循环队列中 Promise的任务会在当前事件循环末尾中执行，而setTimeout中的任务是在下一次事件循环执行
-// Promise.resolve().then(b);
-// process.nextTick();
-// setTimeout(a, 0);
+/*
+event loop
+事件循环执行顺序：
+同步语句-本次事件循环全部微任务(如果有)
+宏任务-本次事件循环全部微任务(如果有)
+宏任务-本次事件循环全部微任务(如果有)
+...
 
+任务队列：宏任务队列和微任务队列
+宏任务：setTimeout setInterval setImmediate I/O UI-rendering
+微任务(在其所处的事件循环最后 && 事件循环进入下一个循环的阶段前执行)：process.nextTick Promise.then Object.observer Mutation.Observer
+
+setImmediate和process.nextTick是Node.js提供的两个任务队列
+setImmediate和setTimeout的执行顺序具有随机性
+setImmediate()是将事件插入到事件队列尾部，主线程和事件队列的函数执行完成之后立即执行setImmediate指定的回调函数，和setTimeout(fn,0)的效果差不多，但是当他们同时在同一个事件循环中时，执行顺序是不定的。
+
+js中为了防止线程阻塞，阻止全局代码的执行，衍生出很多异步执行解决方案，这些方案都会按需加载到指定的队列中，当全局队列执行完毕后，开始循环从 微队列->宏队列->微队列->宏队列...这种执行顺序执行下去
+
+参考
+https://segmentfault.com/a/1190000011198232
+https://segmentfault.com/a/1190000013102056
+https://www.jianshu.com/p/ada516ceb1da
+*/
+
+//some subject
 //1
 console.log(1);
 setTimeout(function(){
@@ -381,3 +401,103 @@ setTimeout(function(){
 	process.nextTick(()=>{console.log(12)})
 },0)
 console.log(6);//1 2 3 6 9 7 4 10 8 13 5 14 11 12
+//10
+console.log('1===>全局队列script')
+setTimeout(function(){
+	console.log('2===>timeout1')
+	new Promise(function(resolve){
+		console.log('3===>timeout1_promise')
+		resolve()
+	}).then(function(){
+		console.log('4===>timeout1_promise_then')
+	})
+},2000)
+for(var i=1;i<=5;i++){
+	setTimeout(function(){
+		console.log('5===>timeout2='+i)
+	},i*1000)
+	console.log('6===>全局队列script='+i)
+}
+new Promise(function(resolve){
+	console.log('7===>promise1')
+	resolve()
+}).then(function(){
+	console.log('8===>then1')
+})
+setTimeout(function(){
+	console.log('9===>timeout3')
+	new Promise(function(resoleve){
+		console.log('10===>timeout3_promise')
+		resoleve()
+	}).then(function(){
+		console.log('11===>timeout3_promise_then')
+	})
+},1000)
+new Promise(function(resoleve){
+	console.log('12===>promise2')
+	resoleve()
+}).then(function(){
+	console.log('13===>promise2_then2')
+})
+var interval = setInterval(function(){
+	console.log('15===>setInterval')
+	new Promise(function(resoleve){
+		console.log('16===>setinterval_promise')
+		resoleve()
+	}).then(function(){
+		console.log('17===>setinterval_promise_then')
+	})
+},1000)
+setTimeout(function(){
+	clearInterval(interval)
+},1000)
+console.log('18===>全局队列script')
+
+/*
+1===>全局队列script
+6===>全局队列script=1
+6===>全局队列script=2
+6===>全局队列script=3
+6===>全局队列script=4
+6===>全局队列script=5
+7===>promise1
+12===>promise2
+18===>全局队列script
+
+8===>then1
+13===>promise2_then2
+
+5===>timeout2=6
+9===>timeout3
+10===>timeout3_promise
+
+15===>setInterval
+16===>setinterval_promise
+11===>timeout3_promise_then
+17===>setinterval_promise_then
+2===>timeout1
+3===>timeout1_promise
+4===>timeout1_promise_then
+5===>timeout2=6
+5===>timeout2=6
+5===>timeout2=6
+5===>timeout2=6
+*/
+//11
+setTimeout(() => {
+	console.log('timeout0');
+	process.nextTick(() => {
+		console.log('nextTick1');
+		process.nextTick(() => {
+			console.log('nextTick2');
+		});
+	});
+	process.nextTick(() => {
+		console.log('nextTick3');
+	});
+	console.log('sync');
+	setTimeout(() => {
+		console.log('timeout2');
+	}, 0);
+}, 0);
+//timeout0 sync nextTick1 nextTick3 nextTick2 timeout2
