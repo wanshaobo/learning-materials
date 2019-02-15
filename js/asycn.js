@@ -1,4 +1,6 @@
 /*
+宏队列 微队列
+https://www.cnblogs.com/ZavierTang/p/ZavierTang.html
 event loop
 事件循环执行顺序：
 同步语句-本次事件循环全部微任务(如果有)
@@ -6,7 +8,7 @@ event loop
 宏任务-本次事件循环全部微任务(如果有)
 ...
 
-任务队列：宏任务队列和微任务队列
+任务队列：宏任务队列和微任务队列，FIFO-先进先出
 宏任务：setTimeout setInterval setImmediate I/O UI-rendering
 微任务(在其所处的事件循环最后 && 事件循环进入下一个循环的阶段前执行)：process.nextTick Promise.then Object.observer Mutation.Observer
 

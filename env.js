@@ -1,16 +1,9 @@
-setTimeout(() => {
-	console.log('timeout0');
-	process.nextTick(() => {
-		console.log('nextTick1');
-		process.nextTick(() => {
-			console.log('nextTick2');
-		});
-	});
-	process.nextTick(() => {
-		console.log('nextTick3');
-	});
-	console.log('sync');
-	setTimeout(() => {
-		console.log('timeout2');
-	}, 0);
-}, 0);
+Promise.resolve().then(() => {
+	console.log('promise1')
+}).then((a) => {
+	console.log(a)
+}).then(() => {
+	console.log('promise3')
+}).then(() => {
+	console.log('promise4')
+})
