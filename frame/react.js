@@ -192,6 +192,43 @@ react原生函数findDOMNode获取dom
 //13、babel转码react后
 //return <div></div>  ---->   return createElement('div')
 
+//14、函数定义组件
+//应用中的大部分简单组件都可以通过函数定义的方式来编写，并且 React 在将来还会对函数定义组件做出更多优化
+//onClick={() => props.onClick()} 直接修改为 onClick={props.onClick}
+function Square(props) {
+	return (
+		<button className="square" onClick={props.onClick}>
+			{props.value}
+		</button>
+	);
+}
+
+//15、性能优化
+// https://react.docschina.org/docs/optimizing-performance.html#examples
+//避免使用 值 可能会 突变 的属性或状态
+//shouldComponentUpdate方法只能进行浅比较，和React.PureComponent一样，只能比较this.props和this.state下面第一级的数据，并且必须是值的类型，如果是引用类型，会失效
+function shouldComponentUpdate(nextProps, nextState) {
+	if (this.props.color !== nextProps.color) {
+		return true;
+	}
+	if (this.state.count !== nextState.count) {
+		return true;
+	}
+	return false;
+}
+//推荐使用Object.assign和对象展开语法进行this.props和this.state下面第一级数据的更新(重新生成)
+//使用不可突变的数据结构
+// https://github.com/immutable-js/immutable-js
+// https://github.com/rtfeldman/seamless-immutable
+// https://github.com/kolodny/immutability-helper
+
+
+
+
+
+
+
+
 /*
 
 生命周期

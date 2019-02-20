@@ -265,3 +265,6 @@ shuffle(arr)
 //数组过滤空值：false null 0 "" undefined NaN
 var arr = [false,null,0,'',undefined,NaN,1,true,'1']
 console.log(arr.filter(item => !!item));//[1, true, "1"]
+
+var arr = Array(9).fill('a')
+console.log(arr);//[ 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a' ]
