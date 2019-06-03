@@ -4,55 +4,18 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+
+</style>
 <body>
 
+<div id="test">
+
+</div>
+
 </body>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 <script>
-    let tree = {
-        left:11,
-        right:12,
-        children:[{
-            left:211,
-            right:212
-        },{
-            left:221,
-            right:222
-        },{
-            left:231,
-            right:232,
-            children:[{
-                left:311,
-                right:312
-            },{
-                left:321,
-                right:322
-            },{
-                left:331,
-                right:332
-            }]
-        }]
-    }
-    var res = [
-        [{left:12,right:12}],
-        [{left:211,right:212},{left:221,right:222},{left:231,right:232}],
-        [{left:311,right:312},{left:321,right:322}]
-    ]
-    function objToFlatten(tree){
-        var res = [];
-        var tem = []
-        tem.push({left:tree.left, right:tree.right})
-        res.push(tem)
-        if(tree.children){//tree.children[i] {left:211,right:212}{left:211,right:212}
-            var arr = [];
-            for(var i=0,len=tree.children.length;i<len;i++){
-                res.push(objToFlatten(tree.children[i]))
-            }
-        }else{
 
-        }
-
-        return res
-    }
-    console.log(objToFlatten(tree));
 </script>
 </html>
