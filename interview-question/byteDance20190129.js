@@ -38,7 +38,7 @@ A.prototype.getA = function(){
 let a = new A()
 let funcA = a.getA
 funcA()
-//Window ByteDance
+//Window ByteDance1
 
 //扩展
 window.name = 'ByteDance'

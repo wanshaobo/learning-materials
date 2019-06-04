@@ -688,5 +688,14 @@ const onScroll = e => {
 }
 window.addEventListener('scroll', onScroll)
 
+//28
+var val = 'a'
+function hehe(){
+    console.log(val)
+    var val = 'b'
+    console.log(val)
+}
+hehe()
+
 //百度 js高阶函数
 

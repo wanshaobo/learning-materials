@@ -18,10 +18,12 @@ git tag -a v1.0 -m '这个版本的一些说明' f52c633
 
 ###### 查看当前本地的所有tag，标签列表按照字母排序的，而非时间顺序
 git tag
+git tag -n
+git tag -l
 git tag -l 'v0.1.*' # 查看0.1.0 0.1.1等0.1下面的所有tag
 
 ###### 查看标签信息
-git show tagName
+git show tagName(v1.0)
 
 ###### 删除本地tag
 git tag -d v1.0
@@ -102,8 +104,21 @@ git config --global alias.br branch
 > git pull # git fecht && git merge
 
 #### 6、远程仓库代码回滚
+>回滚代码前，先从当前分支切出一个新的分支 $git checkout -b fixhot_repaire
 git log -3 查看提交的记录
 git reset --hard HEAD^ 回滚本地代码到上一次提交成功的时候(删除本地代码修改 && add && commit)
+git reset --hard HEAD-3
+git reset --hard commit_id
 git push -f 强制提交本地回滚后的代码到当前分支远程仓库，此时远程仓库代码回滚成功
 git push -f origin feature 强制提交本地回滚后的代码到指定分支远程仓库，此时远程仓库代码回滚成功
+
+#### 7、取消文件追踪
+https://github.com/github/gitignore/blob/master/Node.gitignore
+git rm -r --cached . 对全部文件取消追踪 保留本地文件
+git rm -r --f . 对全部文件取消追踪 删除本地文件
+git rm --cached readme1.txt 保留本地文件
+git rm --f readme1.txt 删除本地文件
+
+如果创建.gitignore文件之前就已经push项目了，那么即时你在.gitignore文件中写入新的规则，这些规则也不会起作用，此时需要先把本地缓存删除（改变成未track状态），然后再提交
+如果文件曾经被 Git 记录过，那么.gitignore 就对它们完全无效。
 

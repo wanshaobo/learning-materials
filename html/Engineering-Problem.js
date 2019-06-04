@@ -15,6 +15,8 @@ $(function() {
 
 //2、点击穿透原理及解决
 // https://blog.csdn.net/qq_17746623/article/details/55805425
+// https://blog.csdn.net/zhuyinqinying/article/details/81775671
+// https://www.cnblogs.com/lvmingyin/p/5372678.html
 
 //3、canvas放置图片，canvas转化为图片 用canvas的toDataURL()将图片转为dataURL(base64)
 //https://www.jianshu.com/p/17d7e5ddf10a
