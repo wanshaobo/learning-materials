@@ -45,3 +45,93 @@ https://blog.csdn.net/osdfhv/article/details/79017338
 		// https://babeljs.io/docs/en/babel-plugin-syntax-dynamic-import/#installation
 		// Support for the experimental syntax 'dynamicImport' isn't currently enabled
 		// Add @babel/plugin-syntax-dynamic-import (https://git.io/vb4Sv) to the 'plugins' section of your Babel config to enable parsing.
+	
+	<script>
+            !function (window, doc) {
+                var docEl = document.documentElement;
+                var dpr = window.devicePixelRatio || 1;
+                var scale = 1 / dpr;
+                var metaEl = document.querySelector('meta[name="viewport"]');
+                docEl.setAttribute('data-dpr', dpr);
+                metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+                function refreshRem() {
+                    var rem = docEl.clientWidth / 10;
+                    docEl.style.fontSize = rem + 'px';
+                }
+                refreshRem()
+                window.addEventListener('resize', refreshRem)
+                window.addEventListener('pageshow', function (e) {
+                    if (e.persisted) {
+                        refreshRem()
+                    }
+                })
+            }(window, document)
+        </script>
+        
+<script>
+        (function flexible(d,b){
+            let h=b.documentElement;
+            let c=d.devicePixelRatio||1;
+            function g(){
+                if(b.body){
+                    b.body.style.fontSize=(12*c)+"px"
+                }else{
+                    b.addEventListener("DOMContentLoaded",g)
+                }
+            }
+            g();
+            function a(){
+                let i=h.clientWidth/10;
+                h.style.fontSize=i+"px"
+            }
+            a();
+            d.addEventListener("resize",a);
+            d.addEventListener("pageshow",function(i){if(i.persisted){a()}});
+            if(c>=2){
+                let f=b.createElement("body");
+                let e=b.createElement("div");
+                e.style.border=".5px solid transparent";
+                f.appendChild(e);
+                h.appendChild(f);
+                if(e.offsetHeight===1){
+                    h.classList.add("hairlines")
+                }
+                h.removeChild(f)
+            }}(window,document));
+    </script>
+    <script>
+        (function (win, doc) {
+            let docEl = doc.documentElement;
+
+            function setRemUnit () {
+                let docWidth = docEl.clientWidth;
+                let rem = docWidth / 10;
+                docEl.style.fontSize = rem + 'px';
+            }
+
+            win.addEventListener('resize', function () {
+                setRemUnit();
+            }, false);
+            win.addEventListener('pageshow', function (e) {
+                if (e.persisted) {
+                    setRemUnit();
+                }
+            }, false);
+
+            setRemUnit();
+
+            if (win.devicePixelRatio && win.devicePixelRatio >= 2) {
+                let testEl = doc.createElement('div');
+                let fakeBody = doc.createElement('body');
+                testEl.style.border = '0.5px solid transparent';
+                fakeBody.appendChild(testEl);
+                docEl.appendChild(fakeBody);
+                if (testEl.offsetHeight === 1) {
+                    docEl.classList.add('hairlines');
+                    console.log(2);
+                }
+                docEl.removeChild(fakeBody);
+            }
+        }) (window, document);
+    </script>
+    https://github.com/li-shuaishuai/screen_flex

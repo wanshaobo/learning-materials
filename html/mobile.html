@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>移动端demo</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #test{
+            width: 200rem;
+            background: #aaaaaa;
+            height: 100%;
+            display: flex;
+            font-size: 3rem;
+        }
+        #sec1{
+            background: #00BFFF;
+            width: 20rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+        #sec2{
+            background: #6A5ACD;
+            width: 30rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        #sec3{
+            background: #808000;
+            width: 40rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        #sec4{
+            background: #9400D3;
+            width: 50rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        #sec5{
+            background: #B0E0E6;
+            width: 60rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+    </style>
+    <script>
+        !function (window, doc) {
+            let html = document.documentElement;//返回html元素
+            let dpr = window.devicePixelRatio || 1;
+            let scale = 1 / dpr;
+            html.setAttribute('data-dpr', String(dpr));
+            document.write('<meta name="viewport" content="width=device-width,initial-scale='+scale+',minimum-scale='+scale+',' + 'maximum-scale='+scale+'" />');
+            function refreshRem() {
+                html.style.fontSize = html.clientWidth / 37.5 + 'px';
+            }
+            refreshRem()
+            // window.addEventListener('resize', refreshRem)
+            window.addEventListener('pageshow', function (e) {
+                console.log(3);
+                if (e.persisted) {
+                    refreshRem()
+                }
+            })
+        }(window, document)
+    //css尺寸 375设计稿/10 750设计稿/5
+    </script>
+</head>
+<style>
+
+</style>
+<body>
+
+<div id="test">
+    <div id="sec1">第一区域</div>
+    <div id="sec2">第二区域</div>
+    <div id="sec3">第三区域</div>
+    <div id="sec4">第四区域</div>
+    <div id="sec5">第五区域</div>
+</div>
+
+</body>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script>
+    let detectOrient = function() {
+        let width = document.documentElement.clientWidth;
+        let height = document.documentElement.clientHeight;
+            // wrapper = document.getElementById("test"),
+        let wrapper = document.body;//document.documentElement document.body 属性返回 <body> 元素， document.documentElement 属性返回 <html> 元素。
+        let style = "";
+        if(width >= height) { // 竖屏
+            style += "width:" + width + "px;";
+            style += "height:" + height + "px;";
+            style += "-webkit-transform: rotate(0); transform: rotate(0);";
+            style += "-webkit-transform-origin: 0 0;";
+            style += "transform-origin: 0 0;";
+            console.log(1);
+        } else { // 横屏
+            style += "width:" + height + "px;";// 注意旋转后的宽高切换
+            style += "height:" + width + "px;";
+            style += "-webkit-transform: rotate(90deg); transform: rotate(90deg);";
+            // 注意旋转中点的处理
+            style += "-webkit-transform-origin: " + width / 2 + "px " + width / 2 + "px;";
+            style += "transform-origin: " + width / 2 + "px " + width / 2 + "px;";
+            console.log(2);
+        }
+        wrapper.style.cssText = style;
+    }
+    window.onresize = detectOrient;
+    detectOrient();
+</script>
+</html>
