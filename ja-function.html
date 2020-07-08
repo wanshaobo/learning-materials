@@ -284,60 +284,6 @@ sm.call(null);//null
 sm.call(undefined);//undefined
 sm.call(1);//1
 
-//https://www.zhihu.com/question/20175380
-//函数柯里化问题 Currying 卡瑞化 加里化 是把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术
-//sum(1) 1
-//sum(1)(2) 3
-//sum(1)(2)(3) 6
-function sum(item){
-	var cur = item;
-	var inner = function(next){
-		return next == null ? cur : (cur += next,inner);
-	};
-	return item == null ? undefined : inner;
-}
-console.log(sum(1)());//1
-console.log(sum(1)(2)());//3
-console.log(sum(1)(2)(3)());//6
-function sum(item){
-	var cur = item;
-	var inner = function(next){
-		if(next != null){
-			cur += next;
-		}
-		return inner;
-	};
-	inner.toString = function(){
-		return cur;
-	}
-	return inner;
-}
-function add(seed) {
-	function retVal(later) {
-		return add( seed + later );
-	}
-	retVal.toString = function() {
-		return seed;
-	}
-	return retVal;
-}
-console.log(sum(1));//1
-console.log(sum(1)(2));//3
-console.log(sum(1)(2)(3));//6
-function multiply(item){
-	var cur = item;
-	var inner = function(next){
-		if(next != null){
-			cur *= next;
-		}
-		return inner
-	}
-	inner.toString = function(){
-		return cur;
-	}
-	return inner;
-}
-
 //实现如下函数
 function repeat(fun,amount,timer){
 	var lastTime = Date.now();
@@ -349,11 +295,6 @@ function repeat(fun,amount,timer){
 }
 	var alertRepear = repeat;//执行alert函数两次，每次间隔500毫秒
 	alertRepear(alert,2,1000);
-
-	//fetch和xhr的区别
-	//react vue 全家桶
-
-	//redux 操作数据的原理，仅仅改变某个节点数据的方案
 
 	//对象序列化和反序列化
 	let obj = {

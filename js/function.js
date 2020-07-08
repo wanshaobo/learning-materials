@@ -23,6 +23,7 @@ var result = add(1)(2)(3);
 console.log(result);//6
 
 //2
+//函数柯里化问题 Currying 卡瑞化 加里化 是把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术
 ////每次接收不固定参数
 function add () {
     var args = [].slice.call(arguments);//arguments转化为数组 Array.prototype.slice.call(arguments);
@@ -39,6 +40,22 @@ var result = add(1,1)(2)(3)
 console.log(result);//f 7
 console.log(result.toString());//7
 console.log(typeof result.toString());//number
+function add() {
+    // 第一次执行时，定义一个数组专门用来存储所有的参数
+    var _args = Array.prototype.slice.call(arguments);
+    // 在内部声明一个函数，利用闭包的特性保存_args并收集所有的参数值
+    var inner = function() {
+        _args.push(...arguments);
+        return inner;
+    };
+    // 利用toString隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
+    inner.toString = function () {
+        return _args.reduce(function (a, b) {
+            return a + b;
+        });
+    }
+    return inner;
+}
 
 //3
 //每一次接收一个固定参数

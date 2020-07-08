@@ -39,6 +39,7 @@ new 构造函数（传入的参数）生成了一个对象实例
 	var obj  = {};
 	obj.__proto__ = Img.prototype;
 	Img.call(obj);
+	//return obj
 	console.log(obj.__proto__ === Img.prototype);//true
 	//继承
 	function A(){}

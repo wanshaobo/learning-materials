@@ -44,3 +44,6 @@ function tap(){
 	}
 }
 
+//2 移动端1像素边框问题
+// https://www.jianshu.com/p/fa670b737a29
+

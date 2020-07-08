@@ -18,12 +18,6 @@ react事件和js原生事件 区别 执行顺序
 
 为什么action触发reducer后就执行render？
 
-var arr = [1,2,3,1,2,3,NaN,NaN]
-var set = new Set(arr)
-console.log(set);
-去重，包括NaN
-测试
-
 移动设备适配方案
 媒体查询
 @media
@@ -135,3 +129,38 @@ https://blog.csdn.net/osdfhv/article/details/79017338
         }) (window, document);
     </script>
     https://github.com/li-shuaishuai/screen_flex
+!function (e, t) {
+    var i = t.documentElement, o = e.devicePixelRatio || 1;
+    function n() {
+        t.body ? t.body.style.fontSize = 12 * o + "px" : t.addEventListener("DOMContentLoaded", n)
+    }
+    function d() {
+        var e = i.clientWidth / 10;
+        i.style.fontSize = e + "px"
+    }
+    if (n(), d(), e.addEventListener("resize", d), e.addEventListener("pageshow", function (e) { e.persisted && d() }), o >= 2) {
+        var a = t.createElement("body"), s = t.createElement("div");
+        s.style.border = ".5px solid transparent", a.appendChild(s), i.appendChild(a), 1 === s.offsetHeight && i.classList.add("hairlines"), i.removeChild(a)
+    }
+}(window, document);
+
+
+var html = document.documentElement, dpr = window.devicePixelRatio || 1;
+function initBody(){
+    document.body ? document.body.style.fontSize = 12 * dpr + "px" : document.addEventListener("DOMContentLoaded", initBody)
+}
+initBody();
+function initHtml(){
+    html.style.fontSize = html.clientWidth / 10 + "px"
+}
+initHtml();
+window.addEventListener("resize", initHtml)
+window.addEventListener("pageshow", function (e) { e.persisted && initHtml() })
+if(dpr >= 2){
+    var newBody = document.createElement("body"), newDiv = document.createElement("div")
+    newDiv.style.border = '.5px solid transparent';
+    newBody.appendChild(newDiv)
+    html.appendChild(newBody)
+    1 === newDiv.offsetHeight && html.classList.add("hairlines")
+    html.removeChild(newBody)
+}

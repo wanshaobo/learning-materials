@@ -34,3 +34,7 @@ function strToCamel(str){
 	}
 	return str;
 }
+
+//字符串提取出固定格式的内容，输出结果为数字
+let a = "https://resource/1593311954488.png";
+console.log(+a.split('/').pop().split('.').shift());//Number 1593311954488

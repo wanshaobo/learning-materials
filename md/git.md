@@ -1,48 +1,3 @@
-#### 1、git tag
-> 作用：给当前版本做一个标记，tagName和commitID一一对应，因为commitID不容易记忆，因此标签可以当做是版本库的一个快照。
-使用tag标签来管理项目的版本号
-
->标签和commitID挂钩，如果commitID出现在多个分支，那么在每个分支上都可以看到这个标签
-
-###### 切换到需要打标签的分支
-git checkout feature
-
-###### 添加标签，标签默认打在最新的commit
-git tag v1.0
-
-###### 给指定commitID添加标签，七位字符的ID号
-git tag v1.0 f52c633
-
-###### 带有名称和说明的标签，commitID号可有可无
-git tag -a v1.0 -m '这个版本的一些说明' f52c633
-
-###### 查看当前本地的所有tag，标签列表按照字母排序的，而非时间顺序
-git tag
-git tag -n
-git tag -l
-git tag -l 'v0.1.*' # 查看0.1.0 0.1.1等0.1下面的所有tag
-
-###### 查看标签信息
-git show tagName(v1.0)
-
-###### 删除本地tag
-git tag -d v1.0
-
-###### 将指定tag推送到远程代码仓库
-git push origin v1.0
-
-###### 将全部tag推送到远程代码仓库
-git push origin --tags
-
-#### 删除远程仓库的tag，方案一
-git tag -d v1.0
-git push origin :refs/tags/v1.0
-
-#### 删除远程仓库的tag，方案二
-git tag -d v1.0
-git push origin --delete tag v1.5.3 # 有待验证
-
-
 #### 2、撤销commit
 
 ###### 撤销git add . 撤销commit 不删除工作空间改动代码
@@ -106,6 +61,7 @@ git config --global alias.br branch
 #### 6、远程仓库代码回滚
 >回滚代码前，先从当前分支切出一个新的分支 $git checkout -b fixhot_repaire
 git log -3 查看提交的记录
+git reflog -3 ???TODO
 git reset --hard HEAD^ 回滚本地代码到上一次提交成功的时候(删除本地代码修改 && add && commit)
 git reset --hard HEAD-3
 git reset --hard commit_id

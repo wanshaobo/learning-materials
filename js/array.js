@@ -12,6 +12,14 @@ a1 === a2; // true, a1和a2是同一对象
 //类（伪）数组使用数组方法
 Array.prototype.slice.call(document.getElementsByTagName("*"));
 
+Array.prototype.toUpperCase = function(){
+	for(var i=0;i<this.length;i++){
+		this[i] = this[i].toUpperCase();
+	}
+}
+var arr = ['xin','dong','fang']
+arr.toUpperCase();//arr = ['XIN','DONG','FANG']
+
 //0、实现原生push方法
 Array.prototype._push = function(){
 	for(var i=0,len=arguments.length; i<len; i++){
@@ -38,6 +46,7 @@ console.log(arr instanceof Array);
 console.log(arr.constructor === Array);
 console.log(Object.prototype.toString.call(arr) === '[object Array]');//‘[object Array]’
 Array.prototype.isPrototypeOf([]);//Array是不是[]的原型链
+[].constructor.toString()//"function Array() { [native code] }"
 
 //2、数字转字符串
 var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -268,3 +277,16 @@ console.log(arr.filter(item => !!item));//[1, true, "1"]
 
 var arr = Array(9).fill('a')
 console.log(arr);//[ 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a' ]
+
+function sum(){
+	let arg = [...arguments];
+	arg = arg.filter((item) => (typeof item == 'number' && !isNaN(item)))
+	return arg.reduce((total,item)=>{return total+item});
+}
+sum('a',1,true,2,NaN,3);//6
+
+//数组按照固定格式中的字符串数字排序
+let arr = ["https://resource/1593311954488.png","https://resource/1593311954457.png","https://resource/1593311954535.png"]
+arr.sort((a,b)=>{
+	return +a.split('/').pop().split('.').shift() - b.split('/').pop().split('.').shift()
+});

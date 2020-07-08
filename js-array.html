@@ -15,6 +15,18 @@
 遍历数组：forEach
 操作数组：pop push unshift shift reverse splice sort
 
+数组遍历:
+for break可以结束循环 continue中断当次循环 可以改变原数组
+map 返回新数组 不可改变原数组
+forEach 没有返回值 不可改变原数组
+
+concat() 返回新数组 不改变原数组
+var res = [1,2,3].reduce((res,cur,index,curArr)=>{
+    res += cur
+    return res
+},10)
+console.log(res);//16
+
 判断数组的三种方法
 [].constructor.toString();//"function Array() { [native code] }".indexOf("Array") == 9
 if(arr.constructor.toString().indexOf("Array") !== -1){

@@ -94,3 +94,16 @@ a(2);//a is not a function 由于函数声明提前了，又赋值了1，a成为
 // https://github.com/mqyqingfeng/Blog
 // https://juejin.im/user/58e4b9b261ff4b006b3227f4/posts
 // https://juejin.im/post/59278e312f301e006c2e1510
+
+//逗号运算符
+let a = (b = 8*2, b*4);
+console.log(a);//64
+let a = b = (c = 5, c * 2);
+console.log(a,b);//10
+function add(){
+	var a = 1;
+	var b = 1;
+	return a++,b++,a+b;
+}
+console.log(add());//4
+console.log((0,9));//9

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <canvas id="canvas" width="500px" height="500px"></canvas>
+    <img id="source" src="../file/drawImage.png" />
+    <!--<img id="source" src="../file/drawImage100.png" />-->
+    <!--<img id="source" src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg" />-->
+</div>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ff7777';//ff7777
+    ctx.fillRect(0,0,500,500);
+    // ctx.fillStyle = '#ff77ff';
+
+
+    let image = document.getElementById('source');
+    // let image = new Image(100);
+    // image.src = "../file/bg.jpeg";
+    // image.src = "https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg";
+
+    image.onload = function(){
+        //图片原始宽高
+        let tw = this.width;
+        let th = this.height;
+        //起点坐标
+        let x = 40;
+        let y = 10;
+        //圆角半径
+        let r = 20;
+        //保存当前的绘画样式状态
+        ctx.save();
+        //绘制一个圆角矩形
+        //矩形宽高
+        let w = 120;
+        let h = 50;
+        //开始新路径
+        ctx.beginPath();
+        //左上角圆角
+        ctx.arc(x+r,y+r,r,Math.PI,Math.PI*3/2);
+        //矩形上边线
+        ctx.lineTo(x+w-r, y);
+        //右上角圆角
+        ctx.arc(x+w-r,y+r,r,Math.PI*3/2,Math.PI*2);
+        //矩形右边线
+        ctx.lineTo(x+w, y+h-r);
+        //右下角圆角
+        ctx.arc(x+w-r,y+h-r,r,0,Math.PI/2);
+        //矩形下边线
+        ctx.lineTo(x+r, y+h);
+        //左下角圆角
+        ctx.arc(x+r,y+h-r,r,Math.PI/2,Math.PI);
+        //矩形左边线
+        ctx.lineTo(x, y+r);//最后一条边线可用 ctx.closePath() 完成绘制
+        ctx.clip();
+        //绘制第一个图片
+        ctx.drawImage(image, tw/2 - w/2, th/2 - h/2, w, h, x, y, w, h)
+        ctx.restore();
+        //绘制第二个图片
+        ctx.drawImage(image, 0, 150)
+        ctx.restore();
+    }
+    // ctx.save();
+    // ctx.restore();
+    function radius(){
+        //矩形起始坐标(10,10)
+        let x =0;
+        let y = 0;
+        //圆角半径5
+        let r = 10;
+        //矩形宽高
+        let w = 200;
+        let h = 100;
+        //开始新路径
+        ctx.beginPath();
+        //左上角圆角
+        ctx.arc(x+r,y+r,r,Math.PI,Math.PI*3/2);
+        //矩形上边线
+        ctx.lineTo(x+w-r, y);
+        //右上角圆角
+        ctx.arc(x+w-r,y+r,r,Math.PI*3/2,Math.PI*2);
+        //矩形右边线
+        ctx.lineTo(x+w, y+h-r);
+        //右下角圆角
+        ctx.arc(x+w-r,y+h-r,r,0,Math.PI/2);
+        //矩形下边线
+        ctx.lineTo(x+r, y+h);
+        //左下角圆角
+        ctx.arc(x+r,y+h-r,r,Math.PI/2,Math.PI);
+        //矩形左边线
+        ctx.lineTo(x, y+r);//最后一条边线可用 ctx.closePath() 完成绘制
+        ctx.clip();
+    }
+
+
+    // ctx.rect(10, 10, 100, 100);
+    // ctx.lineWidth = 1;
+    // ctx.strokeStyle = '#000';
+    // ctx.stroke();
+    //绘制线段
+    // ctx.beginPath();
+    // ctx.moveTo(50,50);
+    // ctx.lineTo(100, 50);
+    // ctx.stroke();
+
+    // ctx.beginPath();
+    // ctx.arc(50,50,50,0,Math.PI/3);
+    // ctx.lineTo(50, 50);
+    // ctx.fillStyle = '#7FFFAA';
+    // ctx.fill();
+</script>
+</html>
