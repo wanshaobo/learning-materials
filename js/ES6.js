@@ -122,3 +122,54 @@ function curryingSum (a) {
 //12、生成值和地址都不可变数组和对象
 
 //13 map set
+
+// Promise原理与实现 https://www.jianshu.com/p/b4f0425b22a1
+Promise.all = function(promises){
+    return new Promise((resolve,reject)=>{
+        let counter = 0;
+        let result = new Array(promises.length);
+        promises.forEach((promise,index)=>{
+            Promise.resolve(promise).then((value)=>{
+                counter++;
+                result[index] = value;
+                if(counter == promises.length){
+                    resolve(result);
+                }
+            },(reason)=>{
+                reject(reason);
+            })
+        })
+    });
+}
+Promise.race = function(promises){
+    return new Promise((resolve,reject)=>{
+        promises.forEach((promise)=>{
+            Promise.resolve(promise).then((value)=>{
+                resolve(value);
+            },(reason)=>{
+                reject(reason);
+            })
+        })
+    });
+}
+Promise.allSettled = function(promises){
+    return new Promise((resolve,reject)=>{
+        let counter = 0;
+        let result = new Array(promises.length);
+        promises.forEach((promise,index)=>{
+            Promise.resolve(promise).then((value)=>{
+                counter++;
+                result[index] = {status:"fulfilled",value};
+                if(counter == promises.length){
+                    resolve(result);
+                }
+            },(reason)=>{
+                counter++;
+                result[index] = {status:"rejected",reason};
+                if(counter == promises.length){
+                    resolve(result);
+                }
+            })
+        })
+    });
+}

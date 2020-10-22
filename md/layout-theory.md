@@ -1,13 +1,14 @@
 
 #### 1、BFC
 >块级格式上下文：块级元素自顶向下排列，同级之间的containing block顶部一个接一个垂直排列，水平方向上撑满宽度。因为两个相邻的BFC之间距离由margin决定，在同一个BFC内部，两个垂直方向相邻的块级元素margin值会"共用"，导致塌陷。也是经典的外边距塌陷问题。
-https://www.jianshu.com/p/1702af88e9e7
+https://www.jianshu.com/p/1702af88e9e7 https://blog.csdn.net/sinat_36422236/article/details/88763187
 >BFC 理解为一个封闭盒子，盒子内部的元素无论如何，都不会影响到外部。
+>独立的渲染区域，独立的布局环境，其中的元素布局是不受外界的影响
 
 ###### 如何产生BFC
 - body根元素
 - 浮动元素：float：除none以为的值
-- 块级元素[https://baike.baidu.com/item/%E5%9D%97%E5%85%83%E7%B4%A0/6997452?fr=aladdin]
+- 块级元素 https://baike.baidu.com/item/%E5%9D%97%E5%85%83%E7%B4%A0/6997452?fr=aladdin
 - 块级容器:display：flex、inline-block、table-cell、table-capation
 - 绝对定位元素:position：absolute/fixed
 - overflow: hidden scroll auto

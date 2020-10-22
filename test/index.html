@@ -4,41 +4,28 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-
+        html{
+            background: #fff;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #top{
+            width: 100px;
+            height: 100px;
+            background: #CC0099;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            float: right;
+        }
     </style>
 </head>
 <body>
-
-<canvas id="canvas"></canvas>
-
+<div id="top"></div>
 </body>
 <script>
-    //canvas.toDataURL 报错 Uncaught DOMException: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.
-    //blob file.name file.size
-    let url = "https://ucancdn.xdf.cn/1v1/dingtalkprod/c6f165d6-3b3b-4714-90ce-aab500eb75a1/image/15936909578166f7e220bc13b01b772f7.image";
-    //图片宽高比小于1 宽度小于容器宽度需要等比例放大
-    // let url = "https://ucancdn.xdf.cn/1v1/dingtalkprod/9dc90ef4-d49f-4de1-b743-e1fb360e1076/image/1594093169637ce207981dca579ca4193.image";
-    const canvas = document.getElementById('canvas');
-    let ctx = null;
-    var img = new Image();
-    img.src = url;
-    img.setAttribute('crossorigin', 'anonymous'); // 注意设置图片跨域应该在图片加载之前
-    img.onload = function(e) {
-        //e.target = e.path[0] <img src="https://ucancdn.xdf.cn/1v1/dingtalkprod/c6f165d6-3b3b-4714-90ce-aab500eb75a1/image/15936909578166f7e220bc13b01b772f7.image" crossorigin="anonymous">
-        //图片原始宽高
-        let w = img.width;
-        let h = img.height;
-        //将图片的绝对宽高绘制在canvas上
-        canvas.width = w;
-        canvas.height = h;
-        ctx = canvas.getContext('2d');
-        ctx.drawImage(img,0,0)
 
-        let dataurl = canvas.toDataURL('image/jpeg', 1);//data:image/jpeg;base64,/9j/4AAQSkZJ
-        canvas.toBlob(function(res){
-            console.log(res.size);
-            console.log(res.type);
-        },'image/jpeg',.5)
-    }
 </script>
 </html>

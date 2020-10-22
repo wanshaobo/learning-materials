@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #root{
+            width: 30rem;
+            background-color: #9400D3;
+        }
+    </style>
+    <script>
+        //https://github.com/amfe/lib-flexible/blob/2.0/index.js
+        function px2rem(){
+            var html = document.documentElement;
+            var clientWidth = html.clientWidth;//document.documentElement.getBoundingClientRect().width
+            //设计稿375
+            //html.style.fontSize =(clientWidth / 375) + 'px';//设计稿 10px css 10rem
+            html.style.fontSize = 10 * (clientWidth / 375) + 'px';//设计稿 10px css 1rem
+        }
+        px2rem();
+        //JS实时监听屏幕大小变化，通过实时计算来实现比例的转换
+        let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
+        window.addEventListener(resizeEvt, px2rem, false);
+        document.addEventListener('DOMContentLoaded', px2rem, false);
+    </script>
+</head>
+<body>
+<div id="root">123</div>
+</body>
+<script>
+/* 李帅帅脚手架的使用方案
+//postcss.config.js postcss-adaptive
+//config/index.js remUnit: 37.5
+(function flexible(window,document){
+    var html = document.documentElement;
+    var dpr = window.devicePixelRatio || 1;
+    function g(){
+        if(document.body){
+            document.body.style.fontSize = (12*dpr)+"px"
+        }else{
+            document.addEventListener("DOMContentLoaded",g)
+        }
+    }
+    g();
+    function a(){
+        var i = html.clientWidth/10;
+        html.style.fontSize= i + "px";
+    }
+    a();
+    //通过JS实时监听屏幕大小变化，通过实时计算来实现比例的转换
+    window.addEventListener("resize",a);
+    window.addEventListener("pageshow",function(i){
+        if(i.persisted){a()}
+    });
+    if(dpr >= 2){
+        var f = document.createElement("body");
+        var e = document.createElement("div");
+        e.style.border=".5px solid transparent";
+        f.appendChild(e);
+        html.appendChild(f);
+        if(e.offsetHeight === 1){
+            html.classList.add("hairlines")}
+        html.removeChild(f)
+    }
+}(window,document));//html
+*/
+</script>
+</html>

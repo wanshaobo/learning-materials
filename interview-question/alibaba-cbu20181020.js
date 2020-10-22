@@ -21,8 +21,7 @@ function padLeft(str, len, chars) {
     if(str.length >= len)
         return str
     if(chars == undefined)
-        return new Array(len - str.length + 1).map((item,index) => " "+item).join(" ") + str;
-        // return new Array(len - str.length + 1).fill("").join(" ") + str
+        return new Array(len - str.length + 1).fill("").join(" ") + str
     if(str.length + chars.length >= len)
         return chars.substring(0, len - str.length) + str
     let insertLen = len - str.length;
@@ -30,7 +29,24 @@ function padLeft(str, len, chars) {
     let remainder = insertLen % chars.length
     return new Array(count).fill(chars).join("") + (remainder == 0 ? "" : chars.substring(0, remainder)) + str
 }
-
+function padLeft(){
+    let args = [].slice.call(arguments,0);
+    let str = args[0];
+    let totalLength = args[1];
+    let fillStr = args[2] || ' ';
+    if(totalLength <= str.length){
+        return str
+    }
+    let left = ''
+    for(let i=0;;i++){
+        left += fillStr;
+        if(left.length + str.length >= totalLength){
+            left = left.slice(0,totalLength-str.length);
+            break;
+        }
+    }
+    console.log(left+str);
+}
 // console.log("编码题一：字符串填充");
 // console.log(padLeft('abc', 10));
 // console.log(padLeft('abc', 10, 'foo'));

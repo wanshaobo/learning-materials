@@ -101,7 +101,8 @@ new Promise((resolve)=>{
     console.log(10);
 });
 console.log(11);
-//4 1 3 9 11 10 2 5 7 6 8
+//node环境 4 1 3 9 11 10 2 5 7 6 8
+//浏览器环境 4 1 3 9 11 2 10 5 6 7 8
 
 //4
 class Example extends React.Component{
@@ -195,6 +196,7 @@ function mergeOrder(arr1, arr2) {
 console.log(mergeOrder(arr1, arr2));;//[1,2,5,5,6,8]
 
 //6
+//F(1)=1，F(2)=1, F(n)=F(n - 1)+F(n - 2)（n ≥ 3，n ∈ N*）
 //打印斐波那契数列数列前十项，每秒钟打印一项 1、1、2、3、5、8、13、21、34、55
 //var和let的区别
 function fibonacci(n){

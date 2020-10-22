@@ -503,3 +503,268 @@ setTimeout(() => {
 	}, 0);
 }, 0);
 //timeout0 sync nextTick1 nextTick3 nextTick2 timeout2
+
+async function async1() {
+	console.log('async1 start');//2
+	await async2();
+	console.log('async1 end'); //6
+}
+async function async2() {
+	console.log('async2');//3
+}
+console.log('illegalscript start'); // 1
+setTimeout(function() {
+	console.log('setTimeout'); //8
+}, 0);
+async1();
+new Promise(function(resolve) {
+	console.log('promise1'); // 4
+	resolve();
+}).then(function() {
+	console.log('promise2'); //7
+});
+console.log('illegalscript end'); //5
+
+// async 函数的实现原理，就是将 Generator 函数和自动执行器，包装在一个函数里。
+//async函数如果有return语句(return 的内容会被Promise.resolve()加载) 调用的时候可以使用then方法
+async function asyncDemo(){
+	return 4
+}
+asyncDemo().then((res)=>{console.log(res)});//4
+//
+async function asyncDemo(){
+	return new Promise((resolve)=>{
+		setTimeout(()=>{
+			resolve(1)
+		},3000)
+	})
+}
+asyncDemo().then((res)=>{console.log(res)});//1
+//await命令只能用在async函数之中
+async function getTime(){
+	let res = await new Promise((resolve)=>{
+		setTimeout(()=>{
+			console.log(3);
+			resolve(1)
+		},1000)
+	})
+	console.log(2);
+	return res
+}
+getTime().then((res)=>{console.log(res)})//321
+
+console.log('script start')//1
+async function async1() {
+	await async2()
+	console.log('async1 end')//5
+}
+async function async2() {
+	console.log('async2 end')//2
+}
+async1()
+setTimeout(function () {
+	console.log('setTimeout');//9
+}, 0)
+new Promise(resolve => {
+	console.log('Promise')//3
+	resolve()
+})
+	.then(function () {
+		console.log('promise1')//6
+	})
+	.then(function () {
+		console.log('promise2')//8
+	})
+
+Promise.resolve().then(function () {
+	console.log('resolve then');//7
+})
+console.log('script end');//4
+
+//race 先抛出reject 直接结束等待resolve
+let arr = []
+let p1 = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		reject(1)
+	},1000)
+})
+let p2 = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		resolve(2)
+	},2000)
+})
+let p3 = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		resolve(3)
+	},3000)
+})
+arr.push(p1,p2,p3)
+Promise.race(arr).then((res)=>{
+	console.log(res);
+},(res)=>{
+	console.log(res);//1
+})
+
+try{
+	let p = new Promise((resolve,reject)=>{
+		reject(10)
+	})
+}catch(e){
+	console.log(e);//抛出错误
+}
+
+let a = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		resolve('a')
+		console.log(1);//1
+	},1000)
+})
+let b = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		resolve('b')
+		console.log(2);//2
+	},2000)
+})
+let c = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		reject('c')
+		console.log(3);//3
+	},3000)
+})
+Promise.all([a,b,c]).then((res)=>{
+	console.log(res);
+},(err)=>{
+	console.log(err);//c
+})
+
+//then方法中的return语句返回一个新的Promise实例 可以再用then方法接收返回值
+let p1 = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		resolve('pro')
+	},1000)
+})
+p1.then((res)=>{
+	console.log(res);//pro
+	return res
+}).then((res)=>{
+	console.log(res);//pro
+})
+
+//then方法中没有return语句 用第二个then方法接收不到任何数据 undefined
+let p1 = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		resolve('pro')
+	},1000)
+})
+p1.then((res)=>{
+	console.log(res);//pro
+}).then((res)=>{
+	console.log(res);//undefined
+})
+
+//Promise.prototype.catch()方法是.then(null, rejection)或.then(undefined, rejection)的别名，用于指定发生错误时的回调函数。
+//then方法有第二个异常捕获方法 就不会触发catch
+let p = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		reject(1)
+	},1000)
+})
+p.then((res)=>{
+	console.log(1,res);
+},(err)=>{
+	console.log(2,err);//2 1
+}).catch((e)=>{
+	console.log(3,e);
+})
+//then方法没有第二个异常捕获方法 会触发catch
+let p = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		reject(1)
+	},1000)
+})
+p.then((res)=>{
+	console.log(1,res);
+}).catch((e)=>{
+	console.log(3,e);//3 1
+})
+
+let p1 = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		resolve(1)
+	},1000)
+})
+let p2 = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		reject(2)
+	},2000)
+})
+let p3 = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		resolve(3)
+	},1000)
+})
+Promise.allSettled([p1,p2,p3]).then((res)=>{
+	console.log(JSON.stringify(res));//[ { status: 'fulfilled', value: 1 },{ status: 'rejected', reason: 2 },{ status: 'fulfilled', value: 3 } ]
+})
+
+async function async1() {
+	console.log('async1 start');//2
+	await async2();
+	console.log('async1 end');//6
+}
+async function async2() {
+	console.log('async2');//3
+}
+console.log('script start');//1
+setTimeout(function() {
+	console.log('setTimeout');//8
+}, 0)
+async1();
+new Promise(function(resolve) {
+	console.log('promise1');//4
+	resolve();
+}).then(function() {
+	console.log('promise2');//7
+});
+console.log('script end');//5
+
+//微任务嵌套微任务 第二次微任务执行完才执行性第一次的宏任务
+console.log(1);
+new Promise(function(resolve) {
+	console.log(2);
+	resolve();
+}).then(function() {
+	console.log(4);
+	new Promise(function(resolve) {
+		console.log(5);
+		resolve();
+		setTimeout(()=>{console.log(8);},0)
+	}).then(function() {
+		console.log(6);
+	});
+});
+setTimeout(()=>{console.log(7);},0)
+console.log(3);
+
+//平行调用then方法
+let p = new Promise((resolve,reject)=>{
+	setTimeout(()=>{
+		resolve(2)
+	},1000)
+})
+p.then((res)=>{console.log(1,res);})//1 2
+p.then((res)=>{console.log(2,res);})//2 2
+
+document.body.addEventListener('click', () => {
+	Promise.resolve(1).then((v) => {
+		console.log(v)
+	})
+	console.log(2)
+})
+document.body.addEventListener('click', () => {
+	Promise.resolve(3).then((v) => {
+		console.log(v)
+	})
+	console.log(4)
+})
+//2 1 4 3

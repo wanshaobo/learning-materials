@@ -1,3 +1,8 @@
+/*
+substr(start,length)
+substring([from,to))
+slice([start,end))
+*/
 //for...of语句在可迭代对象(包括 Array, Map, Set, String, TypedArray，arguments 对象等等)上创建一个迭代循环，对每个不同属性的属性值,调用一个自定义的有执行语句的迭代挂钩
 var str = 'abc';
 for(var item of str){
@@ -38,3 +43,14 @@ function strToCamel(str){
 //字符串提取出固定格式的内容，输出结果为数字
 let a = "https://resource/1593311954488.png";
 console.log(+a.split('/').pop().split('.').shift());//Number 1593311954488
+
+let str = 'abcd';
+function deleteSingleChar(str,index){
+	return str.slice(0,index) + str.slice(index+1)
+}
+deleteSingleChar(str,str.indexOf('b'));//acd
+
+// fffggjjj -> f4g2j3
+
+//字符串转数组
+Array.from("RUNOOB");//[ 'R', 'U', 'N', 'O', 'O', 'B' ]

@@ -107,3 +107,90 @@ function add(){
 }
 console.log(add());//4
 console.log((0,9));//9
+
+//进制转换
+function num2str(str){
+	let arr = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G'];
+	return arr[str]
+}
+//十进制 - 十七进制
+function num2Seventeen(num){
+	if(num <= 0){
+		return num
+	}
+	let res = ''
+	while(num != 0){
+		res = num2str(num%17) + res;//取模
+		num = Math.floor(num/17);//取商
+	}
+	console.log(res);
+}
+//十进制 - 二进制
+function num2Binary(num){
+	if(num <= 0){
+		return num
+	}
+	let res = ''
+	while(num != 0){
+		res = num%2 + res
+		num = Math.floor(num/2)
+	}
+	console.log(res);
+}
+//十进制 - 二进制
+function num2Binary(num){
+	if(num <= 0){
+		return num
+	}
+	let res = ''
+	while(num != 0){
+		res = num%2 + res
+		num = num>>1
+	}
+	console.log(res);
+}
+
+var num = 100;
+console.log(num.toString(2));
+parseInt(num,8);   //八进制转十进制
+parseInt(num,16);   //十六进制转十进制
+parseInt(num).toString(8)  //十进制转八进制
+parseInt(num).toString(16)   //十进制转十六进制
+parseInt(num,2).toString(8)   //二进制转八进制
+parseInt(num,2).toString(16)  //二进制转十六进制
+parseInt(num,8).toString(2)   //八进制转二进制
+parseInt(num,8).toString(16)  //八进制转十六进制
+parseInt(num,16).toString(2)  //十六进制转二进制
+parseInt(num,16).toString(8)  //十六进制转八进制
+
+console.log(11>'10');//纯数字和数字字符串相比较，则将字符串数字隐式转换成数字再进行比较 true
+console.log(10>'10');//false
+console.log(999>'a');//纯数字和非数字字符串比较，都返回false 由于parseInt('a')永远是NaN
+console.log(1>NaN);//false
+console.log(1<NaN);//false
+console.log('10'>'5');//纯字符串比较，转换成ASCII码再进行比较 false
+console.log('b'>'a');//纯字符串比较，转换成ASCII码再进行比较 true
+console.log('2'>'!');//true
+console.log("abc"<"acd");//true
+//js最大数字 2^53 9007199254740992
+console.log(9007199254740991);
+console.log(9007199254740992);
+console.log(9007199254740993);
+let num1 =  0.1,num2 = 0.2;
+console.log(num1+num2);
+console.log((num1*10 + num2*10)/10);
+
+
+var a = {n:1}
+var b = a;
+a.x = a = {n:2};//从左到右进行  a.x = {n:2}  a = {n:2}
+console.log(a);//{n:2}
+console.log(b);//{ n: 1, x: { n: 2 } }
+console.log(b.x);//{n:2}
+console.log(a.x);//undefined
+a === b.x//true
+
+//创建10个*的字符串
+new Array(10).join("*");//"*********"
+//初始化一个数组
+new Array(10).fill(1);//[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]

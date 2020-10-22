@@ -59,3 +59,65 @@ function isMyWeb(url){
 		return false
 	}
 }
+
+//连字符 -> 驼峰
+//back-ground-color -> backGroundColor
+let reg = /-[a-z]/g;
+let str = 'back-ground-color';
+let match = str.match(reg);//['-g','-c']
+match.forEach((item) => {
+	str = str.replace(item, item.split('')[1].toUpperCase())
+})
+console.log(str);
+//驼峰 -> 连字符
+//backGroundColor -> back-ground-color
+console.log('backGroundColor'.replace(/[A-Z]/g,'-$&').toLowerCase());//background-color
+
+let str = 'abcdefgWhigk-kdfanDdfakld-dkldkGfg'
+let reg = /-[a-z]|[A-Z]/g;
+//console.log(str.match(reg));//[ 'W', '-', 'D', '-', 'G' ]
+str.replace(reg,function(match,index,source){
+	console.log(1,match);//W
+	console.log(2,index);//7
+	console.log(3,source);//abcdefgWhigk-kdfanDdfakld-dkldkGfg
+})
+
+//两个子表达式是或的关系
+var str ='111xyz22xxxx';
+var res= str.replace(/(\d{3})|(\d{2})/g,'a$1b$2c');
+console.log(res);//a111bcxyzab22cxxxx
+
+//两个子表达式是与的关系
+var str ='11122xxxx';
+var res= str.replace(/(\d{3})(\d{2})/g,'a$1b$2c');
+console.log(res);//a111b22cxxxx
+console.log(RegExp.$1);//111
+console.log(RegExp.$2);//22
+
+// $1 $2 ... 识别的子表达式必须用()包围
+console.log('abcdefgWhigk-kdfanDdfakld-dkldkGfg'.replace(/([A-Z])|(-[a-z])/g, 'x$1y$2z'));//abcdefgxWyzhigkxy-kzdfanxDyzdfakldxy-dzkldkxGyzfg
+console.log('abcdefgWhigk-kdfanDdfakld-dkldkGfg'.replace(/[A-Z]|(-[a-z])/g, 'x$1y$2z'));//abcdefgxy$2zhigkx-ky$2zdfanxy$2zdfakldx-dy$2zkldkxy$2zfg
+console.log('11122xxxx11122xxxx'.replace(/(\d{3})(\d{2})/g, 'a$1b$2c'));
+
+//replact(reg,replacement) replacement可以是函数 也可以是字符串($字符具有特定的含义)
+//$1-$9 存放着正则表达式中最近的9个正则表达式的匹配结果，这些结果按照子匹配的出现顺序依次排列
+// 基本语法RegExp.$n 这些属性是静态的，除了replace中的第二个参数可以省略RegExp之外，其他地方使用都要加上RegExp。
+//$1 $2 $3 与reg中的第1/2/3个子表达式(用括号包围的表达式)匹配到的内容
+//$&　与reg相匹配的子串
+//$`　位于匹配子串左侧的文本
+//$'　位于匹配子串右侧的文本
+
+//(?=pattern) 正向肯定预查 (?!pattern) 正向否定预查 https://www.cnblogs.com/dogecheng/p/11466687.html
+//()表示捕获分组 (?:)表示非捕获分组-匹配的值不会保存起来
+function thousands (num) {
+	return (num+ '').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g,'$1,');
+}
+console.log(thousands ('12345678901234567890.4567845678'));//12,345,678,901,234,567,890.4,567,845,678
+
+let str = 'abcdefgWhigk-kdfanDdfakld-dkldkGfg'
+let reg = /[A-Z]|-[a-z]/g;
+console.log(str.match(reg));//[ 'W', '-k', 'D', '-d', 'G' ]
+
+let str = "ABC is an great man, which means ABC is great"
+let res = str.replace(/ABC/g,'Batman')
+console.log(res);//Batman is an great man, which means Batman is great

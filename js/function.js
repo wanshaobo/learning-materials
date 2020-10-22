@@ -1,3 +1,42 @@
+
+function a(){
+    console.log(1);
+}
+function b(){
+    console.log(2);
+}
+function c(){
+    console.log(3);
+}
+function d(){
+    console.log(4);
+}
+//reduce() 可以作为一个高阶函数，用于函数的 compose。
+function e(...args){
+    return args.reduce((res,cur) => (...args) => res(cur(...args)));
+}
+let e = [a,b,c,d].reduce((res,cur) => (...args) => res(cur(...args)));
+console.log(e.toString());//(...args) => res(cur(...args))
+e();//4 3 2 1
+function f(...args){
+    console.log(args);
+}
+f(a,b,c,d)//[function a(){console.log(1);}, function b(){console.log(2);}, function c(){console.log(3);}, function d(){console.log(4);}]
+
+// compose 从右向左
+const compose = (...funcs) => x => funcs.reduceRight((v, f) => f(v), x);
+const func1 = n => n + 1; //加1
+const func2 = n => n * 2; // 乘2
+const funcs = compose(func1,func2);
+console.log(funcs(2));; // 6
+
+// pipe 从左向右
+const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);
+const func1 = n => n + 1; //加1
+const func2 = n => n * 2; // 乘2
+const funcs = pipe(func1,func2);
+console.log(funcs(2));; // 6
+
 //获取函数的形参个数 functionName.length
 function abc(){
 
@@ -714,5 +753,69 @@ function hehe(){
 }
 hehe()
 
-//百度 js高阶函数
+
+//currying作用 延迟计算 参数复用 动态生成函数
+//延迟计算
+// 不定执行次数 不定参数个数 求和
+function currying(fn) {
+    var args = [];//闭包
+    return function () {
+        if (arguments.length === 0) {
+            return fn.apply(this, args);
+        } else {
+            Array.prototype.push.apply(args, [].slice.call(arguments));
+            return arguments.callee;//函数本身
+        }
+    }
+};
+function mul() {
+    var total = 0;
+    for (var i = 0, c; c = arguments[i++];) {
+        total += c;
+    }
+    return total;
+}
+var sum = currying(mul);
+sum(1,2,3)(4)(5)(6,1);
+console.log(sum());//22 空白调用时才是真正的计算
+//参数复用
+function curryingCheck(reg) {
+    return function (str) {
+        return reg.test(str);
+    }
+}
+var isNumer = curryingCheck(/\d+/g);
+var isString = curryingCheck(/[a-z]+/g)
+console.log(isNumer('123')) //true
+console.log(isString('wan'));//true
+//compose函数是一个函数（函数只接受一个参数）的返回值作为另外一个函数的参数，将需要嵌套执行的函数平铺。
+//calc1(calc2(calc3(d))) 可读性差
+let calc1 = (x) => x + 1;
+let calc2 = (x) => x + 2;
+let calc3 = (x) => x + 3;
+function compose(...funcs) {
+    return function anonymous(val) {
+        return funcs.reverse().reduce((num, item) => {
+            if (funcs.length === 0) return val;
+            if (funcs.length === 1) return funcs[0](val);
+            return typeof num === 'function' ? item(num(val)) : item(num);
+        });
+    }
+}
+let result = compose(calc1, calc3, calc2);
+console.log(result(0));
+
+//将函数 arguments对象 转化为数组的方式
+function foo() {
+    Array.prototype.slice.call(arguments)
+}
+function foo() {
+    [].slice.call(arguments);
+}
+function foo() {
+    Array.from(arguments); // [ 'a', 'b', 'c' ]
+}
+function foo() {
+    let args = [...arguments]; // [ 'a', 'b', 'c' ]
+}
 
